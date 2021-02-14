@@ -30,7 +30,7 @@ namespace Algorithms.MatrixOperations
 
             var length = startingData.Count();
 
-            if (Math.Sqrt(length) % 1 != 0)
+            if (Math.Sqrt(length) % 1 != 0 || !this.IsPowerOfTwo(length))
                 throw new ArgumentOutOfRangeException(
                         $"The size of a square matrix must be a power of 2: you sent an array of {length}");
 
