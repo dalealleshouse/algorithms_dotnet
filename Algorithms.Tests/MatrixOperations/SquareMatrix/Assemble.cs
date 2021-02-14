@@ -16,7 +16,20 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
         }
 
         [Fact]
-        public void Should_JoinSize2FromQuadrants()
+        public void Should_RejectDifferntSizes()
+        {
+            var q1 = new TestMatrix(new int[] { 1, 2, 3, 4 });
+            var q2 = new TestMatrix(new int[] { 2 });
+            var q3 = new TestMatrix(new int[] { 3 });
+            var q4 = new TestMatrix(new int[] { 4 });
+
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                    q1.Assemble(q1, q2, q3, q4));
+        }
+
+
+        [Fact]
+        public void Should_JoinSize2MatrixFromQuadrants()
         {
             var expected = new TestMatrix(new int[] { 1, 2, 3, 4 });
             var q1 = new TestMatrix(new int[] { 1 });
