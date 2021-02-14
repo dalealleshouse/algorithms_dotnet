@@ -4,7 +4,7 @@ namespace Algorithms.MatrixOperations
 
     public class BinaryOps<T>
     {
-        public BinaryOps(Func<T, T, T> add, Func<T, T, T> subtract,
+        private BinaryOps(Func<T, T, T> add, Func<T, T, T> subtract,
                 Func<T, T, T> multiply)
         {
             Add = (x, y) => add(x, y) ?? throw new ArgumentNullException(nameof(add));
@@ -16,7 +16,22 @@ namespace Algorithms.MatrixOperations
         public Func<T, T, T> Subtract { get; }
         public Func<T, T, T> Multiply { get; }
 
+        public static BinaryOps<uint> UInt() => new BinaryOps<uint>(
+                    (x, y) => checked(x + y),
+                    (x, y) => checked(x - y),
+                    (x, y) => checked(x * y));
+
         public static BinaryOps<int> Int() => new BinaryOps<int>(
+                    (x, y) => checked(x + y),
+                    (x, y) => checked(x - y),
+                    (x, y) => checked(x * y));
+
+        public static BinaryOps<long> Long() => new BinaryOps<long>(
+                    (x, y) => checked(x + y),
+                    (x, y) => checked(x - y),
+                    (x, y) => checked(x * y));
+
+        public static BinaryOps<ulong> ULong() => new BinaryOps<ulong>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));
