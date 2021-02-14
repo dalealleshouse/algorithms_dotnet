@@ -36,10 +36,8 @@ namespace Algorithms.MatrixOperations
             var p7 = (a1 - a3) * (b1 + b2);
 
             return this.Assemble(
-                    p5 + p4 - p2 + p6,
-                    p1 + p2,
-                    p3 + p4,
-                    p1 + p5 - p3 - p7);
+                    p5 + p4 - p2 + p6,  p1 + p2,
+                    p3 + p4,            p1 + p5 - p3 - p7);
         }
     }
 }

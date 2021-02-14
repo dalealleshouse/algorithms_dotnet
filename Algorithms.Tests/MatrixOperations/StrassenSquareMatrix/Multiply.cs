@@ -31,10 +31,8 @@ namespace Algorithms.Tests.MatrixOperations
 
             var expected = n1 * n2;
 
-            var r1 = new StrassenSquareMatrix<int>(
-                    BinaryOps<int>.Int(), n1.Data);
-            var r2 = new StrassenSquareMatrix<int>(
-                    BinaryOps<int>.Int(), n2.Data);
+            var r1 = new StrassenSquareMatrix<int>(BinaryOps<int>.Int(), n1.Data);
+            var r2 = new StrassenSquareMatrix<int>(BinaryOps<int>.Int(), n2.Data);
 
             Assert.Equal(expected, r1 * r2);
         }

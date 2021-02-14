@@ -24,5 +24,14 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
             Assert.Throws<ArgumentNullException>(() => null + a);
             Assert.Throws<ArgumentNullException>(() => b + b);
         }
+
+        [Fact]
+        public void Should_Overflow()
+        {
+            var a = new TestMatrix(new int[] { int.MaxValue, 8, 3, 7 });
+            var b = new TestMatrix(new int[] { 1, 0, 5, 2 });
+
+            Assert.Throws<OverflowException>(() => a + b);
+        }
     }
 }
