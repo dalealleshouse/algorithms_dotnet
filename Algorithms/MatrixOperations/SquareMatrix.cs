@@ -21,7 +21,7 @@ namespace Algorithms.MatrixOperations
 
             this.size = size;
             this.ops = ops ?? throw new ArgumentNullException(nameof(ops));
-            this.data = new T[(int)Math.Pow(size, 2)];
+            this.data = new T[size * size];
         }
 
         protected SquareMatrix(BinaryOps<T> ops, IEnumerable<T> startingData)
@@ -33,21 +33,97 @@ namespace Algorithms.MatrixOperations
 
             var length = startingData.Count();
 
-            if (!this.IsPowerOfTwo(length))
+            if (Math.Sqrt(length) % 1 != 0)
             {
                 throw new ArgumentOutOfRangeException(
                         "The size of a square matrix must be a power of 2");
             }
 
-            size = (int)Math.Log2(length);
-            this.data = new T[(int)Math.Pow(size, 2)];
+            size = (length == 1) ? 1 : (int)Math.Log2(length);
+            this.data = new T[length];
             startingData.ToArray().CopyTo(this.data, 0);
             this.ops = ops ?? throw new ArgumentNullException(nameof(ops));
         }
+
         private bool IsPowerOfTwo(int x) { return (x & (x - 1)) == 0; }
-        protected abstract SquareMatrix<T> Empty();
+        protected SquareMatrix<T> Empty() => this.Empty(size);
+        protected abstract SquareMatrix<T> Empty(int size);
 
         public int Size => size;
+
+        public T this[int x, int y]
+        {
+            get => this.data[x * this.size + y];
+            set => this.data[x * this.size + y] = value;
+        }
+
+        public SquareMatrix<T> Transpose()
+        {
+            var result = this.Empty();
+
+            for (var i = 0; i < size; i++)
+            {
+                for (var j = 0; j < size; j++)
+                {
+                    result[j, i] = this[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        public (SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>)
+            Quarter()
+        {
+            if (size < 2)
+                throw new ArgumentOutOfRangeException("size must be greater than or equal to 2");
+
+            int newSize = size / 2;
+
+            var q1 = this.Empty(newSize);
+            var q2 = this.Empty(newSize);
+            var q3 = this.Empty(newSize);
+            var q4 = this.Empty(newSize);
+
+            for (var i = 0; i < newSize; i++)
+            {
+                for (var j = 0; j < newSize; j++)
+                {
+                    q1[i, j] = this[i, j];
+                    q2[i, j] = this[i, newSize + j];
+                    q3[i, j] = this[newSize + i, j];
+                    q4[i, j] = this[newSize + i, newSize + j];
+                }
+            }
+
+            return (q1, q2, q3, q4);
+        }
+
+        public SquareMatrix<T> Assemble(SquareMatrix<T> q1, SquareMatrix<T> q2, 
+                SquareMatrix<T> q3, SquareMatrix<T> q4)
+        {
+            if (q1 is null) throw new ArgumentNullException(nameof(q1));
+            if (q2 is null) throw new ArgumentNullException(nameof(q2));
+            if (q3 is null) throw new ArgumentNullException(nameof(q3));
+            if (q4 is null) throw new ArgumentNullException(nameof(q4));
+
+            int newSize = size * 2;
+
+            var result = this.Empty(newSize);
+
+            for (var i = 0; i < size; i++)
+            {
+                for (var j = 0; j < size; j++)
+                {
+                    result[i, j] = q1[i, j];
+                    result[i, size + j] = q2[i, j];
+                    result[size + i, j] = q3[i, j];
+                    result[size + i, size + j] = q4[i, j];
+                }
+            }
+
+            return result;
+        }
 
         public static SquareMatrix<T> operator +(SquareMatrix<T> a, SquareMatrix<T> b)
         {
@@ -87,6 +163,8 @@ namespace Algorithms.MatrixOperations
             return result;
         }
 
+        protected abstract SquareMatrix<T> Multiply(SquareMatrix<T> b);
+
         public static SquareMatrix<T> operator *(SquareMatrix<T> a, SquareMatrix<T> b)
         {
             if (a is null) throw new ArgumentNullException(nameof(a));
@@ -94,27 +172,9 @@ namespace Algorithms.MatrixOperations
             if (a.size != b.size)
                 throw new ArgumentOutOfRangeException("matrices must be the same size");
 
-            var result = a.Empty();
-
-            for (int i = 0; i < a.size; i++)
-            {
-                for (int j = 0; j < a.size; j++)
-                {
-                    for (int k = 0; k < a.size; k++)
-                    {
-                        result[i, j] = a.ops.Add(result[i, j], a.ops.Multiply(a[i, k], b[k, j]));
-                    }
-                }
-            }
-            return result;
+            return a.Multiply(b);
         }
 
-
-        public T this[int x, int y]
-        {
-            get => this.data[x * this.size + y];
-            set => this.data[x * this.size + y] = value;
-        }
 
         public override bool Equals(object obj)
         {

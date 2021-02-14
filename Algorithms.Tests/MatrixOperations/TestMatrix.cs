@@ -9,10 +9,7 @@ namespace Algorithms.Tests
         {
         }
 
-        public TestMatrix(int size)
-            : base(size, new BinaryOps<int>(
-                        (x, y) => checked(x + y), (x, y) => checked(x - y),
-                        (x, y) => checked(x * y)))
+        public TestMatrix(int size) : base(size, BinaryOps<int>.Int())
         {
         }
 
@@ -22,17 +19,14 @@ namespace Algorithms.Tests
         }
 
         public TestMatrix(int[] startingData)
-            : base(new BinaryOps<int>(
-                        (x, y) => checked(x + y), (x, y) => checked(x - y),
-                        (x, y) => checked(x * y)),
-                    startingData)
+            : base(BinaryOps<int>.Int(), startingData)
         {
         }
 
-        protected override SquareMatrix<int> Empty()
-        {
-            return new TestMatrix(size, ops);
-        }
+        protected override SquareMatrix<int> Empty(int size) => 
+            new TestMatrix(size, ops);
+
+        protected override SquareMatrix<int> Multiply(SquareMatrix<int> b) => b;
     }
 
 
