@@ -7,7 +7,7 @@ namespace Algorithms.MatrixOperations
         private BinaryOps(Func<T, T, T> add, Func<T, T, T> subtract,
                 Func<T, T, T> multiply)
         {
-            Add = (x, y) => add(x, y) ?? throw new ArgumentNullException(nameof(add));
+            Add = add ?? throw new ArgumentNullException(nameof(add));
             Subtract = subtract ?? throw new ArgumentNullException(nameof(subtract));
             Multiply = multiply ?? throw new ArgumentNullException(nameof(multiply));
         }
