@@ -1,24 +1,22 @@
 namespace Algorithms.Tests.MatrixOperations
 {
     using System;
+    using System.Linq;
     using Algorithms.MatrixOperations;
 
     public static class MatrixGenerator
     {
-        public static NaiveSquareMatrix<int> NaiveMatrixGenerator(int size)
+        public static T CreateMatrix<T>(int size)
+            where T : SquareMatrix<long>
         {
             var rand = new Random();
 
-            var matrix = new NaiveSquareMatrix<int>(size, BinaryOps<int>.Int());
-            for (var i = 0; i < size; i++)
-            {
+            var data = Enumerable.Range(0, size * size)
+                .Select(r => (long)rand.Next(100))
+                .ToList();
 
-                for (var j = 0; j < size; j++)
-                {
-                    matrix[i, j] = rand.Next(50);
-                }
-            }
-            return matrix;
+            return (T)Activator.CreateInstance(typeof(T),
+                    BinaryOps<long>.Long, data);
         }
     }
 }

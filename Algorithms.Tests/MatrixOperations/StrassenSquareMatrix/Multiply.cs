@@ -5,11 +5,12 @@ namespace Algorithms.Tests.MatrixOperations.StrassenSquareMatrix
     using Algorithms.MatrixOperations;
     using System.Collections.Generic;
 
+        [Trait("Category","A")]
     public class Multiply
     {
         private StrassenSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {
-            return new StrassenSquareMatrix<int>(BinaryOps<int>.Int(), data);
+            return new StrassenSquareMatrix<int>(BinaryOps<int>.Int, data);
         }
 
 
@@ -26,13 +27,13 @@ namespace Algorithms.Tests.MatrixOperations.StrassenSquareMatrix
         public void Multiply_MatchesNaive()
         {
             var size = 128;
-            var n1 = MatrixGenerator.NaiveMatrixGenerator(size);
-            var n2 = MatrixGenerator.NaiveMatrixGenerator(size);
+            var n1 = MatrixGenerator.CreateMatrix<NaiveSquareMatrix<long>>(size);
+            var n2 = MatrixGenerator.CreateMatrix<NaiveSquareMatrix<long>>(size);
 
             var expected = n1 * n2;
 
-            var r1 = new StrassenSquareMatrix<int>(BinaryOps<int>.Int(), n1.Data);
-            var r2 = new StrassenSquareMatrix<int>(BinaryOps<int>.Int(), n2.Data);
+            var r1 = new StrassenSquareMatrix<long>(BinaryOps<long>.Long, n1.Data);
+            var r2 = new StrassenSquareMatrix<long>(BinaryOps<long>.Long, n2.Data);
 
             Assert.Equal(expected, r1 * r2);
         }

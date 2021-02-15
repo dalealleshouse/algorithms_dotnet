@@ -16,37 +16,37 @@ namespace Algorithms.MatrixOperations
         public Func<T, T, T> Subtract { get; }
         public Func<T, T, T> Multiply { get; }
 
-        public static BinaryOps<uint> UInt() => new BinaryOps<uint>(
+        public static readonly BinaryOps<uint> UInt = new BinaryOps<uint>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));
 
-        public static BinaryOps<int> Int() => new BinaryOps<int>(
+        public static readonly BinaryOps<int> Int = new BinaryOps<int>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));
 
-        public static BinaryOps<long> Long() => new BinaryOps<long>(
+        public static readonly BinaryOps<long> Long = new BinaryOps<long>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));
 
-        public static BinaryOps<ulong> ULong() => new BinaryOps<ulong>(
+        public static readonly BinaryOps<ulong> ULong = new BinaryOps<ulong>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));
 
-        public static BinaryOps<decimal> Decimal() => new BinaryOps<decimal>(
+        public static readonly BinaryOps<decimal> Decimal = new BinaryOps<decimal>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));
 
-        public static BinaryOps<double> Double() => new BinaryOps<double>(
+        public static readonly BinaryOps<double> Double = new BinaryOps<double>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));
 
-        public static BinaryOps<float> Float() => new BinaryOps<float>(
+        public static readonly BinaryOps<float> Float = new BinaryOps<float>(
                     (x, y) => checked(x + y),
                     (x, y) => checked(x - y),
                     (x, y) => checked(x * y));

@@ -9,7 +9,7 @@ namespace Algorithms.Tests
         {
         }
 
-        public TestMatrix(int size) : base(size, BinaryOps<int>.Int())
+        public TestMatrix(int size) : base(size, BinaryOps<int>.Int)
         {
         }
 
@@ -19,7 +19,7 @@ namespace Algorithms.Tests
         }
 
         public TestMatrix(int[] startingData)
-            : base(BinaryOps<int>.Int(), startingData)
+            : base(BinaryOps<int>.Int, startingData)
         {
         }
 
