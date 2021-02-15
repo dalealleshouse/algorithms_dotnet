@@ -1,11 +1,11 @@
-namespace Algorithms.Tests.MatrixOperations
+namespace Algorithms.Tests.MatrixOperations.NaiveSquareMatrix
 {
     using System;
     using Xunit;
     using Algorithms.MatrixOperations;
     using System.Collections.Generic;
 
-    public class NaiveSquareMatrix_Multiply
+    public class Multiply
     {
         public NaiveSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {

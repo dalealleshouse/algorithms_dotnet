@@ -1,11 +1,11 @@
-namespace Algorithms.Tests.MatrixOperations
+namespace Algorithms.Tests.MatrixOperations.TransposeMatrixMultiply
 {
     using System;
     using Xunit;
     using Algorithms.MatrixOperations;
     using System.Collections.Generic;
 
-    public class TransposeSquareMatrix_Multiply
+    public class Multiply
     {
         public TransposeSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {

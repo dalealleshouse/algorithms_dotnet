@@ -1,11 +1,11 @@
-namespace Algorithms.Tests.MatrixOperations
+namespace Algorithms.Tests.MatrixOperations.StrassenSquareMatrix
 {
     using System;
     using Xunit;
     using Algorithms.MatrixOperations;
     using System.Collections.Generic;
 
-    public class StrassenSquareMatrix_Multiply
+    public class Multiply
     {
         private StrassenSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {
@@ -25,7 +25,7 @@ namespace Algorithms.Tests.MatrixOperations
         [Fact]
         public void Multiply_MatchesNaive()
         {
-            var size = 32;
+            var size = 128;
             var n1 = MatrixGenerator.NaiveMatrixGenerator(size);
             var n2 = MatrixGenerator.NaiveMatrixGenerator(size);
 
