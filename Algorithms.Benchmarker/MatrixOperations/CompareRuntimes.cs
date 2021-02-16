@@ -8,12 +8,13 @@ namespace Algorithms.Benchmarker.MatrixOperations
         public static void CompareTimes()
         {
             const int size = 1024;
+            TimeSpan ts;
 
             SquareMatrix<long> a = TestDataGenerator
                 .CreateMatrix<NaiveSquareMatrix<long>>(size);
             SquareMatrix<long> b = TestDataGenerator
                 .CreateMatrix<NaiveSquareMatrix<long>>(size);
-            (_, var ts) = ActionTimer.Time(() => a * b);
+            (_, ts) = ActionTimer.Time(() => a * b);
             Console.WriteLine($"Naive {ts}");
 
             a = TestDataGenerator
@@ -36,6 +37,15 @@ namespace Algorithms.Benchmarker.MatrixOperations
                 .CreateMatrix<StrassenSquareMatrix<long>>(b.Data);
             (_, ts) = ActionTimer.Time(() => a * b);
             Console.WriteLine($"Strassen {ts}");
+
+            a = TestDataGenerator
+                .CreateMatrix<FixedSquareMatrix>(a.Data);
+            b = TestDataGenerator
+                .CreateMatrix<FixedSquareMatrix>(b.Data);
+            (_, ts) = ActionTimer.Time(() => a * b);
+            Console.WriteLine($"Fixed Strassen {ts}");
+
+
         }
     }
 }

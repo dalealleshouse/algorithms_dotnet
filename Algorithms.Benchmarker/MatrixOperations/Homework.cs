@@ -11,8 +11,8 @@ namespace Algorithms.Benchmarker.MatrixOperations
         private static void MultiplyMatricies(string matrixPath1,
                 string matrixPath2, long expected)
         {
-            var a = TestDataGenerator.CreateMatrix<StrassenSquareMatrix<long>>(matrixPath1);
-            var b = TestDataGenerator.CreateMatrix<StrassenSquareMatrix<long>>(matrixPath2);
+            var a = TestDataGenerator.CreateMatrix<FixedSquareMatrix>(matrixPath1);
+            var b = TestDataGenerator.CreateMatrix<FixedSquareMatrix>(matrixPath2);
 
             (var result, var time) = ActionTimer.Time<SquareMatrix<long>>(
                     () => a * b);
@@ -31,10 +31,10 @@ namespace Algorithms.Benchmarker.MatrixOperations
                     AppConfig.config.MatrixOperations.SmallMatrixBUrl,
                     1321619);
 
-            /* MultiplyMatricies( */
-            /*         AppConfig.config.MatrixOperations.LargeMatrixAUrl, */
-            /*         AppConfig.config.MatrixOperations.LargeMatrixBUrl, */
-                    /* 168345695003062); */
+            MultiplyMatricies(
+                    AppConfig.config.MatrixOperations.LargeMatrixAUrl,
+                    AppConfig.config.MatrixOperations.LargeMatrixBUrl,
+                    168345695003062);
         }
     }
 }
