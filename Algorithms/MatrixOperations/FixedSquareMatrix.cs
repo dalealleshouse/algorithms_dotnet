@@ -66,10 +66,10 @@ namespace Algorithms.MatrixOperations
 
         public static FixedSquareMatrix operator +(FixedSquareMatrix a, FixedSquareMatrix b)
         {
-            /* if (a is null) throw new ArgumentNullException(nameof(a)); */
-            /* if (b is null) throw new ArgumentNullException(nameof(b)); */
-            /* if (a.size != b.size) */
-            /*     throw new ArgumentOutOfRangeException("matrices must be the same size"); */
+            if (a is null) throw new ArgumentNullException(nameof(a));
+            if (b is null) throw new ArgumentNullException(nameof(b));
+            if (a.size != b.size)
+                throw new ArgumentOutOfRangeException("matrices must be the same size");
 
             var result = (FixedSquareMatrix)a.Empty();
             var size = a.size;
@@ -83,10 +83,10 @@ namespace Algorithms.MatrixOperations
 
         public static FixedSquareMatrix operator -(FixedSquareMatrix a, FixedSquareMatrix b)
         {
-            /* if (a is null) throw new ArgumentNullException(nameof(a)); */
-            /* if (b is null) throw new ArgumentNullException(nameof(b)); */
-            /* if (a.size != b.size) */
-            /*     throw new ArgumentOutOfRangeException("matrices must be the same size"); */
+            if (a is null) throw new ArgumentNullException(nameof(a));
+            if (b is null) throw new ArgumentNullException(nameof(b));
+            if (a.size != b.size)
+                throw new ArgumentOutOfRangeException("matrices must be the same size");
 
             var result = (FixedSquareMatrix)a.Empty();
             var size = a.size;
