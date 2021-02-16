@@ -14,8 +14,7 @@ namespace Algorithms.Benchmarker.MatrixOperations
             string matrix = wc.DownloadString(path);
 
             return matrix.Split('\n')
-                .SelectMany(line => line
-                        .Split('\t')
+                .SelectMany(line => line.Split('\t')
                         .Where(value => long.TryParse(value, out long dummy))
                         .Select(long.Parse))
                 .ToList();
@@ -24,8 +23,7 @@ namespace Algorithms.Benchmarker.MatrixOperations
         public static T CreateMatrix<T>(IEnumerable<long> data)
             where T : SquareMatrix<long>
         {
-            return (T)Activator.CreateInstance(typeof(T),
-                    BinaryOps<long>.Long, data);
+            return (T)Activator.CreateInstance(typeof(T), BinaryOps.Long, data);
         }
 
 
@@ -38,8 +36,7 @@ namespace Algorithms.Benchmarker.MatrixOperations
                 .Select(r => (long)rand.Next(100))
                 .ToList();
 
-            return (T)Activator.CreateInstance(typeof(T),
-                    BinaryOps<long>.Long, data);
+            return (T)Activator.CreateInstance(typeof(T), BinaryOps.Long, data);
         }
 
         public static T CreateMatrix<T>(string fileUrl)
@@ -50,8 +47,8 @@ namespace Algorithms.Benchmarker.MatrixOperations
                         $"'{nameof(fileUrl)}' cannot be null or whitespace.",
                         nameof(fileUrl));
 
-            return (T)Activator.CreateInstance(typeof(T),
-                    BinaryOps<long>.Long, ParseFile(fileUrl));
+            return (T)Activator.CreateInstance(typeof(T), BinaryOps.Long,
+                    ParseFile(fileUrl));
         }
     }
 }

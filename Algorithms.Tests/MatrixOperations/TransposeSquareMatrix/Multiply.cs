@@ -9,7 +9,7 @@ namespace Algorithms.Tests.MatrixOperations.TransposeMatrixMultiply
     {
         public TransposeSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {
-            return new TransposeSquareMatrix<int>(BinaryOps<int>.Int, data);
+            return new TransposeSquareMatrix<int>(BinaryOps.Int, data);
         }
 
 

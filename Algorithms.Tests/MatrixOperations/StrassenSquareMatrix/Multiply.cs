@@ -9,7 +9,7 @@ namespace Algorithms.Tests.MatrixOperations.StrassenSquareMatrix
     {
         private StrassenSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {
-            return new StrassenSquareMatrix<int>(BinaryOps<int>.Int, data);
+            return new StrassenSquareMatrix<int>(BinaryOps.Int, data);
         }
 
 
@@ -31,8 +31,8 @@ namespace Algorithms.Tests.MatrixOperations.StrassenSquareMatrix
 
             var expected = n1 * n2;
 
-            var r1 = new StrassenSquareMatrix<long>(BinaryOps<long>.Long, n1.Data);
-            var r2 = new StrassenSquareMatrix<long>(BinaryOps<long>.Long, n2.Data);
+            var r1 = new StrassenSquareMatrix<long>(BinaryOps.Long, n1.Data);
+            var r2 = new StrassenSquareMatrix<long>(BinaryOps.Long, n2.Data);
 
             Assert.Equal(expected, r1 * r2);
         }

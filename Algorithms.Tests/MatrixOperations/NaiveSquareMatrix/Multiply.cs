@@ -9,7 +9,7 @@ namespace Algorithms.Tests.MatrixOperations.NaiveSquareMatrix
     {
         public NaiveSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {
-            return new NaiveSquareMatrix<int>(BinaryOps<int>.Int, data);
+            return new NaiveSquareMatrix<int>(BinaryOps.Int, data);
         }
 
 

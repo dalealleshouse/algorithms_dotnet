@@ -6,12 +6,12 @@ namespace Algorithms.MatrixOperations
     {
         private const int STOP_RECURSION_SIZE = 32;
 
-        public StrassenSquareMatrix(BinaryOps<T> ops, IEnumerable<T> startingData)
+        public StrassenSquareMatrix(IBinaryOps<T> ops, IEnumerable<T> startingData)
             : base(ops, startingData)
         {
         }
 
-        public StrassenSquareMatrix(int size, BinaryOps<T> ops) : base(size, ops)
+        public StrassenSquareMatrix(int size, IBinaryOps<T> ops) : base(size, ops)
         {
         }
 
@@ -36,8 +36,8 @@ namespace Algorithms.MatrixOperations
             var p7 = (a1 - a3) * (b1 + b2);
 
             return this.Assemble(
-                    p5 + p4 - p2 + p6,  p1 + p2,
-                    p3 + p4,            p1 + p5 - p3 - p7);
+                    p5 + p4 - p2 + p6, p1 + p2,
+                    p3 + p4, p1 + p5 - p3 - p7);
         }
     }
 }

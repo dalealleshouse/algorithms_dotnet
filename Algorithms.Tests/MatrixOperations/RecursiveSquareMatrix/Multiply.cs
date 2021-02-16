@@ -9,7 +9,7 @@ namespace Algorithms.Tests.MatrixOperations.RecurrsiveSquareMatrix
     {
         private RecursiveSquareMatrix<int> SutFactory(IEnumerable<int> data)
         {
-            return new RecursiveSquareMatrix<int>(BinaryOps<int>.Int, data);
+            return new RecursiveSquareMatrix<int>(BinaryOps.Int, data);
         }
 
         [Fact]
@@ -30,10 +30,8 @@ namespace Algorithms.Tests.MatrixOperations.RecurrsiveSquareMatrix
 
             var expected = n1 * n2;
 
-            var r1 = new RecursiveSquareMatrix<long>(
-                    BinaryOps<long>.Long, n1.Data);
-            var r2 = new RecursiveSquareMatrix<long>(
-                        BinaryOps<long>.Long, n2.Data);
+            var r1 = new RecursiveSquareMatrix<long>(BinaryOps.Long, n1.Data);
+            var r2 = new RecursiveSquareMatrix<long>(BinaryOps.Long, n2.Data);
 
             Assert.Equal(expected, r1 * r2);
         }

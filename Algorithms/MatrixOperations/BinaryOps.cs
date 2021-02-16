@@ -1,56 +1,25 @@
 namespace Algorithms.MatrixOperations
 {
-    using System;
-
-    public class BinaryOps<T>
+    public class BinaryOps
     {
-        private BinaryOps(Func<T, T, T> add, Func<T, T, T> subtract,
-                Func<T, T, T> multiply)
-        {
-            Add = add ?? throw new ArgumentNullException(nameof(add));
-            Subtract = subtract ?? throw new ArgumentNullException(nameof(subtract));
-            Multiply = multiply ?? throw new ArgumentNullException(nameof(multiply));
-        }
-
-        public Func<T, T, T> Add { get; }
-        public Func<T, T, T> Subtract { get; }
-        public Func<T, T, T> Multiply { get; }
-
-        public static readonly BinaryOps<uint> UInt = new BinaryOps<uint>(
-                    (x, y) => checked(x + y),
-                    (x, y) => checked(x - y),
-                    (x, y) => checked(x * y));
-
-        public static readonly BinaryOps<int> Int = new BinaryOps<int>(
-                    (x, y) => checked(x + y),
-                    (x, y) => checked(x - y),
-                    (x, y) => checked(x * y));
-
-        public static readonly BinaryOps<long> Long = new BinaryOps<long>(
-                    (x, y) => checked(x + y),
-                    (x, y) => checked(x - y),
-                    (x, y) => checked(x * y));
-
-        public static readonly BinaryOps<ulong> ULong = new BinaryOps<ulong>(
-                    (x, y) => checked(x + y),
-                    (x, y) => checked(x - y),
-                    (x, y) => checked(x * y));
-
-        public static readonly BinaryOps<decimal> Decimal = new BinaryOps<decimal>(
-                    (x, y) => checked(x + y),
-                    (x, y) => checked(x - y),
-                    (x, y) => checked(x * y));
-
-        public static readonly BinaryOps<double> Double = new BinaryOps<double>(
-                    (x, y) => checked(x + y),
-                    (x, y) => checked(x - y),
-                    (x, y) => checked(x * y));
-
-        public static readonly BinaryOps<float> Float = new BinaryOps<float>(
-                    (x, y) => checked(x + y),
-                    (x, y) => checked(x - y),
-                    (x, y) => checked(x * y));
+        public static readonly IBinaryOps<int> Int = new IntOps();
+        public static readonly IBinaryOps<long> Long = new LongOps();
 
         // TODO: Add many more...
+        private class IntOps : IBinaryOps<int>
+        {
+            public int Add(int x, int y) => checked(x + y);
+            public int Multiply(int x, int y) => checked(x * y);
+            public int Subtract(int x, int y) => checked(x - y);
+        }
+
+        private class LongOps : IBinaryOps<long>
+        {
+            public long Add(long x, long y) => checked(x + y);
+            public long Multiply(long x, long y) => checked(x * y);
+            public long Subtract(long x, long y) => checked(x - y);
+        }
     }
+
+
 }

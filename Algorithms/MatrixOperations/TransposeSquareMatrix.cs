@@ -4,12 +4,12 @@ namespace Algorithms.MatrixOperations
 {
     public class TransposeSquareMatrix<T> : SquareMatrix<T>
     {
-        public TransposeSquareMatrix(BinaryOps<T> ops, IEnumerable<T> startingData)
+        public TransposeSquareMatrix(IBinaryOps<T> ops, IEnumerable<T> startingData)
             : base(ops, startingData)
         {
         }
 
-        public TransposeSquareMatrix(int size, BinaryOps<T> ops) : base(size, ops)
+        public TransposeSquareMatrix(int size, IBinaryOps<T> ops) : base(size, ops)
         {
         }
 

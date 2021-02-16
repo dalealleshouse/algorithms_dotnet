@@ -15,8 +15,7 @@ namespace Algorithms.Tests.MatrixOperations
                 .Select(r => (long)rand.Next(100))
                 .ToList();
 
-            return (T)Activator.CreateInstance(typeof(T),
-                    BinaryOps<long>.Long, data);
+            return (T)Activator.CreateInstance(typeof(T), BinaryOps.Long, data);
         }
     }
 }

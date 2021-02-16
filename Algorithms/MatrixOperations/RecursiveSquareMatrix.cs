@@ -6,12 +6,12 @@ namespace Algorithms.MatrixOperations
     {
         private const int STOP_RECURSION_SIZE = 32;
 
-        public RecursiveSquareMatrix(BinaryOps<T> ops, IEnumerable<T> startingData)
+        public RecursiveSquareMatrix(IBinaryOps<T> ops, IEnumerable<T> startingData)
             : base(ops, startingData)
         {
         }
 
-        public RecursiveSquareMatrix(int size, BinaryOps<T> ops) : base(size, ops)
+        public RecursiveSquareMatrix(int size, IBinaryOps<T> ops) : base(size, ops)
         {
         }
 

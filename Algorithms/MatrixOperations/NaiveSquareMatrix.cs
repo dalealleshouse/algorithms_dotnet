@@ -4,12 +4,12 @@ namespace Algorithms.MatrixOperations
 
     public class NaiveSquareMatrix<T> : SquareMatrix<T>
     {
-        public NaiveSquareMatrix(BinaryOps<T> ops, IEnumerable<T> startingData)
+        public NaiveSquareMatrix(IBinaryOps<T> ops, IEnumerable<T> startingData)
             : base(ops, startingData)
         {
         }
 
-        public NaiveSquareMatrix(int size, BinaryOps<T> ops) : base(size, ops)
+        public NaiveSquareMatrix(int size, IBinaryOps<T> ops) : base(size, ops)
         {
         }
 

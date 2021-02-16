@@ -9,10 +9,10 @@ namespace Algorithms.MatrixOperations
     public abstract class SquareMatrix<T> where T : notnull
     {
         protected readonly int size;
-        protected readonly BinaryOps<T> ops;
+        protected readonly IBinaryOps<T> ops;
         protected T[] data;
 
-        protected SquareMatrix(int size, BinaryOps<T> ops)
+        protected SquareMatrix(int size, IBinaryOps<T> ops)
         {
             if (!this.IsPowerOfTwo(size))
                 throw new ArgumentOutOfRangeException(
@@ -23,7 +23,7 @@ namespace Algorithms.MatrixOperations
             this.data = new T[size * size];
         }
 
-        protected SquareMatrix(BinaryOps<T> ops, IEnumerable<T> startingData)
+        protected SquareMatrix(IBinaryOps<T> ops, IEnumerable<T> startingData)
         {
             if (startingData is null)
                 throw new ArgumentNullException(nameof(startingData));
