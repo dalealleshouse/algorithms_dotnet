@@ -68,10 +68,8 @@ namespace Algorithms.MatrixOperations
                 {
                     for (int k = 0; k < this.size; k++)
                     {
-                        /* result[i, j] = this.ops.Add(result[i, j], */
-                        /*         this.ops.Multiply(this[i, k], b[k, j])); */
-                        result.data[i * size + j] = this.ops.Add(
-                                result.data[i * size + j],
+                        ref T val = ref result.data[i * size + j];
+                        val = this.ops.Add(val,
                                 this.ops.Multiply(this.data[i * size + k],
                                     b.data[k * size + j]));
                     }
