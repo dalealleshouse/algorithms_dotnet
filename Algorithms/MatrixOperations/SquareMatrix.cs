@@ -5,6 +5,7 @@ namespace Algorithms.MatrixOperations
     using System.Linq;
     using System.Collections.Generic;
 
+    // WARNING: Avoid using the indexer inside this class to improve performance
     public abstract class SquareMatrix<T> where T : notnull
     {
         protected readonly int size;
@@ -67,9 +68,12 @@ namespace Algorithms.MatrixOperations
                 {
                     for (int k = 0; k < this.size; k++)
                     {
-                        result[i, j] = this.ops.Add(
-                                result[i, j],
-                                this.ops.Multiply(this[i, k], b[k, j]));
+                        /* result[i, j] = this.ops.Add(result[i, j], */
+                        /*         this.ops.Multiply(this[i, k], b[k, j])); */
+                        result.data[i * size + j] = this.ops.Add(
+                                result.data[i * size + j],
+                                this.ops.Multiply(this.data[i * size + k],
+                                    b.data[k * size + j]));
                     }
                 }
             }
@@ -91,7 +95,7 @@ namespace Algorithms.MatrixOperations
             {
                 for (var j = 0; j < size; j++)
                 {
-                    result[j, i] = this[i, j];
+                    result.data[j * size + i] = this.data[i * size + j];
                 }
             }
 
@@ -115,10 +119,10 @@ namespace Algorithms.MatrixOperations
             {
                 for (var j = 0; j < newSize; j++)
                 {
-                    q1[i, j] = this[i, j];
-                    q2[i, j] = this[i, newSize + j];
-                    q3[i, j] = this[newSize + i, j];
-                    q4[i, j] = this[newSize + i, newSize + j];
+                    q1.data[i * newSize + j] = this.data[i * size + j];
+                    q2.data[i * newSize + j] = this.data[i * size + newSize + j];
+                    q3.data[i * newSize + j] = this.data[(newSize + i) * size + j];
+                    q4.data[i * newSize + j] = this.data[(newSize + i) * size + newSize + j];
                 }
             }
 
@@ -135,17 +139,18 @@ namespace Algorithms.MatrixOperations
             if (q1.size != q2.size || q2.size != q3.size || q3.size != q4.size)
                 throw new ArgumentOutOfRangeException("All matracies must  be the same size");
 
+            int size = q1.size;
             int newSize = q1.size * 2;
             var result = this.Empty(newSize);
 
-            for (var i = 0; i < q1.size; i++)
+            for (var i = 0; i < size; i++)
             {
-                for (var j = 0; j < q1.size; j++)
+                for (var j = 0; j < size; j++)
                 {
-                    result[i, j] = q1[i, j];
-                    result[i, q1.size + j] = q2[i, j];
-                    result[q1.size + i, j] = q3[i, j];
-                    result[q1.size + i, q1.size + j] = q4[i, j];
+                    result.data[i * newSize + j] = q1.data[i * size + j];
+                    result.data[i * newSize + size + j] = q2.data[i * size + j];
+                    result.data[(size + i) * newSize + j] = q3.data[i * size + j];
+                    result.data[(q1.size + i) * newSize + size + j] = q4.data[i * size + j];
                 }
             }
 
@@ -195,12 +200,14 @@ namespace Algorithms.MatrixOperations
                 throw new ArgumentOutOfRangeException("matrices must be the same size");
 
             var result = a.Empty();
+            var size = a.size;
 
-            for (int i = 0; i < a.size; i++)
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < a.size; j++)
+                for (int j = 0; j < size; j++)
                 {
-                    result[i, j] = a.ops.Add(a[i, j], b[i, j]);
+                    result.data[i * size + j] = a.ops.Add(
+                            a.data[i * size + j], b.data[i * size + j]);
                 }
             }
             return result;
@@ -214,12 +221,14 @@ namespace Algorithms.MatrixOperations
                 throw new ArgumentOutOfRangeException("matrices must be the same size");
 
             var result = a.Empty();
+            var size = a.size;
 
-            for (int i = 0; i < a.size; i++)
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < a.size; j++)
+                for (int j = 0; j < size; j++)
                 {
-                    result[i, j] = a.ops.Subtract(a[i, j], b[i, j]);
+                    result.data[i * size + j] = a.ops.Subtract(
+                            a.data[i * size + j], b.data[i * size + j]);
                 }
             }
             return result;

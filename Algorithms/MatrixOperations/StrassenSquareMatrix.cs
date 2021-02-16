@@ -4,7 +4,7 @@ namespace Algorithms.MatrixOperations
 
     public class StrassenSquareMatrix<T> : SquareMatrix<T>
     {
-        private const int STOP_RECURSION_SIZE = 16;
+        private const int STOP_RECURSION_SIZE = 32;
 
         public StrassenSquareMatrix(BinaryOps<T> ops, IEnumerable<T> startingData)
             : base(ops, startingData)

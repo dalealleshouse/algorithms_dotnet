@@ -5,7 +5,6 @@ namespace Algorithms.Tests.MatrixOperations.StrassenSquareMatrix
     using Algorithms.MatrixOperations;
     using System.Collections.Generic;
 
-        [Trait("Category","A")]
     public class Multiply
     {
         private StrassenSquareMatrix<int> SutFactory(IEnumerable<int> data)

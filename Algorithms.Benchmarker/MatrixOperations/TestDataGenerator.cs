@@ -6,7 +6,7 @@ namespace Algorithms.Benchmarker.MatrixOperations
     using System.Linq;
     using Algorithms.MatrixOperations;
 
-    public static class TestData
+    public static class TestDataGenerator
     {
         private static IEnumerable<long> ParseFile(string path)
         {
@@ -20,6 +20,14 @@ namespace Algorithms.Benchmarker.MatrixOperations
                         .Select(long.Parse))
                 .ToList();
         }
+
+        public static T CreateMatrix<T>(IEnumerable<long> data)
+            where T : SquareMatrix<long>
+        {
+            return (T)Activator.CreateInstance(typeof(T),
+                    BinaryOps<long>.Long, data);
+        }
+
 
         public static T CreateMatrix<T>(int size)
             where T : SquareMatrix<long>

@@ -9,7 +9,8 @@
         {
             AppConfig.InitConfg();
 
-            Homework.ExerciseThree();
+            /* Homework.ExerciseThree(); */
+            CompareRuntimes.CompareTimes();
         }
     }
 }
