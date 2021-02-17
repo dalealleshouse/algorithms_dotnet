@@ -1,7 +1,7 @@
 namespace Algorithms.Benchmarker.Configuration
 {
-    using System;
     using Microsoft.Extensions.Configuration;
+    using System;
 
     public class AppConfig
     {

@@ -1,10 +1,10 @@
 namespace Algorithms.Benchmarker.MatrixOperations
 {
+    using Algorithms.Benchmarker.Configuration;
+    using Algorithms.MatrixOperations;
     using System;
     using System.Diagnostics;
     using System.Linq;
-    using Algorithms.Benchmarker.Configuration;
-    using Algorithms.MatrixOperations;
 
     public static class Homework
     {

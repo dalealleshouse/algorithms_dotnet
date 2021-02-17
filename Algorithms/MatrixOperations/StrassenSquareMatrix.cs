@@ -6,17 +6,16 @@ namespace Algorithms.MatrixOperations
     {
         private const int STOP_RECURSION_SIZE = 32;
 
-        public StrassenSquareMatrix(IBinaryOps<T> ops, IEnumerable<T> startingData)
-            : base(ops, startingData)
+        public StrassenSquareMatrix(IEnumerable<T> startingData) : base(startingData)
         {
         }
 
-        public StrassenSquareMatrix(int size, IBinaryOps<T> ops) : base(size, ops)
+        public StrassenSquareMatrix(int size) : base(size)
         {
         }
 
         protected override SquareMatrix<T> Empty(int size) =>
-            new StrassenSquareMatrix<T>(size, ops);
+            new StrassenSquareMatrix<T>(size);
 
         protected override SquareMatrix<T> Multiply(SquareMatrix<T> b)
         {

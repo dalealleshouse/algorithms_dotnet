@@ -11,7 +11,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
             var a = new TestMatrix(4);
             var b = new TestMatrix(8);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => a * b);
+            Assert.Throws<ArgumentException>(() => a * b);
         }
 
         [Fact]

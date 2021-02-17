@@ -23,8 +23,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
             var q3 = new TestMatrix(new int[] { 3 });
             var q4 = new TestMatrix(new int[] { 4 });
 
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                    q1.Assemble(q1, q2, q3, q4));
+            Assert.Throws<ArgumentException>(() => q1.Assemble(q1, q2, q3, q4));
         }
 
 

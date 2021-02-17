@@ -1,7 +1,7 @@
 namespace Algorithms.Benchmarker.MatrixOperations
 {
-    using System;
     using Algorithms.MatrixOperations;
+    using System;
 
     public class CompareRuntimes
     {
@@ -11,41 +11,39 @@ namespace Algorithms.Benchmarker.MatrixOperations
             TimeSpan ts;
 
             SquareMatrix<long> a = TestDataGenerator
-                .CreateMatrix<NaiveSquareMatrix<long>>(size);
+                .CreateRandomMatrix<NaiveSquareMatrix<long>>(size);
             SquareMatrix<long> b = TestDataGenerator
-                .CreateMatrix<NaiveSquareMatrix<long>>(size);
+                .CreateRandomMatrix<NaiveSquareMatrix<long>>(size);
             (_, ts) = ActionTimer.Time(() => a * b);
             Console.WriteLine($"Naive {ts}");
 
-            a = TestDataGenerator
-                .CreateMatrix<TransposeSquareMatrix<long>>(a.Data);
-            b = TestDataGenerator
-                .CreateMatrix<TransposeSquareMatrix<long>>(b.Data);
+            a = MatrixFactory
+                .CreateMatrix<TransposeSquareMatrix<long>, long>(a.Data);
+            b = MatrixFactory
+                .CreateMatrix<TransposeSquareMatrix<long>, long>(b.Data);
             (_, ts) = ActionTimer.Time(() => a * b);
             Console.WriteLine($"Transpose {ts}");
 
-            a = TestDataGenerator
-                .CreateMatrix<RecursiveSquareMatrix<long>>(a.Data);
-            b = TestDataGenerator
-                .CreateMatrix<RecursiveSquareMatrix<long>>(b.Data);
+            a = MatrixFactory
+                .CreateMatrix<RecursiveSquareMatrix<long>, long>(a.Data);
+            b = MatrixFactory
+                .CreateMatrix<RecursiveSquareMatrix<long>, long>(b.Data);
             (_, ts) = ActionTimer.Time(() => a * b);
             Console.WriteLine($"Recursive {ts}");
 
-            a = TestDataGenerator
-                .CreateMatrix<StrassenSquareMatrix<long>>(a.Data);
-            b = TestDataGenerator
-                .CreateMatrix<StrassenSquareMatrix<long>>(b.Data);
+            a = MatrixFactory
+                .CreateMatrix<StrassenSquareMatrix<long>, long>(a.Data);
+            b = MatrixFactory
+                .CreateMatrix<StrassenSquareMatrix<long>, long>(b.Data);
             (_, ts) = ActionTimer.Time(() => a * b);
             Console.WriteLine($"Strassen {ts}");
 
-            a = TestDataGenerator
-                .CreateMatrix<FixedSquareMatrix>(a.Data);
-            b = TestDataGenerator
-                .CreateMatrix<FixedSquareMatrix>(b.Data);
+            a = MatrixFactory
+                .CreateMatrix<FixedSquareMatrix, long>(a.Data);
+            b = MatrixFactory
+                .CreateMatrix<FixedSquareMatrix, long>(b.Data);
             (_, ts) = ActionTimer.Time(() => a * b);
             Console.WriteLine($"Fixed Strassen {ts}");
-
-
         }
     }
 }

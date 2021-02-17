@@ -8,10 +8,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
         [Fact]
         public void Should_RejectNullValue()
         {
-            Assert.Throws<ArgumentNullException>(
-                    () => new TestMatrix(4, null));
-            Assert.Throws<ArgumentNullException>(
-                    () => new TestMatrix(null, new int[4] { 1, 2, 3, 4 }));
+            Assert.Throws<ArgumentNullException>(() => new TestMatrix(null));
         }
 
         [Theory]
@@ -21,8 +18,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
         [InlineData(31)]
         public void Should_RejectNonPowerOfTwo(int size)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
-                    () => new TestMatrix(size));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TestMatrix(size));
         }
 
         [Theory]
@@ -33,8 +29,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
         public void Should_RejectDataThatIsNotSquare(int size)
         {
             int[] dummy = new int[size];
-            Assert.Throws<ArgumentOutOfRangeException>(
-                    () => new TestMatrix(dummy));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new TestMatrix(dummy));
         }
 
     }

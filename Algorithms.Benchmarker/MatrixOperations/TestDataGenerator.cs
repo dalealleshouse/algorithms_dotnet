@@ -1,10 +1,10 @@
 namespace Algorithms.Benchmarker.MatrixOperations
 {
+    using Algorithms.MatrixOperations;
     using System;
-    using System.Net;
     using System.Collections.Generic;
     using System.Linq;
-    using Algorithms.MatrixOperations;
+    using System.Net;
 
     public static class TestDataGenerator
     {
@@ -20,14 +20,7 @@ namespace Algorithms.Benchmarker.MatrixOperations
                 .ToList();
         }
 
-        public static T CreateMatrix<T>(IEnumerable<long> data)
-            where T : SquareMatrix<long>
-        {
-            return (T)Activator.CreateInstance(typeof(T), BinaryOps.Long, data);
-        }
-
-
-        public static T CreateMatrix<T>(int size)
+        public static T CreateRandomMatrix<T>(int size)
             where T : SquareMatrix<long>
         {
             var rand = new Random();
@@ -36,7 +29,8 @@ namespace Algorithms.Benchmarker.MatrixOperations
                 .Select(r => (long)rand.Next(100))
                 .ToList();
 
-            return (T)Activator.CreateInstance(typeof(T), BinaryOps.Long, data);
+            return (T)Activator.CreateInstance(typeof(T), data);
+
         }
 
         public static T CreateMatrix<T>(string fileUrl)
@@ -47,8 +41,8 @@ namespace Algorithms.Benchmarker.MatrixOperations
                         $"'{nameof(fileUrl)}' cannot be null or whitespace.",
                         nameof(fileUrl));
 
-            return (T)Activator.CreateInstance(typeof(T), BinaryOps.Long,
-                    ParseFile(fileUrl));
+            var data = ParseFile(fileUrl);
+            return MatrixFactory.CreateMatrix<T, long>(data);
         }
     }
 }

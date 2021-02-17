@@ -4,17 +4,16 @@ namespace Algorithms.MatrixOperations
 
     public class NaiveSquareMatrix<T> : SquareMatrix<T>
     {
-        public NaiveSquareMatrix(IBinaryOps<T> ops, IEnumerable<T> startingData)
-            : base(ops, startingData)
+        public NaiveSquareMatrix(IEnumerable<T> startingData) : base(startingData)
         {
         }
 
-        public NaiveSquareMatrix(int size, IBinaryOps<T> ops) : base(size, ops)
+        public NaiveSquareMatrix(int size) : base(size)
         {
         }
 
         protected override SquareMatrix<T> Empty(int size) =>
-            new NaiveSquareMatrix<T>(size, ops);
+            new NaiveSquareMatrix<T>(size);
 
         protected override SquareMatrix<T> Multiply(SquareMatrix<T> b) =>
             this.NaiveMultiply(this, b);

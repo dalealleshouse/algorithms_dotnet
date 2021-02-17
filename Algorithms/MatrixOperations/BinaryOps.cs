@@ -1,7 +1,22 @@
 namespace Algorithms.MatrixOperations
 {
+    using System;
+
     public class BinaryOps
     {
+        public static IBinaryOps<T> Factory<T>()
+        {
+            switch (Type.GetTypeCode(typeof(T)))
+            {
+                case TypeCode.Int32:
+                    return (IBinaryOps<T>)Int;
+                case TypeCode.Int64:
+                    return (IBinaryOps<T>)Long;
+                default:
+                    throw new System.NotImplementedException();
+            }
+        }
+
         public static readonly IBinaryOps<int> Int = new IntOps();
         public static readonly IBinaryOps<long> Long = new LongOps();
 
