@@ -6,6 +6,7 @@ namespace Algorithms.MatrixOperations
     // This implementation is optimized for performance:
     // - Does not use BinaryOps to eliminate function calls
     // - Does not use the indexer
+    // - No overflow checking
     public class FixedSquareMatrix : SquareMatrix<long>
     {
         private const int STOP_RECURSION_SIZE = 32;
@@ -62,13 +63,8 @@ namespace Algorithms.MatrixOperations
             for (var i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
                     for (int k = 0; k < size; k++)
-                    {
-                        checked
-                        {
-                            result.data[i * size + j] +=
-                                a.data[i * size + k] * b.data[k * size + j];
-                        }
-                    }
+                        result.data[i * size + j] +=
+                            a.data[i * size + k] * b.data[k * size + j];
 
             return result;
         }
@@ -86,13 +82,8 @@ namespace Algorithms.MatrixOperations
 
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                {
-                    checked
-                    {
-                        result.data[i * size + j] =
-                            a.data[i * size + j] + b.data[i * size + j];
-                    }
-                }
+                    result.data[i * size + j] =
+                        a.data[i * size + j] + b.data[i * size + j];
             return result;
         }
 
@@ -109,13 +100,8 @@ namespace Algorithms.MatrixOperations
 
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                {
-                    checked
-                    {
-                        result.data[i * size + j] =
-                            a.data[i * size + j] - b.data[i * size + j];
-                    }
-                }
+                    result.data[i * size + j] =
+                        a.data[i * size + j] - b.data[i * size + j];
             return result;
         }
 

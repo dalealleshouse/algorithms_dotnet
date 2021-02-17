@@ -25,15 +25,5 @@ namespace Algorithms.Tests.MatrixOperations.FixedSquareMatrix
             Assert.Throws<ArgumentNullException>(() => null - a);
             Assert.Throws<ArgumentNullException>(() => b - b);
         }
-
-        [Fact]
-        [Trait("Category", "Temp")]
-        public void Should_Overflow()
-        {
-            var a = new FixedSquareMatrix(new long[] { long.MinValue, 8, 3, 7 });
-            var b = new FixedSquareMatrix(new long[] { 1, 0, 5, 2 });
-
-            Assert.Throws<OverflowException>(() => a - b);
-        }
     }
 }
