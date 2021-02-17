@@ -12,6 +12,17 @@ namespace Algorithms.MatrixOperations
         protected readonly IBinaryOps<T> ops;
         protected T[] data;
 
+        protected SquareMatrix(int size, IBinaryOps<T> ops)
+        {
+            this.ops = ops;
+            if (!IsPowerOfTwo(size))
+                throw new ArgumentOutOfRangeException(nameof(size),
+                        $"The size of a square matrix must be a power of 2: you passed in {size}");
+
+            this.size = size;
+            data = new T[size * size];
+        }
+
         protected SquareMatrix(int size)
         {
             ops = BinaryOps.Factory<T>();
