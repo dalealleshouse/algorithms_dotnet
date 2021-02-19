@@ -10,11 +10,11 @@ namespace Algorithms.MatrixOperations
         {
         }
 
-        public RecursiveSquareMatrix(int size) : base(size)
+        public RecursiveSquareMatrix(uint size) : base(size)
         {
         }
 
-        protected override SquareMatrix<T> Empty(int size) =>
+        protected override SquareMatrix<T> Empty(uint size) =>
             new RecursiveSquareMatrix<T>(size);
 
         protected override SquareMatrix<T> Multiply(SquareMatrix<T> b)

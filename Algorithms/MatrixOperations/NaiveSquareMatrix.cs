@@ -8,11 +8,11 @@ namespace Algorithms.MatrixOperations
         {
         }
 
-        public NaiveSquareMatrix(int size) : base(size)
+        public NaiveSquareMatrix(uint size) : base(size)
         {
         }
 
-        protected override SquareMatrix<T> Empty(int size) =>
+        protected override SquareMatrix<T> Empty(uint size) =>
             new NaiveSquareMatrix<T>(size);
 
         protected override SquareMatrix<T> Multiply(SquareMatrix<T> b) =>

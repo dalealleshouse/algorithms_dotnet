@@ -10,11 +10,11 @@ namespace Algorithms.MatrixOperations
         {
         }
 
-        public StrassenSquareMatrix(int size) : base(size)
+        public StrassenSquareMatrix(uint size) : base(size)
         {
         }
 
-        protected override SquareMatrix<T> Empty(int size) =>
+        protected override SquareMatrix<T> Empty(uint size) =>
             new StrassenSquareMatrix<T>(size);
 
         protected override SquareMatrix<T> Multiply(SquareMatrix<T> b)

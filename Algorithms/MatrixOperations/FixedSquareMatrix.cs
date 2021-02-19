@@ -15,11 +15,11 @@ namespace Algorithms.MatrixOperations
         {
         }
 
-        public FixedSquareMatrix(int size) : base(size, null)
+        public FixedSquareMatrix(uint size) : base(size, null)
         {
         }
 
-        protected override FixedSquareMatrix Empty(int size) =>
+        protected override FixedSquareMatrix Empty(uint size) =>
             new FixedSquareMatrix(size);
 
         protected (FixedSquareMatrix, FixedSquareMatrix, FixedSquareMatrix,

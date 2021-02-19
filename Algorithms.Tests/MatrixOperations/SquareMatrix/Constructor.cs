@@ -16,7 +16,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
         [InlineData(5)]
         [InlineData(15)]
         [InlineData(31)]
-        public void Should_RejectNonPowerOfTwo(int size)
+        public void Should_RejectNonPowerOfTwo(uint size)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new TestMatrix(size));
         }

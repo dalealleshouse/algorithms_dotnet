@@ -8,11 +8,11 @@ namespace Algorithms.MatrixOperations
     // WARNING: Avoid using the indexer inside this class to improve performance
     public abstract class SquareMatrix<T> where T : notnull
     {
-        protected readonly int size;
+        protected readonly uint size;
         protected readonly IBinaryOps<T> ops;
         protected T[] data;
 
-        protected SquareMatrix(int size, IBinaryOps<T> ops)
+        protected SquareMatrix(uint size, IBinaryOps<T> ops)
         {
             this.ops = ops;
             if (!IsPowerOfTwo(size))
@@ -23,7 +23,7 @@ namespace Algorithms.MatrixOperations
             data = new T[size * size];
         }
 
-        protected SquareMatrix(int size)
+        protected SquareMatrix(uint size)
         {
             ops = BinaryOps.Factory<T>();
             if (!IsPowerOfTwo(size))
@@ -42,12 +42,12 @@ namespace Algorithms.MatrixOperations
 
             var length = startingData.Count();
 
-            if (Math.Sqrt(length) % 1 != 0 || !IsPowerOfTwo(length))
+            if (Math.Sqrt(length) % 1 != 0 || !IsPowerOfTwo((uint)length))
                 throw new ArgumentOutOfRangeException(nameof(startingData),
                         $"The size of a square matrix must be a power of 2: you sent an array of {length}");
 
 
-            size = (int)Math.Sqrt(length);
+            size = (uint)Math.Sqrt(length);
             data = new T[length];
             startingData.ToArray().CopyTo(data, 0);
         }
@@ -55,12 +55,12 @@ namespace Algorithms.MatrixOperations
         //**********************************************************************
         // Private
         //**********************************************************************
-        private bool IsPowerOfTwo(int x) { return (x & (x - 1)) == 0; }
+        private bool IsPowerOfTwo(uint x) { return (x & (x - 1)) == 0; }
 
         //**********************************************************************
         // Abstract
         //**********************************************************************
-        protected abstract SquareMatrix<T> Empty(int size);
+        protected abstract SquareMatrix<T> Empty(uint size);
         protected abstract SquareMatrix<T> Multiply(SquareMatrix<T> b);
 
         //**********************************************************************
@@ -88,7 +88,7 @@ namespace Algorithms.MatrixOperations
         //**********************************************************************
         // Public
         //**********************************************************************
-        public int Size => size;
+        public uint Size => size;
         public T[] Data => data;
 
         public SquareMatrix<T> Transpose()
@@ -109,7 +109,7 @@ namespace Algorithms.MatrixOperations
                 throw new ArgumentOutOfRangeException(nameof(size),
                         "size must be greater than or equal to 2");
 
-            int newSize = size / 2;
+            uint newSize = size / 2;
 
             var q1 = Empty(newSize);
             var q2 = Empty(newSize);
@@ -138,8 +138,8 @@ namespace Algorithms.MatrixOperations
             if (q1.size != q2.size || q2.size != q3.size || q3.size != q4.size)
                 throw new ArgumentException("All matracies must  be the same size");
 
-            int size = q1.size;
-            int newSize = q1.size * 2;
+            uint size = q1.size;
+            uint newSize = q1.size * 2;
             var result = Empty(newSize);
 
             for (var i = 0; i < size; i++)
