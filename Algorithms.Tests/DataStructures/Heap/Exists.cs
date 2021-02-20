@@ -16,9 +16,7 @@ namespace Algorithms.Tests.DataStructures.Heap
         [Fact]
         public void ReturnsTrueWhenItemExist()
         {
-            var sut = SutFactory.MaxHeap(10);
-            sut.Insert(5);
-            sut.Insert(10);
+            var sut = SutFactory.MaxHeap(10, new int[] { 5, 10 });
 
             Assert.True(sut.Exists(5));
             Assert.True(sut.Exists(10));
@@ -27,9 +25,7 @@ namespace Algorithms.Tests.DataStructures.Heap
         [Fact]
         public void ReturnsFalseWhenItemDoesNotExist()
         {
-            var sut = SutFactory.MaxHeap(10);
-            sut.Insert(5);
-            sut.Insert(10);
+            var sut = SutFactory.MaxHeap(10, new int[] { 5, 10 });
 
             Assert.False(sut.Exists(15));
             Assert.False(sut.Exists(100));
@@ -38,11 +34,23 @@ namespace Algorithms.Tests.DataStructures.Heap
         [Fact]
         public void ReturnsFalseAfterItemRemoved()
         {
-            var sut = SutFactory.MaxHeap(10);
-            sut.Insert(5);
-            sut.Insert(10);
+            var sut = SutFactory.MaxHeap(10, new int[] { 5, 10 });
 
             Assert.True(sut.Exists(10));
+            Assert.Equal(10, sut.Extract());
+            Assert.False(sut.Exists(10));
+        }
+
+        [Fact]
+        public void ReturnsTrueAfterDuplicateItemRemoved()
+        {
+            var sut = SutFactory.MaxHeap(10, new int[] { 5, 10, 10 });
+
+            Assert.True(sut.Exists(10));
+
+            Assert.Equal(10, sut.Extract());
+            Assert.True(sut.Exists(10));
+
             Assert.Equal(10, sut.Extract());
             Assert.False(sut.Exists(10));
         }

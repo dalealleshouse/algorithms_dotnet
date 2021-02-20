@@ -16,21 +16,17 @@ namespace Algorithms.Tests.DataStructures.Heap
         [Fact]
         public void AutoResize()
         {
-            var sut = SutFactory.MaxHeap(1);
-            sut.Insert(5);
-            sut.Insert(10);
+            var sut = SutFactory.MaxHeap(1, new int[] { 5, 10 });
 
             Assert.Equal(2U, sut.ItemCount);
         }
 
         [Fact]
-        public void RejectsDuplicates()
+        public void AcceptsDuplicates()
         {
-            var sut = SutFactory.MaxHeap(10);
-            sut.Insert(5);
-            sut.Insert(10);
+            var sut = SutFactory.MaxHeap(1, new int[] { 5, 10, 5 });
 
-            Assert.Throws<InvalidOperationException>(() => sut.Insert(5));
+            Assert.Equal(3U, sut.ItemCount);
         }
     }
 }

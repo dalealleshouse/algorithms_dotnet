@@ -19,5 +19,6 @@ namespace Algorithms.Benchmarker.Configuration
         }
 
         public MatrixOperations MatrixOperations { get; set; }
+        public RunningMedian RunningMedian { get; set; }
     }
 }

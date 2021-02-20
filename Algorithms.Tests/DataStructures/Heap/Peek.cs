@@ -15,22 +15,14 @@ namespace Algorithms.Tests.DataStructures.Heap
         [Fact]
         public void RetursHighestPriorityFromMax()
         {
-            var sut = SutFactory.MaxHeap(10);
-            sut.Insert(5);
-            sut.Insert(10);
-            sut.Insert(20);
-
+            var sut = SutFactory.MaxHeap(10, new int[] { 5, 10, 20 });
             Assert.Equal(20, sut.Peek());
         }
 
         [Fact]
         public void RetursHighestPriorityFromMin()
         {
-            var sut = SutFactory.MinHeap(10);
-            sut.Insert(5);
-            sut.Insert(10);
-            sut.Insert(20);
-
+            var sut = SutFactory.MinHeap(10, new int[] { 5, 10, 20 });
             Assert.Equal(5, sut.Peek());
         }
     }

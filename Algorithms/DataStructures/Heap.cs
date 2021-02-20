@@ -2,13 +2,16 @@ namespace Algorithms.DataStructures
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
+    using System.Linq;
 
     public class Heap<T> where T : notnull
     {
         private const uint INIT_SIZE = 50;
 
         private readonly Priority priorityFunc;
-        private Dictionary<T, uint> itemLocator;
+        // The linked list accounts for duplicate values
+        private Dictionary<T, LinkedList<uint>> itemLocator;
         private uint size;
         private uint itemCount = 0;
         private T[] data;
@@ -17,11 +20,11 @@ namespace Algorithms.DataStructures
 
         public Heap(Priority priorityFunc, uint initialSize)
         {
-            this.priorityFunc = priorityFunc ?? throw new System.ArgumentNullException(nameof(priorityFunc));
+            this.priorityFunc = priorityFunc ?? throw new ArgumentNullException(nameof(priorityFunc));
             if (initialSize <= 0) throw new ArgumentOutOfRangeException(nameof(initialSize));
             this.size = initialSize;
             data = new T[initialSize];
-            itemLocator = new Dictionary<T, uint>((int)initialSize);
+            itemLocator = new((int)initialSize);
         }
 
         public Heap(Priority priorityFunc) : this(priorityFunc, INIT_SIZE) { }
@@ -37,29 +40,58 @@ namespace Algorithms.DataStructures
 
         private uint ParentIndex(uint index)
         {
-            ++index;
-            index = index >> 1;
+            index = ++index >> 1;
             return index - 1;
         }
 
         private uint ChildIndex(uint index)
         {
-            index++;
-            index = index << 1;
+            index = ++index << 1;
             return index - 1;
         }
 
-        private void SetDataItem(uint index, T value)
+        private T ClearDataItem(uint index)
         {
-            itemLocator[value] = index;
+            T value = data[index];
+
+            var indices = itemLocator[value];
+            indices.Remove(index);
+
+            // If the list is empty, clear out the dictonrary entry
+            if (indices.Count == 0)
+                itemLocator.Remove(value);
+
+            data[index] = default(T);
+            return value;
+        }
+
+        private void InsertDataItem(uint index, T value)
+        {
+            LinkedList<uint> indices;
+
+            if (itemLocator.ContainsKey(value))
+                indices = itemLocator[value];
+            else
+            {
+                indices = new();
+                itemLocator[value] = indices;
+            }
+
+            indices.AddFirst(index);
             data[index] = value;
         }
 
         private void Swap(uint x, uint y)
         {
+            var xIndices = itemLocator[data[x]];
+            var yIndices = itemLocator[data[y]];
+
+            xIndices.Find(x).Value = y;
+            yIndices.Find(y).Value = x;
+
             T temp = data[x];
-            SetDataItem(x, data[y]);
-            SetDataItem(y, temp);
+            data[x] = data[y];
+            data[y] = temp;
         }
 
         private void BubbleUp(uint index)
@@ -75,10 +107,12 @@ namespace Algorithms.DataStructures
             }
         }
 
-        private uint GreatestPriority(uint x, uint y)
+        private uint GreatestChild(uint x)
         {
-            if (priorityFunc(data[x], data[y]) >= 0) return x;
-            return y;
+            if (x == itemCount - 1) return x;
+
+            if (priorityFunc(data[x], data[x + 1]) >= 0) return x;
+            return x + 1;
         }
 
         private void BubbleDown(uint start)
@@ -87,8 +121,8 @@ namespace Algorithms.DataStructures
 
             while ((child = ChildIndex(start)) < itemCount)
             {
-                child = GreatestPriority(child, child + 1);
-                if (priorityFunc(data[start], data[child]) >= 0) return;
+                child = GreatestChild(child);
+                if (priorityFunc(data[start], data[child]) > 0) return;
 
                 Swap(start, child);
                 start = child;
@@ -106,12 +140,10 @@ namespace Algorithms.DataStructures
 
             // Figure out if item has a higher priority than its parent
             uint parent = ParentIndex(index);
-            int comp_result = priorityFunc(data[index], data[parent]);
-
-            if (comp_result > 0)
+            if (priorityFunc(data[index], data[parent]) > 0)
                 BubbleUp(index); // If it is greater, then bubble it up
             else
-                BubbleDown(index);// The only other option is less so bubble it down
+                BubbleDown(index); // The only other option is less so bubble it down
 
         }
 
@@ -123,24 +155,27 @@ namespace Algorithms.DataStructures
         public void Insert(T item)
         {
             if (item == null) throw new System.ArgumentNullException(nameof(item));
-            if (itemLocator.ContainsKey(item)) throw new InvalidOperationException("Duplicate items are not supported");
-
             if (itemCount == size) Grow();
 
-            SetDataItem(itemCount++, item);
-            BubbleUp(ItemCount - 1);
+            InsertDataItem(itemCount++, item);
+            BubbleUp(itemCount - 1);
         }
 
         public void Delete(T item)
         {
             if (item == null) throw new System.ArgumentNullException(nameof(item));
-            if (!itemLocator.ContainsKey(item)) throw new ArgumentException("Item does not exist");
+            if (!itemLocator.ContainsKey(item)) throw new ArgumentException($"{nameof(item)} does not exist");
 
-            uint index;
-            itemLocator.Remove(item, out index);
+            uint index = itemLocator[item].First.Value;
+            ClearDataItem(index);
             --itemCount;
 
-            SetDataItem(index, data[itemCount]);
+            // No need to reprioritize becasue we just deleted the last item
+            if(index == itemCount) return;
+
+            T relocate = data[itemCount];
+            ClearDataItem(itemCount);
+            InsertDataItem(index, relocate);
             Reprioritize(index);
         }
 
@@ -149,10 +184,16 @@ namespace Algorithms.DataStructures
             if (itemCount == 0) throw new InvalidOperationException("Heap is empty");
 
             T returnValue = data[0];
-            itemLocator.Remove(data[0]);
+            ClearDataItem(0);
             --itemCount;
 
-            SetDataItem(0, data[itemCount]);
+            if (itemCount == 0) return returnValue;
+
+            T relocate = data[itemCount];
+            ClearDataItem(itemCount);
+            InsertDataItem(0, relocate);
+            if (itemCount == 1) return returnValue;
+
             BubbleDown(0);
             return returnValue;
         }
@@ -162,8 +203,18 @@ namespace Algorithms.DataStructures
             if (item == null) throw new System.ArgumentNullException(nameof(item));
             if (!itemLocator.ContainsKey(item)) throw new ArgumentException("Item does not exist");
 
-            var index = itemLocator[item];
-            Reprioritize(index);
+            var indices = itemLocator[item];
+
+            if (indices.Count == 1)
+            {
+                Reprioritize(indices.First.Value);
+                return;
+            }
+
+            // If there is more than one, they have to prioritized in order
+            var sorted = new List<uint>(itemLocator[item]);
+            sorted.Sort();
+            sorted.ForEach(Reprioritize);
         }
 
         public T Peek()
@@ -177,6 +228,13 @@ namespace Algorithms.DataStructures
         {
             if (item == null) throw new System.ArgumentNullException(nameof(item));
             return itemLocator.ContainsKey(item);
+        }
+
+        public override string ToString()
+        {
+            return data
+                .Aggregate(new StringBuilder(), (sb, i) => sb.Append($"{i}-"))
+                .ToString();
         }
     }
 }

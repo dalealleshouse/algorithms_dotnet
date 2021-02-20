@@ -1,7 +1,7 @@
 ﻿namespace Algorithms.Benchmarker
 {
     using Algorithms.Benchmarker.Configuration;
-    using Algorithms.Benchmarker.MatrixOperations;
+    using Algorithms.Benchmarker.RunningMedian;
 
     class Program
     {
@@ -9,7 +9,9 @@
         {
             AppConfig.InitConfg();
 
-            CompareRuntimes.CompareTimes();
+            /* CompareRuntimes.CompareTimes(); */
+            /* Homework.ExerciseThree(); */
+
             Homework.ExerciseThree();
         }
     }
