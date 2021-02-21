@@ -1,8 +1,8 @@
 namespace Algorithms.Tests.RunningMedian
 {
+    using Algorithms;
     using System;
     using Xunit;
-    using Algorithms;
 
     public class Constructor
     {

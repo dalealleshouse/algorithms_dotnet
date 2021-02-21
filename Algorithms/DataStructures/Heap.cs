@@ -2,8 +2,8 @@ namespace Algorithms.DataStructures
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Linq;
+    using System.Text;
 
     public class Heap<T> where T : notnull
     {
@@ -171,7 +171,7 @@ namespace Algorithms.DataStructures
             --itemCount;
 
             // No need to reprioritize becasue we just deleted the last item
-            if(index == itemCount) return;
+            if (index == itemCount) return;
 
             T relocate = data[itemCount];
             ClearDataItem(itemCount);

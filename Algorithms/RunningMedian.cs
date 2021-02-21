@@ -1,8 +1,8 @@
 namespace Algorithms
 {
+    using Algorithms.DataStructures;
     using System;
     using System.Collections.Generic;
-    using Algorithms.DataStructures;
 
     public class RunningMedian<T> where T : notnull
     {

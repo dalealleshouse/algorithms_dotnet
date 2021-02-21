@@ -1,8 +1,8 @@
 namespace Algorithms.Tests.DataStructures.Heap
 {
+    using Algorithms.DataStructures;
     using System;
     using Xunit;
-    using Algorithms.DataStructures;
 
     public class Insert
     {
