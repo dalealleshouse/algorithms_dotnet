@@ -1,29 +1,45 @@
 namespace Algorithms
 {
     using System;
+    using System.Collections.Generic;
     using Algorithms.DataStructures;
 
-    public class RunningMedian<T>
-        where T : notnull
+    public class RunningMedian<T> where T : notnull
     {
+        private const uint DEFAULT_INIT_SIZE = 50;
         public delegate T Average(T x, T y);
 
         private readonly Heap<T>.Priority minPriorityFunc;
         private readonly Average averageFunc;
+        private readonly uint slidingWindow;
+        private readonly uint initalSize;
         private readonly Heap<T> maxHeap;
         private readonly Heap<T> minHeap;
         private uint itemCount = 0;
+        private LinkedList<T> window = new();
 
 
         // minPriorityFunc = priority function that prioritizes smaller values
         // averageFunc = calculates the average of two values
-        public RunningMedian(Heap<T>.Priority minPriorityFunc, Average averageFunc)
+        public RunningMedian(Heap<T>.Priority minPriorityFunc, Average averageFunc, uint slidingWindow, uint initalSize)
         {
             this.minPriorityFunc = minPriorityFunc ?? throw new ArgumentNullException(nameof(minPriorityFunc));
             this.averageFunc = averageFunc ?? throw new ArgumentNullException(nameof(averageFunc));
+            this.slidingWindow = slidingWindow;
+            this.initalSize = initalSize;
+            uint half = (uint)Math.Ceiling((decimal)(initalSize / 2));
+            this.maxHeap = new Heap<T>((x, y) => minPriorityFunc(x, y) * -1, half);
+            this.minHeap = new Heap<T>(minPriorityFunc, half);
+        }
 
-            this.maxHeap = new Heap<T>((x, y) => minPriorityFunc(x, y) * -1);
-            this.minHeap = new Heap<T>(minPriorityFunc);
+        public RunningMedian(Heap<T>.Priority minPriorityFunc, Average averageFunc, uint slidingWindow) :
+            this(minPriorityFunc, averageFunc, slidingWindow, DEFAULT_INIT_SIZE)
+        {
+        }
+
+        public RunningMedian(Heap<T>.Priority minPriorityFunc, Average averageFunc) :
+            this(minPriorityFunc, averageFunc, 0, DEFAULT_INIT_SIZE)
+        {
         }
 
         /***************************************************************************************************************
@@ -47,6 +63,22 @@ namespace Algorithms
             }
         }
 
+        private void MaintainSlidingWindow(T value)
+        {
+            window.AddFirst(value);
+
+            if (itemCount <= slidingWindow) return;
+            var doomed = window.Last.Value;
+
+            if (minPriorityFunc(doomed, maxHeap.Peek()) >= 0)
+                maxHeap.Delete(doomed);
+            else
+                minHeap.Delete(doomed);
+
+            window.RemoveLast();
+            itemCount--;
+        }
+
         /***************************************************************************************************************
          * Public Members
          **************************************************************************************************************/
@@ -55,8 +87,6 @@ namespace Algorithms
         public void Track(T value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
-
-            /* ResultCode result_code = ResizeHeapsIfNeeded(self); */
 
             if (itemCount == 0)
             {
@@ -75,13 +105,9 @@ namespace Algorithms
             }
 
             itemCount++;
-            BalanceHeaps();
+            if (slidingWindow > 0) MaintainSlidingWindow(value);
 
-            /* if (self->sliding_window > 0) */
-            /* { */
-            /*     result_code = MaintainSlidingWindow(self, val); */
-            /*     if (result_code != kSuccess) goto fail; */
-            /* } */
+            BalanceHeaps();
         }
 
         public T Median()

@@ -13,6 +13,7 @@
             /* Homework.ExerciseThree(); */
 
             Homework.ExerciseThree();
+            Homework.ExerciseFive();
         }
     }
 }
