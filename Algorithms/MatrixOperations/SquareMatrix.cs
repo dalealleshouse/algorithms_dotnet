@@ -15,46 +15,46 @@ namespace Algorithms.MatrixOperations
         protected SquareMatrix(uint size, IBinaryOps<T> ops)
         {
             this.ops = ops;
-            if (!IsPowerOfTwo(size))
+            if (!this.IsPowerOfTwo(size))
             {
                 throw new ArgumentOutOfRangeException(nameof(size),
                         $"The size of a square matrix must be a power of 2: you passed in {size}");
             }
 
             this.size = size;
-            data = new T[size * size];
+            this.data = new T[size * size];
         }
 
         protected SquareMatrix(uint size)
         {
-            ops = BinaryOps.Factory<T>();
-            if (!IsPowerOfTwo(size))
+            this.ops = BinaryOps.Factory<T>();
+            if (!this.IsPowerOfTwo(size))
             {
                 throw new ArgumentOutOfRangeException(nameof(size),
                         $"The size of a square matrix must be a power of 2: you passed in {size}");
             }
 
             this.size = size;
-            data = new T[size * size];
+            this.data = new T[size * size];
         }
 
         protected SquareMatrix(IEnumerable<T> startingData)
         {
-            ops = BinaryOps.Factory<T>();
+            this.ops = BinaryOps.Factory<T>();
             if (startingData is null)
                 throw new ArgumentNullException(nameof(startingData));
 
             var length = startingData.Count();
 
-            if (Math.Sqrt(length) % 1 != 0 || !IsPowerOfTwo((uint)length))
+            if (Math.Sqrt(length) % 1 != 0 || !this.IsPowerOfTwo((uint)length))
             {
                 throw new ArgumentOutOfRangeException(nameof(startingData),
                         $"The size of a square matrix must be a power of 2: you sent an array of {length}");
             }
 
-            size = (uint)Math.Sqrt(length);
-            data = new T[length];
-            startingData.ToArray().CopyTo(data, 0);
+            this.size = (uint)Math.Sqrt(length);
+            this.data = new T[length];
+            startingData.ToArray().CopyTo(this.data, 0);
         }
 
         // **********************************************************************
@@ -71,20 +71,20 @@ namespace Algorithms.MatrixOperations
         // **********************************************************************
         // Protected
         // **********************************************************************
-        protected SquareMatrix<T> Empty() => Empty(size);
+        protected SquareMatrix<T> Empty() => this.Empty(this.size);
 
         // This is used by many of the algorithms
         protected SquareMatrix<T> NaiveMultiply(SquareMatrix<T> a, SquareMatrix<T> b)
         {
-            var result = Empty(a.Size);
+            var result = this.Empty(a.Size);
 
-            for (var i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    for (int k = 0; k < size; k++)
+            for (var i = 0; i < this.size; i++)
+                for (int j = 0; j < this.size; j++)
+                    for (int k = 0; k < this.size; k++)
                     {
-                        ref T val = ref result.data[i * size + j];
-                        val = ops.Add(val, ops.Multiply(data[i * size + k],
-                                    b.data[k * size + j]));
+                        ref T val = ref result.data[i * this.size + j];
+                        val = this.ops.Add(val, this.ops.Multiply(this.data[i * this.size + k],
+                                    b.data[k * this.size + j]));
                     }
 
             return result;
@@ -93,40 +93,40 @@ namespace Algorithms.MatrixOperations
         // **********************************************************************
         // Public
         // **********************************************************************
-        public uint Size => size;
-        public T[] Data => data;
+        public uint Size => this.size;
+        public T[] Data => this.data;
 
         public SquareMatrix<T> Transpose()
         {
-            var result = Empty();
+            var result = this.Empty();
 
-            for (var i = 0; i < size; i++)
-                for (var j = 0; j < size; j++)
-                    result.data[j * size + i] = data[i * size + j];
+            for (var i = 0; i < this.size; i++)
+                for (var j = 0; j < this.size; j++)
+                    result.data[j * this.size + i] = this.data[i * this.size + j];
 
             return result;
         }
 
         public (SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>) Quarter()
         {
-            if (size < 2) throw new ArgumentOutOfRangeException(nameof(size),
+            if (this.size < 2) throw new ArgumentOutOfRangeException(nameof(this.size),
                         "size must be greater than or equal to 2");
 
-            uint newSize = size / 2;
+            uint newSize = this.size / 2;
 
-            var q1 = Empty(newSize);
-            var q2 = Empty(newSize);
-            var q3 = Empty(newSize);
-            var q4 = Empty(newSize);
+            var q1 = this.Empty(newSize);
+            var q2 = this.Empty(newSize);
+            var q3 = this.Empty(newSize);
+            var q4 = this.Empty(newSize);
 
             for (var i = 0; i < newSize; i++)
             {
                 for (var j = 0; j < newSize; j++)
                 {
-                    q1.data[i * newSize + j] = data[i * size + j];
-                    q2.data[i * newSize + j] = data[i * size + newSize + j];
-                    q3.data[i * newSize + j] = data[(newSize + i) * size + j];
-                    q4.data[i * newSize + j] = data[(newSize + i) * size + newSize + j];
+                    q1.data[i * newSize + j] = this.data[i * this.size + j];
+                    q2.data[i * newSize + j] = this.data[i * this.size + newSize + j];
+                    q3.data[i * newSize + j] = this.data[(newSize + i) * this.size + j];
+                    q4.data[i * newSize + j] = this.data[(newSize + i) * this.size + newSize + j];
                 }
             }
 
@@ -164,11 +164,11 @@ namespace Algorithms.MatrixOperations
         public override bool Equals(object obj)
         {
             return obj is SquareMatrix<T> matrix &&
-                size == matrix.size &&
-                Enumerable.SequenceEqual(data, matrix.data);
+                this.size == matrix.size &&
+                Enumerable.SequenceEqual(this.data, matrix.data);
         }
 
-        public override int GetHashCode() => HashCode.Combine(size, data);
+        public override int GetHashCode() => HashCode.Combine(this.size, this.data);
 
         public override string ToString()
         {
@@ -193,8 +193,8 @@ namespace Algorithms.MatrixOperations
         // **********************************************************************
         public T this[int x, int y]
         {
-            get => data[x * size + y];
-            set => data[x * size + y] = value;
+            get => this.data[x * this.size + y];
+            set => this.data[x * this.size + y] = value;
         }
 
         public static SquareMatrix<T> operator +(SquareMatrix<T> a, SquareMatrix<T> b)

@@ -4,7 +4,7 @@ namespace Algorithms.MatrixOperations
 
     public class StrassenSquareMatrix<T> : SquareMatrix<T>
     {
-        private const int STOP_RECURSION_SIZE = 32;
+        private const int STOPRECURSIONSIZE = 32;
 
         public StrassenSquareMatrix(IEnumerable<T> startingData) : base(startingData)
         {
@@ -19,8 +19,8 @@ namespace Algorithms.MatrixOperations
 
         protected override SquareMatrix<T> Multiply(SquareMatrix<T> b)
         {
-            if (b.Size <= STOP_RECURSION_SIZE)
-                return NaiveMultiply(this, b);
+            if (b.Size <= STOPRECURSIONSIZE)
+                return this.NaiveMultiply(this, b);
 
             SquareMatrix<T> a1, a2, a3, a4, b1, b2, b3, b4;
             (a1, a2, a3, a4) = this.Quarter();

@@ -5,9 +5,10 @@ namespace Algorithms.DataStructures
     using System.Linq;
     using System.Text;
 
-    public class Heap<T> where T : notnull
+    public class Heap<T> 
+        where T : notnull
     {
-        private const uint INIT_SIZE = 50;
+        private const uint INITSIZE = 50;
 
         private readonly Priority priorityFunc;
         // The linked list accounts for duplicate values
@@ -23,19 +24,19 @@ namespace Algorithms.DataStructures
             this.priorityFunc = priorityFunc ?? throw new ArgumentNullException(nameof(priorityFunc));
             if (initialSize <= 0) throw new ArgumentOutOfRangeException(nameof(initialSize));
             this.size = initialSize;
-            data = new T[initialSize];
-            itemLocator = new((int)initialSize);
+            this.data = new T[initialSize];
+            this.itemLocator = new((int)initialSize);
         }
 
-        public Heap(Priority priorityFunc) : this(priorityFunc, INIT_SIZE) { }
+        public Heap(Priority priorityFunc) : this(priorityFunc, INITSIZE) { }
 
         /***************************************************************************************************************
          * Private Methods
          **************************************************************************************************************/
         private void Grow()
         {
-            size = size * 2;
-            Array.Resize(ref data, (int)size);
+            this.size = this.size * 2;
+            Array.Resize(ref this.data, (int)this.size);
         }
 
         private uint ParentIndex(uint index)
@@ -52,16 +53,16 @@ namespace Algorithms.DataStructures
 
         private T ClearDataItem(uint index)
         {
-            T value = data[index];
+            T value = this.data[index];
 
-            var indices = itemLocator[value];
+            var indices = this.itemLocator[value];
             indices.Remove(index);
 
             // If the list is empty, clear out the dictonrary entry
             if (indices.Count == 0)
-                itemLocator.Remove(value);
+                this.itemLocator.Remove(value);
 
-            data[index] = default(T);
+            this.data[index] = default(T);
             return value;
         }
 
@@ -69,49 +70,49 @@ namespace Algorithms.DataStructures
         {
             LinkedList<uint> indices;
 
-            if (itemLocator.ContainsKey(value))
-                indices = itemLocator[value];
+            if (this.itemLocator.ContainsKey(value))
+                indices = this.itemLocator[value];
             else
             {
                 indices = new();
-                itemLocator[value] = indices;
+                this.itemLocator[value] = indices;
             }
 
             indices.AddFirst(index);
-            data[index] = value;
+            this.data[index] = value;
         }
 
         private void Swap(uint x, uint y)
         {
-            var xIndices = itemLocator[data[x]];
-            var yIndices = itemLocator[data[y]];
+            var xIndices = this.itemLocator[this.data[x]];
+            var yIndices = this.itemLocator[this.data[y]];
 
             xIndices.Find(x).Value = y;
             yIndices.Find(y).Value = x;
 
-            T temp = data[x];
-            data[x] = data[y];
-            data[y] = temp;
+            T temp = this.data[x];
+            this.data[x] = this.data[y];
+            this.data[y] = temp;
         }
 
         private void BubbleUp(uint index)
         {
             while (index > 0)
             {
-                uint parent = ParentIndex(index);
+                uint parent = this.ParentIndex(index);
 
-                if (priorityFunc(data[index], data[parent]) <= 0) break;
+                if (this.priorityFunc(this.data[index], this.data[parent]) <= 0) break;
 
-                Swap(index, parent);
+                this.Swap(index, parent);
                 index = parent;
             }
         }
 
         private uint GreatestChild(uint x)
         {
-            if (x == itemCount - 1) return x;
+            if (x == this.itemCount - 1) return x;
 
-            if (priorityFunc(data[x], data[x + 1]) >= 0) return x;
+            if (this.priorityFunc(this.data[x], this.data[x + 1]) >= 0) return x;
             return x + 1;
         }
 
@@ -119,12 +120,12 @@ namespace Algorithms.DataStructures
         {
             uint child;
 
-            while ((child = ChildIndex(start)) < itemCount)
+            while ((child = this.ChildIndex(start)) < this.itemCount)
             {
-                child = GreatestChild(child);
-                if (priorityFunc(data[start], data[child]) > 0) return;
+                child = this.GreatestChild(child);
+                if (this.priorityFunc(this.data[start], this.data[child]) > 0) return;
 
-                Swap(start, child);
+                this.Swap(start, child);
                 start = child;
             }
         }
@@ -134,100 +135,100 @@ namespace Algorithms.DataStructures
             // Index is the first item in queue, so it can only go down
             if (index == 0)
             {
-                BubbleDown(index);
+                this.BubbleDown(index);
                 return;
             }
 
             // Figure out if item has a higher priority than its parent
-            uint parent = ParentIndex(index);
-            if (priorityFunc(data[index], data[parent]) > 0)
-                BubbleUp(index); // If it is greater, then bubble it up
+            uint parent = this.ParentIndex(index);
+            if (this.priorityFunc(this.data[index], this.data[parent]) > 0)
+                this.BubbleUp(index); // If it is greater, then bubble it up
             else
-                BubbleDown(index); // The only other option is less so bubble it down
+                this.BubbleDown(index); // The only other option is less so bubble it down
 
         }
 
         /***************************************************************************************************************
          * Public Methods
          **************************************************************************************************************/
-        public uint ItemCount { get => itemCount; }
+        public uint ItemCount { get => this.itemCount; }
 
         public void Insert(T item)
         {
             if (item == null) throw new System.ArgumentNullException(nameof(item));
-            if (itemCount == size) Grow();
+            if (this.itemCount == this.size) this.Grow();
 
-            InsertDataItem(itemCount++, item);
-            BubbleUp(itemCount - 1);
+            this.InsertDataItem(this.itemCount++, item);
+            this.BubbleUp(this.itemCount - 1);
         }
 
         public void Delete(T item)
         {
             if (item == null) throw new System.ArgumentNullException(nameof(item));
-            if (!itemLocator.ContainsKey(item)) throw new ArgumentException($"{nameof(item)} does not exist");
+            if (!this.itemLocator.ContainsKey(item)) throw new ArgumentException($"{nameof(item)} does not exist");
 
-            uint index = itemLocator[item].First.Value;
-            ClearDataItem(index);
-            --itemCount;
+            uint index = this.itemLocator[item].First.Value;
+            this.ClearDataItem(index);
+            --this.itemCount;
 
             // No need to reprioritize becasue we just deleted the last item
-            if (index == itemCount) return;
+            if (index == this.itemCount) return;
 
-            T relocate = data[itemCount];
-            ClearDataItem(itemCount);
-            InsertDataItem(index, relocate);
-            Reprioritize(index);
+            T relocate = this.data[this.itemCount];
+            this.ClearDataItem(this.itemCount);
+            this.InsertDataItem(index, relocate);
+            this.Reprioritize(index);
         }
 
         public T Extract()
         {
-            if (itemCount == 0) throw new InvalidOperationException("Heap is empty");
+            if (this.itemCount == 0) throw new InvalidOperationException("Heap is empty");
 
-            T returnValue = data[0];
-            ClearDataItem(0);
-            --itemCount;
+            T returnValue = this.data[0];
+            this.ClearDataItem(0);
+            --this.itemCount;
 
-            if (itemCount == 0) return returnValue;
+            if (this.itemCount == 0) return returnValue;
 
-            T relocate = data[itemCount];
-            ClearDataItem(itemCount);
-            InsertDataItem(0, relocate);
-            if (itemCount == 1) return returnValue;
+            T relocate = this.data[this.itemCount];
+            this.ClearDataItem(this.itemCount);
+            this.InsertDataItem(0, relocate);
+            if (this.itemCount == 1) return returnValue;
 
-            BubbleDown(0);
+            this.BubbleDown(0);
             return returnValue;
         }
 
         public void Reprioritize(T item)
         {
             if (item == null) throw new System.ArgumentNullException(nameof(item));
-            if (!itemLocator.ContainsKey(item)) throw new ArgumentException("Item does not exist");
+            if (!this.itemLocator.ContainsKey(item)) throw new ArgumentException("Item does not exist");
 
-            var indices = itemLocator[item];
+            var indices = this.itemLocator[item];
 
             if (indices.Count == 1)
             {
-                Reprioritize(indices.First.Value);
+                this.Reprioritize(indices.First.Value);
                 return;
             }
 
             // If there is more than one, they have to prioritized in order
-            var sorted = new List<uint>(itemLocator[item]);
+            var sorted = new List<uint>(this.itemLocator[item]);
             sorted.Sort();
-            sorted.ForEach(Reprioritize);
+            sorted.ForEach(this.Reprioritize);
         }
 
         public T Peek()
         {
-            if (itemCount == 0) throw new InvalidOperationException("Heap is empty");
+            if (this.itemCount == 0) throw new InvalidOperationException("Heap is empty");
 
-            return data[0];
+            return this.data[0];
         }
 
         public bool Exists(T item)
         {
             if (item == null) throw new System.ArgumentNullException(nameof(item));
-            return itemLocator.ContainsKey(item);
+            return this.itemLocator.ContainsKey(item);
         }
 
         public override string ToString()

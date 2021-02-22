@@ -9,7 +9,7 @@ namespace Algorithms.MatrixOperations
     // - No overflow checking
     public class FixedSquareMatrix : SquareMatrix<long>
     {
-        private const int STOP_RECURSION_SIZE = 32;
+        private const int STOPRECURSIONSIZE = 32;
 
         public FixedSquareMatrix(IEnumerable<long> startingData) : base(startingData)
         {
@@ -31,7 +31,7 @@ namespace Algorithms.MatrixOperations
 
         protected override FixedSquareMatrix Multiply(SquareMatrix<long> b)
         {
-            if (size <= STOP_RECURSION_SIZE)
+            if (this.size <= STOPRECURSIONSIZE)
                 return FastNaiveMultiply(this, (FixedSquareMatrix)b);
 
             var btype = (FixedSquareMatrix)b;

@@ -6,7 +6,7 @@ namespace Algorithms
 
     public class RunningMedian<T> where T : notnull
     {
-        private const uint DEFAULT_INIT_SIZE = 50;
+        private const uint DEFAULTINITSIZE = 50;
         public delegate T Average(T x, T y);
 
         private readonly Heap<T>.Priority minPriorityFunc;
@@ -32,12 +32,12 @@ namespace Algorithms
         }
 
         public RunningMedian(Heap<T>.Priority minPriorityFunc, Average averageFunc, uint slidingWindow) :
-            this(minPriorityFunc, averageFunc, slidingWindow, DEFAULT_INIT_SIZE)
+            this(minPriorityFunc, averageFunc, slidingWindow, DEFAULTINITSIZE)
         {
         }
 
         public RunningMedian(Heap<T>.Priority minPriorityFunc, Average averageFunc) :
-            this(minPriorityFunc, averageFunc, 0, DEFAULT_INIT_SIZE)
+            this(minPriorityFunc, averageFunc, 0, DEFAULTINITSIZE)
         {
         }
 
@@ -46,78 +46,78 @@ namespace Algorithms
          **************************************************************************************************************/
         private bool IsBalanced()
         {
-            return (itemCount % 2 == 0)
-                ? maxHeap.ItemCount == minHeap.ItemCount
-                : Math.Abs((int)maxHeap.ItemCount - (int)minHeap.ItemCount) == 1;
+            return (this.itemCount % 2 == 0)
+                ? this.maxHeap.ItemCount == this.minHeap.ItemCount
+                : Math.Abs((int)this.maxHeap.ItemCount - (int)this.minHeap.ItemCount) == 1;
         }
 
         private void BalanceHeaps()
         {
-            while (!IsBalanced())
+            while (!this.IsBalanced())
             {
-                if (maxHeap.ItemCount > minHeap.ItemCount)
-                    minHeap.Insert(maxHeap.Extract());
+                if (this.maxHeap.ItemCount > this.minHeap.ItemCount)
+                    this.minHeap.Insert(this.maxHeap.Extract());
                 else
-                    maxHeap.Insert(minHeap.Extract());
+                    this.maxHeap.Insert(this.minHeap.Extract());
             }
         }
 
         private void MaintainSlidingWindow(T value)
         {
-            window.AddFirst(value);
+            this.window.AddFirst(value);
 
-            if (itemCount <= slidingWindow) return;
-            var doomed = window.Last.Value;
+            if (this.itemCount <= this.slidingWindow) return;
+            var doomed = this.window.Last.Value;
 
-            if (minPriorityFunc(doomed, maxHeap.Peek()) >= 0)
-                maxHeap.Delete(doomed);
+            if (this.minPriorityFunc(doomed, this.maxHeap.Peek()) >= 0)
+                this.maxHeap.Delete(doomed);
             else
-                minHeap.Delete(doomed);
+                this.minHeap.Delete(doomed);
 
-            window.RemoveLast();
-            itemCount--;
+            this.window.RemoveLast();
+            this.itemCount--;
         }
 
         /***************************************************************************************************************
          * Public Members
          **************************************************************************************************************/
-        public uint ItemCount { get => itemCount; }
+        public uint ItemCount { get => this.itemCount; }
 
         public void Track(T value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            if (itemCount == 0)
+            if (this.itemCount == 0)
             {
                 // If no items exist, just put it on the lower heap
-                maxHeap.Insert(value);
+                this.maxHeap.Insert(value);
             }
             else
             {
                 // Figure out which heap to push the new value on
-                T mid = maxHeap.Peek();
+                T mid = this.maxHeap.Peek();
 
-                if (minPriorityFunc(value, mid) >= 0)
-                    maxHeap.Insert(value);
+                if (this.minPriorityFunc(value, mid) >= 0)
+                    this.maxHeap.Insert(value);
                 else
-                    minHeap.Insert(value);
+                    this.minHeap.Insert(value);
             }
 
-            itemCount++;
-            if (slidingWindow > 0) MaintainSlidingWindow(value);
+            this.itemCount++;
+            if (this.slidingWindow > 0) this.MaintainSlidingWindow(value);
 
-            BalanceHeaps();
+            this.BalanceHeaps();
         }
 
         public T Median()
         {
-            if (itemCount % 2 == 0)
-                return averageFunc(minHeap.Peek(), maxHeap.Peek());
+            if (this.itemCount % 2 == 0)
+                return this.averageFunc(this.minHeap.Peek(), this.maxHeap.Peek());
 
-            if (minHeap.ItemCount > maxHeap.ItemCount)
-                return minHeap.Peek();
+            if (this.minHeap.ItemCount > this.maxHeap.ItemCount)
+                return this.minHeap.Peek();
 
-            return maxHeap.Peek();
+            return this.maxHeap.Peek();
         }
     }
 }
