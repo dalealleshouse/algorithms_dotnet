@@ -1,8 +1,9 @@
+using System;
+using Xunit;
+
 namespace Algorithms.Tests.MatrixOperations.FixedSquareMatrix
 {
     using Algorithms.MatrixOperations;
-    using System;
-    using Xunit;
 
     public class Subtract
     {

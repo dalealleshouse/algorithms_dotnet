@@ -1,7 +1,7 @@
+using Algorithms.MatrixOperations;
+
 namespace Algorithms.Tests
 {
-    using Algorithms.MatrixOperations;
-
     public class TestMatrix : SquareMatrix<int>
     {
         public TestMatrix(uint size) : base(size)

@@ -4,11 +4,13 @@ namespace Algorithms.MatrixOperations
 
     public class NaiveSquareMatrix<T> : SquareMatrix<T>
     {
-        public NaiveSquareMatrix(IEnumerable<T> startingData) : base(startingData)
+        public NaiveSquareMatrix(IEnumerable<T> startingData)
+            : base(startingData)
         {
         }
 
-        public NaiveSquareMatrix(uint size) : base(size)
+        public NaiveSquareMatrix(uint size)
+            : base(size)
         {
         }
 

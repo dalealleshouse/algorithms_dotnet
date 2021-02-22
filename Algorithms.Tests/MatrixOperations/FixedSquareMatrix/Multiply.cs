@@ -1,7 +1,8 @@
+using Xunit;
+
 namespace Algorithms.Tests.MatrixOperations.FixedSquareMatrix
 {
     using Algorithms.MatrixOperations;
-    using Xunit;
 
     public class Multiply
     {

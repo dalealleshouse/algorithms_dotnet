@@ -1,11 +1,11 @@
+using Algorithms.MatrixOperations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+
 namespace Algorithms.Benchmarker.MatrixOperations
 {
-    using Algorithms.MatrixOperations;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-
     public static class TestDataGenerator
     {
         private static IEnumerable<long> ParseFile(string path)

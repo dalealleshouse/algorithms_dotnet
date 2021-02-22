@@ -5,14 +5,14 @@ namespace Algorithms.MatrixOperations
 
     public static class MatrixFactory
     {
-        public static T CreateMatrix<T, U>(IEnumerable<U> data)
-            where T : SquareMatrix<U>
+        public static T CreateMatrix<T, TU>(IEnumerable<TU> data)
+            where T : SquareMatrix<TU>
         {
             return (T)Activator.CreateInstance(typeof(T), data);
         }
 
-        public static T CreateMatrix<T, U>(int size)
-            where T : SquareMatrix<U>
+        public static T CreateMatrix<T, TU>(int size)
+            where T : SquareMatrix<TU>
         {
             return (T)Activator.CreateInstance(typeof(T), size);
         }

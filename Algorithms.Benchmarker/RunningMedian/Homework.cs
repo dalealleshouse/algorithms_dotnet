@@ -1,12 +1,12 @@
+using Algorithms.Benchmarker.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+
 namespace Algorithms.Benchmarker.RunningMedian
 {
-    using Algorithms.Benchmarker.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Net;
-
     public static class Homework
     {
         private const double EPSILON = .0000005;

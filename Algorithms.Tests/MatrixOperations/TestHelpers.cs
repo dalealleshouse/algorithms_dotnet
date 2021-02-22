@@ -1,10 +1,10 @@
+using Algorithms.MatrixOperations;
+using System;
+using System.Linq;
+using Xunit;
+
 namespace Algorithms.Tests.MatrixOperations
 {
-    using Algorithms.MatrixOperations;
-    using System;
-    using System.Linq;
-    using Xunit;
-
     public static class TestHelpers
     {
         public static T CreateRandomMatrix<T>(int size)

@@ -1,7 +1,7 @@
+using Algorithms;
+
 namespace Algorithms.Tests.RunningMedian
 {
-    using Algorithms;
-
     public static class SutFactory
     {
         public static RunningMedian<int> Create(uint slidingWindow)

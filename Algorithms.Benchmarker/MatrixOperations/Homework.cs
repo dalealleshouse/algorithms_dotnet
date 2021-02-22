@@ -1,11 +1,11 @@
+using Algorithms.Benchmarker.Configuration;
+using Algorithms.MatrixOperations;
+using System;
+using System.Diagnostics;
+using System.Linq;
+
 namespace Algorithms.Benchmarker.MatrixOperations
 {
-    using Algorithms.Benchmarker.Configuration;
-    using Algorithms.MatrixOperations;
-    using System;
-    using System.Diagnostics;
-    using System.Linq;
-
     public static class Homework
     {
         private static void MultiplyMatricies(string matrixPath1,

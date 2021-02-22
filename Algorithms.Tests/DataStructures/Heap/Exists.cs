@@ -1,9 +1,9 @@
+using Algorithms.DataStructures;
+using System;
+using Xunit;
+
 namespace Algorithms.Tests.DataStructures.Heap
 {
-    using Algorithms.DataStructures;
-    using System;
-    using Xunit;
-
     public class Exists
     {
         [Fact]

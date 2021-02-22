@@ -1,8 +1,8 @@
+using System;
+using System.Diagnostics;
+
 namespace Algorithms.Benchmarker
 {
-    using System;
-    using System.Diagnostics;
-
     public static class ActionTimer
     {
         public static (T, TimeSpan) Time<T>(Func<T> action)

@@ -6,11 +6,13 @@ namespace Algorithms.MatrixOperations
     {
         private const int STOPRECURSIONSIZE = 32;
 
-        public StrassenSquareMatrix(IEnumerable<T> startingData) : base(startingData)
+        public StrassenSquareMatrix(IEnumerable<T> startingData)
+            : base(startingData)
         {
         }
 
-        public StrassenSquareMatrix(uint size) : base(size)
+        public StrassenSquareMatrix(uint size)
+            : base(size)
         {
         }
 
@@ -20,7 +22,9 @@ namespace Algorithms.MatrixOperations
         protected override SquareMatrix<T> Multiply(SquareMatrix<T> b)
         {
             if (b.Size <= STOPRECURSIONSIZE)
+            {
                 return this.NaiveMultiply(this, b);
+            }
 
             SquareMatrix<T> a1, a2, a3, a4, b1, b2, b3, b4;
             (a1, a2, a3, a4) = this.Quarter();
@@ -35,8 +39,10 @@ namespace Algorithms.MatrixOperations
             var p7 = (a1 - a3) * (b1 + b2);
 
             return this.Assemble(
-                    p5 + p4 - p2 + p6, p1 + p2,
-                    p3 + p4, p1 + p5 - p3 - p7);
+                    p5 + p4 - p2 + p6,
+                    p1 + p2,
+                    p3 + p4,
+                    p1 + p5 - p3 - p7);
         }
     }
 }

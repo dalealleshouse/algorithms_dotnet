@@ -11,19 +11,104 @@ namespace Algorithms.MatrixOperations
     {
         private const int STOPRECURSIONSIZE = 32;
 
-        public FixedSquareMatrix(IEnumerable<long> startingData) : base(startingData)
+        public FixedSquareMatrix(IEnumerable<long> startingData)
+            : base(startingData)
         {
         }
 
-        public FixedSquareMatrix(uint size) : base(size, null)
+        public FixedSquareMatrix(uint size)
+            : base(size, null)
         {
+        }
+
+        public static FixedSquareMatrix operator +(FixedSquareMatrix a, FixedSquareMatrix b)
+        {
+            if (a is null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
+            if (b is null)
+            {
+                throw new ArgumentNullException(nameof(b));
+            }
+
+            if (a.size != b.size)
+            {
+                throw new ArgumentException("matrices must be the same size");
+            }
+
+            var size = a.size;
+            var result = new FixedSquareMatrix(size);
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    result.data[(i * size) + j] =
+                        a.data[(i * size) + j] + b.data[(i * size) + j];
+                }
+            }
+
+            return result;
+        }
+
+        public static FixedSquareMatrix operator -(FixedSquareMatrix a, FixedSquareMatrix b)
+        {
+            if (a is null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
+            if (b is null)
+            {
+                throw new ArgumentNullException(nameof(b));
+            }
+
+            if (a.size != b.size)
+            {
+                throw new ArgumentException("matrices must be the same size");
+            }
+
+            var result = (FixedSquareMatrix)a.Empty();
+            var size = a.size;
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    result.data[(i * size) + j] =
+                        a.data[(i * size) + j] - b.data[(i * size) + j];
+                }
+            }
+
+            return result;
+        }
+
+        public static FixedSquareMatrix operator *(FixedSquareMatrix a, FixedSquareMatrix b)
+        {
+            if (a is null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
+            if (b is null)
+            {
+                throw new ArgumentNullException(nameof(b));
+            }
+
+            if (a.size != b.size)
+            {
+                throw new ArgumentException("matrices must be the same size");
+            }
+
+            return a.Multiply(b);
         }
 
         protected override FixedSquareMatrix Empty(uint size) =>
             new FixedSquareMatrix(size);
 
-        protected (FixedSquareMatrix, FixedSquareMatrix, FixedSquareMatrix,
-            FixedSquareMatrix) TypedQuarter()
+        protected (FixedSquareMatrix, FixedSquareMatrix, FixedSquareMatrix, FixedSquareMatrix) TypedQuarter()
         {
             return ((FixedSquareMatrix, FixedSquareMatrix,
                   FixedSquareMatrix, FixedSquareMatrix))this.Quarter();
@@ -32,7 +117,9 @@ namespace Algorithms.MatrixOperations
         protected override FixedSquareMatrix Multiply(SquareMatrix<long> b)
         {
             if (this.size <= STOPRECURSIONSIZE)
+            {
                 return FastNaiveMultiply(this, (FixedSquareMatrix)b);
+            }
 
             var btype = (FixedSquareMatrix)b;
 
@@ -49,70 +136,30 @@ namespace Algorithms.MatrixOperations
             var p7 = (a1 - a3) * (b1 + b2);
 
             return (FixedSquareMatrix)this.Assemble(
-                                p5 + p4 - p2 + p6, p1 + p2,
-                                p3 + p4, p1 + p5 - p3 - p7);
+                                p5 + p4 - p2 + p6,
+                                p1 + p2,
+                                p3 + p4,
+                                p1 + p5 - p3 - p7);
         }
 
-        private static FixedSquareMatrix FastNaiveMultiply(FixedSquareMatrix a,
-                FixedSquareMatrix b)
+        private static FixedSquareMatrix FastNaiveMultiply(FixedSquareMatrix a, FixedSquareMatrix b)
         {
             var size = a.size;
             var result = new FixedSquareMatrix(size);
 
             for (var i = 0; i < size; i++)
+            {
                 for (int j = 0; j < size; j++)
+                {
                     for (int k = 0; k < size; k++)
-                        result.data[i * size + j] +=
-                            a.data[i * size + k] * b.data[k * size + j];
+                    {
+                        result.data[(i * size) + j] +=
+                            a.data[(i * size) + k] * b.data[(k * size) + j];
+                    }
+                }
+            }
 
             return result;
-        }
-
-        public static FixedSquareMatrix operator +(FixedSquareMatrix a,
-            FixedSquareMatrix b)
-        {
-            if (a is null) throw new ArgumentNullException(nameof(a));
-            if (b is null) throw new ArgumentNullException(nameof(b));
-            if (a.size != b.size)
-                throw new ArgumentException("matrices must be the same size");
-
-            var size = a.size;
-            var result = new FixedSquareMatrix(size);
-
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    result.data[i * size + j] =
-                        a.data[i * size + j] + b.data[i * size + j];
-            return result;
-        }
-
-        public static FixedSquareMatrix operator -(FixedSquareMatrix a,
-            FixedSquareMatrix b)
-        {
-            if (a is null) throw new ArgumentNullException(nameof(a));
-            if (b is null) throw new ArgumentNullException(nameof(b));
-            if (a.size != b.size)
-                throw new ArgumentException("matrices must be the same size");
-
-            var result = (FixedSquareMatrix)a.Empty();
-            var size = a.size;
-
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    result.data[i * size + j] =
-                        a.data[i * size + j] - b.data[i * size + j];
-            return result;
-        }
-
-        public static FixedSquareMatrix operator *(FixedSquareMatrix a,
-            FixedSquareMatrix b)
-        {
-            if (a is null) throw new ArgumentNullException(nameof(a));
-            if (b is null) throw new ArgumentNullException(nameof(b));
-            if (a.size != b.size)
-                throw new ArgumentException("matrices must be the same size");
-
-            return a.Multiply(b);
         }
     }
 }

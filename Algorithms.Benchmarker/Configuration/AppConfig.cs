@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Configuration;
+using System;
+
 namespace Algorithms.Benchmarker.Configuration
 {
-    using Microsoft.Extensions.Configuration;
-    using System;
-
     public class AppConfig
     {
         public static AppConfig config = null;

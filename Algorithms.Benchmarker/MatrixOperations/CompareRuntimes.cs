@@ -1,8 +1,8 @@
+using Algorithms.MatrixOperations;
+using System;
+
 namespace Algorithms.Benchmarker.MatrixOperations
 {
-    using Algorithms.MatrixOperations;
-    using System;
-
     public class CompareRuntimes
     {
         public static void CompareTimes()
