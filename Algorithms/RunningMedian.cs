@@ -16,8 +16,7 @@ namespace Algorithms
         private readonly Heap<T> maxHeap;
         private readonly Heap<T> minHeap;
         private uint itemCount = 0;
-        private LinkedList<T> window = new();
-
+        private LinkedList<T> window = new ();
 
         // minPriorityFunc = priority function that prioritizes smaller values
         // averageFunc = calculates the average of two values

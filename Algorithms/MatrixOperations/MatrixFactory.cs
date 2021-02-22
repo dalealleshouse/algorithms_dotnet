@@ -11,7 +11,6 @@ namespace Algorithms.MatrixOperations
             return (T)Activator.CreateInstance(typeof(T), data);
         }
 
-
         public static T CreateMatrix<T, U>(int size)
             where T : SquareMatrix<U>
         {

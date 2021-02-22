@@ -232,7 +232,7 @@ namespace Algorithms.DataStructures
 
         public override string ToString()
         {
-            return data
+            return this.data
                 .Aggregate(new StringBuilder(), (sb, i) => sb.Append($"{i}-"))
                 .ToString();
         }

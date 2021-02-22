@@ -16,8 +16,10 @@ namespace Algorithms.MatrixOperations
         {
             this.ops = ops;
             if (!IsPowerOfTwo(size))
+            {
                 throw new ArgumentOutOfRangeException(nameof(size),
                         $"The size of a square matrix must be a power of 2: you passed in {size}");
+            }
 
             this.size = size;
             data = new T[size * size];
@@ -27,8 +29,10 @@ namespace Algorithms.MatrixOperations
         {
             ops = BinaryOps.Factory<T>();
             if (!IsPowerOfTwo(size))
+            {
                 throw new ArgumentOutOfRangeException(nameof(size),
                         $"The size of a square matrix must be a power of 2: you passed in {size}");
+            }
 
             this.size = size;
             data = new T[size * size];
@@ -43,29 +47,30 @@ namespace Algorithms.MatrixOperations
             var length = startingData.Count();
 
             if (Math.Sqrt(length) % 1 != 0 || !IsPowerOfTwo((uint)length))
+            {
                 throw new ArgumentOutOfRangeException(nameof(startingData),
                         $"The size of a square matrix must be a power of 2: you sent an array of {length}");
-
+            }
 
             size = (uint)Math.Sqrt(length);
             data = new T[length];
             startingData.ToArray().CopyTo(data, 0);
         }
 
-        //**********************************************************************
+        // **********************************************************************
         // Private
-        //**********************************************************************
+        // **********************************************************************
         private bool IsPowerOfTwo(uint x) { return (x & (x - 1)) == 0; }
 
-        //**********************************************************************
+        // **********************************************************************
         // Abstract
-        //**********************************************************************
+        // **********************************************************************
         protected abstract SquareMatrix<T> Empty(uint size);
         protected abstract SquareMatrix<T> Multiply(SquareMatrix<T> b);
 
-        //**********************************************************************
+        // **********************************************************************
         // Protected
-        //**********************************************************************
+        // **********************************************************************
         protected SquareMatrix<T> Empty() => Empty(size);
 
         // This is used by many of the algorithms
@@ -85,9 +90,9 @@ namespace Algorithms.MatrixOperations
             return result;
         }
 
-        //**********************************************************************
+        // **********************************************************************
         // Public
-        //**********************************************************************
+        // **********************************************************************
         public uint Size => size;
         public T[] Data => data;
 
@@ -102,11 +107,9 @@ namespace Algorithms.MatrixOperations
             return result;
         }
 
-        public (SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>)
-            Quarter()
+        public (SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>) Quarter()
         {
-            if (size < 2)
-                throw new ArgumentOutOfRangeException(nameof(size),
+            if (size < 2) throw new ArgumentOutOfRangeException(nameof(size),
                         "size must be greater than or equal to 2");
 
             uint newSize = size / 2;
@@ -117,6 +120,7 @@ namespace Algorithms.MatrixOperations
             var q4 = Empty(newSize);
 
             for (var i = 0; i < newSize; i++)
+            {
                 for (var j = 0; j < newSize; j++)
                 {
                     q1.data[i * newSize + j] = data[i * size + j];
@@ -124,25 +128,27 @@ namespace Algorithms.MatrixOperations
                     q3.data[i * newSize + j] = data[(newSize + i) * size + j];
                     q4.data[i * newSize + j] = data[(newSize + i) * size + newSize + j];
                 }
+            }
 
             return (q1, q2, q3, q4);
         }
 
-        public SquareMatrix<T> Assemble(SquareMatrix<T> q1, SquareMatrix<T> q2,
-                SquareMatrix<T> q3, SquareMatrix<T> q4)
+        public SquareMatrix<T> Assemble(SquareMatrix<T> q1, SquareMatrix<T> q2, SquareMatrix<T> q3, SquareMatrix<T> q4)
         {
             if (q1 is null) throw new ArgumentNullException(nameof(q1));
             if (q2 is null) throw new ArgumentNullException(nameof(q2));
             if (q3 is null) throw new ArgumentNullException(nameof(q3));
             if (q4 is null) throw new ArgumentNullException(nameof(q4));
-            if (q1.size != q2.size || q2.size != q3.size || q3.size != q4.size)
+            if (q1.size != q2.size || q2.size != q3.size || q3.size != q4.size) {
                 throw new ArgumentException("All matracies must  be the same size");
+            }
 
             uint size = q1.size;
             uint newSize = q1.size * 2;
-            var result = Empty(newSize);
+            var result = this.Empty(newSize);
 
             for (var i = 0; i < size; i++)
+            {
                 for (var j = 0; j < size; j++)
                 {
                     result.data[i * newSize + j] = q1.data[i * size + j];
@@ -150,6 +156,7 @@ namespace Algorithms.MatrixOperations
                     result.data[(size + i) * newSize + j] = q3.data[i * size + j];
                     result.data[(q1.size + i) * newSize + size + j] = q4.data[i * size + j];
                 }
+            }
 
             return result;
         }
@@ -167,22 +174,23 @@ namespace Algorithms.MatrixOperations
         {
             var matrix = new StringBuilder("\n");
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < this.size; i++)
             {
-                for (int j = 0; j < size; j++)
+                for (int j = 0; j < this.size; j++)
                 {
                     matrix.Append(this[i, j].ToString());
                     matrix.Append("\t");
                 }
+
                 matrix.Append("\n");
             }
 
             return matrix.ToString();
         }
 
-        //**********************************************************************
+        // **********************************************************************
         // Operators
-        //**********************************************************************
+        // **********************************************************************
         public T this[int x, int y]
         {
             get => data[x * size + y];
@@ -200,9 +208,14 @@ namespace Algorithms.MatrixOperations
             var size = a.size;
 
             for (int i = 0; i < size; i++)
+            {
                 for (int j = 0; j < size; j++)
+                {
                     result.data[i * size + j] = a.ops.Add(
                             a.data[i * size + j], b.data[i * size + j]);
+                }
+            }
+
             return result;
         }
 
@@ -210,16 +223,20 @@ namespace Algorithms.MatrixOperations
         {
             if (a is null) throw new ArgumentNullException(nameof(a));
             if (b is null) throw new ArgumentNullException(nameof(b));
-            if (a.size != b.size)
-                throw new ArgumentException("matrices must be the same size");
+            if (a.size != b.size) throw new ArgumentException("matrices must be the same size");
 
             var result = a.Empty();
             var size = a.size;
 
             for (int i = 0; i < size; i++)
+            {
                 for (int j = 0; j < size; j++)
+                {
                     result.data[i * size + j] = a.ops.Subtract(
                             a.data[i * size + j], b.data[i * size + j]);
+                }
+            }
+
             return result;
         }
 
