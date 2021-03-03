@@ -28,7 +28,7 @@ namespace Algorithms.DataStructures
 
             this.size = initialSize;
             this.data = new T[initialSize];
-            this.itemLocator = new ((int)initialSize);
+            this.itemLocator = new((int)initialSize);
         }
 
         public Heap(Priority priorityFunc)
@@ -194,7 +194,7 @@ namespace Algorithms.DataStructures
             }
             else
             {
-                indices = new ();
+                indices = new();
                 this.itemLocator[value] = indices;
             }
 
