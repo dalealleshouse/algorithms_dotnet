@@ -92,23 +92,7 @@ namespace Algorithms.DataStructures
             }
 
             T returnValue = this.data[0];
-            this.ClearDataItem(0);
-            --this.itemCount;
-
-            if (this.itemCount == 0)
-            {
-                return returnValue;
-            }
-
-            T relocate = this.data[this.itemCount];
-            this.ClearDataItem(this.itemCount);
-            this.InsertDataItem(0, relocate);
-            if (this.itemCount == 1)
-            {
-                return returnValue;
-            }
-
-            this.BubbleDown(0);
+            this.Delete(this.data[0]);
             return returnValue;
         }
 

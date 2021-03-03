@@ -9,7 +9,7 @@ namespace Algorithms
     {
         private const uint DEFAULTINITSIZE = 50;
 
-        private readonly LinkedList<T> window = new ();
+        private readonly Queue<T> window = new ();
         private readonly Heap<T>.Priority minPriorityFunc;
         private readonly Average averageFunc;
         private readonly uint slidingWindow;
@@ -120,14 +120,15 @@ namespace Algorithms
 
         private void MaintainSlidingWindow(T value)
         {
-            this.window.AddFirst(value);
+            this.window.Enqueue(value);
 
             if (this.itemCount <= this.slidingWindow)
             {
                 return;
             }
 
-            var doomed = this.window.Last.Value;
+            /* var doomed = this.window.Last.Value; */
+            var doomed = this.window.Dequeue();
 
             if (this.minPriorityFunc(doomed, this.maxHeap.Peek()) >= 0)
             {
@@ -138,7 +139,6 @@ namespace Algorithms
                 this.minHeap.Delete(doomed);
             }
 
-            this.window.RemoveLast();
             this.itemCount--;
         }
     }
