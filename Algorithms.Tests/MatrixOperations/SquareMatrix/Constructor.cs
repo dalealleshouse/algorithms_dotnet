@@ -1,8 +1,8 @@
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.SquareMatrix
 {
+    using System;
+    using Xunit;
+
     public class Constructor
     {
         [Fact]
@@ -31,6 +31,5 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
             int[] dummy = new int[size];
             Assert.Throws<ArgumentOutOfRangeException>(() => new TestMatrix(dummy));
         }
-
     }
 }

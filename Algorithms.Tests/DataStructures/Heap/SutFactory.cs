@@ -1,7 +1,7 @@
-using Algorithms.DataStructures;
-
 namespace Algorithms.Tests.DataStructures.Heap
 {
+    using Algorithms.DataStructures;
+
     public static class SutFactory
     {
         public static Heap<int> MaxHeap(uint size)

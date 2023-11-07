@@ -1,39 +1,19 @@
-using Algorithms.Benchmarker.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-
 namespace Algorithms.Benchmarker.RunningMedian
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Algorithms.Benchmarker.Configuration;
+
     public static class Homework
     {
         private const double EPSILON = .0000005;
 
-        private static double AverageFunc(double x, double y) => (x + y) / 2;
-
-        private static int MinPriorityFunc(double x, double y)
+        public static async Task<(double Sum, TimeSpan ElaspedTime)> GetSumAsync(uint slidingWindow)
         {
-            if (x == y) return 0;
-            else if (y - x < 0) return -1;
-            else return 1;
-        }
-
-        private static IEnumerable<double> ParseFile(string path)
-        {
-            WebClient wc = new WebClient();
-            string data = wc.DownloadString(path);
-
-            return data.Split('\n')
-                .Where(value => !string.IsNullOrWhiteSpace(value))
-                .Select(double.Parse)
-                .ToList();
-        }
-
-        public static (double, TimeSpan) GetSum(uint slidingWindow)
-        {
-            var data = ParseFile(AppConfig.config.RunningMedian.ExerciseFileUrl);
+            var data = await ParseFile(AppConfig.Config.RunningMedian.ExerciseFileUrl);
 
             double sum = 0;
             var rm = new RunningMedian<double>(MinPriorityFunc, AverageFunc, slidingWindow);
@@ -52,21 +32,40 @@ namespace Algorithms.Benchmarker.RunningMedian
             return (sum, ts);
         }
 
-        public static void ExerciseThree()
+        public static async Task ExerciseThreeAsync()
         {
-            (var sum, var ts) = GetSum(0);
+            (var sum, var ts) = await GetSumAsync(0);
             Console.WriteLine($"The median sum is {sum}, completed in {ts}");
 
-            Debug.Assert(Math.Abs(sum - 4995738.755804) <= EPSILON);
+            Debug.Assert(Math.Abs(sum - 4995738.755804) <= EPSILON, "Wrong Answer");
         }
 
-        public static void ExerciseFive()
+        public static async Task ExerciseFiveAsync()
         {
-            (var sum, var ts) = GetSum(100);
+            (var sum, var ts) = await GetSumAsync(100);
             Console.WriteLine($"The median sum with a sliding window of 100 is {sum}, completed in {ts}");
 
-            Debug.Assert(Math.Abs(sum - 4995205.397700) <= EPSILON);
-            var data = ParseFile(AppConfig.config.RunningMedian.ExerciseFileUrl);
+            Debug.Assert(Math.Abs(sum - 4995205.397700) <= EPSILON, "Wrong Answer");
+            var data = ParseFile(AppConfig.Config.RunningMedian.ExerciseFileUrl);
+        }
+
+        private static double AverageFunc(double x, double y) => (x + y) / 2;
+
+        private static int MinPriorityFunc(double x, double y)
+        {
+            if (x == y) return 0;
+            else if (y - x < 0) return -1;
+            else return 1;
+        }
+
+        private static async Task<IEnumerable<double>> ParseFile(string path)
+        {
+            string data = await FileDownloader.DownloadFile(path);
+
+            return data.Split('\n')
+                .Where(value => !string.IsNullOrWhiteSpace(value))
+                .Select(double.Parse)
+                .ToList();
         }
     }
 }

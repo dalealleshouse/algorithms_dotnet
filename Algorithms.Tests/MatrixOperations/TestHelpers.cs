@@ -1,10 +1,10 @@
-using Algorithms.MatrixOperations;
-using System;
-using System.Linq;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations
 {
+    using System;
+    using System.Linq;
+    using Algorithms.MatrixOperations;
+    using Xunit;
+
     public static class TestHelpers
     {
         public static T CreateRandomMatrix<T>(int size)
@@ -17,7 +17,6 @@ namespace Algorithms.Tests.MatrixOperations
                 .ToList();
 
             return (T)Activator.CreateInstance(typeof(T), data);
-
         }
 
         public static void MultiplyHappyPath<T>()
@@ -46,6 +45,5 @@ namespace Algorithms.Tests.MatrixOperations
 
             Assert.Equal(expected, r1 * r2);
         }
-
     }
 }

@@ -1,8 +1,8 @@
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.DataStructures.Heap
 {
+    using System;
+    using Xunit;
+
     public class Peek
     {
         [Fact]

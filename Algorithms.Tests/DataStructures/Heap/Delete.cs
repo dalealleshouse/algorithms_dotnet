@@ -1,9 +1,9 @@
-using Algorithms.DataStructures;
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.DataStructures.Heap
 {
+    using System;
+    using Algorithms.DataStructures;
+    using Xunit;
+
     public class Delete
     {
         [Fact]

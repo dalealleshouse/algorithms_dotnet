@@ -1,19 +1,19 @@
-﻿using Algorithms.Benchmarker.Configuration;
-using Algorithms.Benchmarker.RunningMedian;
-
-namespace Algorithms.Benchmarker
+﻿namespace Algorithms.Benchmarker
 {
-    class Program
+    using Algorithms.Benchmarker.Configuration;
+    using Algorithms.Benchmarker.MatrixOperations;
+
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             AppConfig.InitConfg();
 
-            /* CompareRuntimes.CompareTimes(); */
-            /* Homework.ExerciseThree(); */
+            CompareRuntimes.CompareTimes();
+            MatrixOperations.Homework.ExerciseThreeAsync().Wait();
 
-            Homework.ExerciseThree();
-            Homework.ExerciseFive();
+            RunningMedian.Homework.ExerciseThreeAsync().Wait();
+            RunningMedian.Homework.ExerciseFiveAsync().Wait();
         }
     }
 }

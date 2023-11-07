@@ -1,9 +1,8 @@
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.FixedSquareMatrix
 {
+    using System;
     using Algorithms.MatrixOperations;
+    using Xunit;
 
     public class Add
     {

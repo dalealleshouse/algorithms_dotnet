@@ -1,9 +1,9 @@
-using Algorithms.MatrixOperations;
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.RecurrsiveSquareMatrix
 {
+    using System;
+    using Algorithms.MatrixOperations;
+    using Xunit;
+
     public class Multiply
     {
         [Fact]

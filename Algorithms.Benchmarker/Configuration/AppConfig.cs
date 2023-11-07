@@ -1,11 +1,20 @@
-using Microsoft.Extensions.Configuration;
-using System;
-
 namespace Algorithms.Benchmarker.Configuration
 {
+    using System;
+    using Microsoft.Extensions.Configuration;
+
     public class AppConfig
     {
-        public static AppConfig config = null;
+        private static AppConfig config = null;
+
+        public static AppConfig Config
+        {
+            get { return config; }
+        }
+
+        public MatrixOperations MatrixOperations { get; set; }
+
+        public RunningMedian RunningMedian { get; set; }
 
         public static void InitConfg()
         {
@@ -17,8 +26,5 @@ namespace Algorithms.Benchmarker.Configuration
 
             config = builder.Build().Get<AppConfig>();
         }
-
-        public MatrixOperations MatrixOperations { get; set; }
-        public RunningMedian RunningMedian { get; set; }
     }
 }

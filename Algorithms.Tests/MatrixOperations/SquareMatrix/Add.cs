@@ -1,8 +1,8 @@
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.SquareMatrix
 {
+    using System;
+    using Xunit;
+
     public class Add
     {
         [Fact]

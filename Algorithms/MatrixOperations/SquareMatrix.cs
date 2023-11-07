@@ -174,7 +174,7 @@ namespace Algorithms.MatrixOperations
             return result;
         }
 
-        public (SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>, SquareMatrix<T>) Quarter()
+        public (SquareMatrix<T> QuadA, SquareMatrix<T> QuadB, SquareMatrix<T> QuadC, SquareMatrix<T> QuadD) Quarter()
         {
             if (this.size < 2)
             {

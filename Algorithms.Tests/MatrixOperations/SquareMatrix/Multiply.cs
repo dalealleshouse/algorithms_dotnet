@@ -1,8 +1,8 @@
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.SquareMatrix
 {
+    using System;
+    using Xunit;
+
     public class Multiply
     {
         [Fact]
@@ -24,6 +24,5 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
             Assert.Throws<ArgumentNullException>(() => null * a);
             Assert.Throws<ArgumentNullException>(() => b * b);
         }
-
     }
 }

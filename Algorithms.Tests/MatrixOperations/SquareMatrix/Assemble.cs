@@ -1,8 +1,8 @@
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.SquareMatrix
 {
+    using System;
+    using Xunit;
+
     public class Assemble
     {
         [Fact]
@@ -26,7 +26,6 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
             Assert.Throws<ArgumentException>(() => q1.Assemble(q1, q2, q3, q4));
         }
 
-
         [Fact]
         public void Should_JoinSize2MatrixFromQuadrants()
         {
@@ -44,8 +43,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
         [Fact]
         public void Should_SplitSize4MatrixIntoQuadrants()
         {
-            var expected = new TestMatrix(new int[] { 1, 2, 3, 4, 5, 6, 7, 8,
-                    9, 10, 11, 12, 13, 14, 15, 16 });
+            var expected = new TestMatrix(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, });
 
             var q1 = new TestMatrix(new int[] { 1, 2, 5, 6 });
             var q2 = new TestMatrix(new int[] { 3, 4, 7, 8 });

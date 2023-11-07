@@ -1,23 +1,11 @@
-using Algorithms;
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.RunningMedian
 {
+    using System;
+    using Algorithms;
+    using Xunit;
+
     public class Median
     {
-        private static double AverageFunc(double x, double y)
-        {
-            return (x + y) / 2;
-        }
-
-        private static int MinPriorityFunc(double x, double y)
-        {
-            if (x == y) return 0;
-            else if (y - x < 0) return -1;
-            else return 1;
-        }
-
         [Fact]
         public void ThrowsWhenEmpty()
         {
@@ -75,11 +63,31 @@ namespace Algorithms.Tests.RunningMedian
             var expected = new double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0 };
             var sut = new RunningMedian<double>(MinPriorityFunc, AverageFunc, 5);
 
-
             for (uint i = 0; i < n; i++)
             {
                 sut.Track(vals[i]);
                 Assert.Equal(expected[i], sut.Median());
+            }
+        }
+
+        private static double AverageFunc(double x, double y)
+        {
+            return (x + y) / 2;
+        }
+
+        private static int MinPriorityFunc(double x, double y)
+        {
+            if (x == y)
+            {
+                return 0;
+            }
+            else if (y - x < 0)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
             }
         }
     }

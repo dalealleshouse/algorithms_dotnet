@@ -1,9 +1,9 @@
-using Algorithms.MatrixOperations;
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.NaiveSquareMatrix
 {
+    using System;
+    using Algorithms.MatrixOperations;
+    using Xunit;
+
     public class Multiply
     {
         [Fact]
@@ -15,7 +15,6 @@ namespace Algorithms.Tests.MatrixOperations.NaiveSquareMatrix
 
             Assert.Throws<OverflowException>(() => a * b);
         }
-
 
         [Fact]
         public void Multiply_HappyPath()

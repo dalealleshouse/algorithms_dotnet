@@ -1,25 +1,13 @@
-using Algorithms.MatrixOperations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-
 namespace Algorithms.Benchmarker.MatrixOperations
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Algorithms.MatrixOperations;
+
     public static class TestDataGenerator
     {
-        private static IEnumerable<long> ParseFile(string path)
-        {
-            WebClient wc = new WebClient();
-            string matrix = wc.DownloadString(path);
-
-            return matrix.Split('\n')
-                .SelectMany(line => line.Split('\t')
-                        .Where(value => long.TryParse(value, out long dummy))
-                        .Select(long.Parse))
-                .ToList();
-        }
-
         public static T CreateRandomMatrix<T>(int size)
             where T : SquareMatrix<long>
         {
@@ -30,19 +18,32 @@ namespace Algorithms.Benchmarker.MatrixOperations
                 .ToList();
 
             return (T)Activator.CreateInstance(typeof(T), data);
-
         }
 
-        public static T CreateMatrix<T>(string fileUrl)
+        public static async Task<T> CreateMatrixAsync<T>(string fileUrl)
             where T : SquareMatrix<long>
         {
             if (string.IsNullOrWhiteSpace(fileUrl))
+            {
                 throw new ArgumentException(
                         $"'{nameof(fileUrl)}' cannot be null or whitespace.",
                         nameof(fileUrl));
+            }
 
-            var data = ParseFile(fileUrl);
+            var data = await ParseFileAsync(fileUrl);
+
             return MatrixFactory.CreateMatrix<T, long>(data);
+        }
+
+        private static async Task<IEnumerable<long>> ParseFileAsync(string path)
+        {
+            string matrix = await FileDownloader.DownloadFile(path);
+
+            return matrix.Split('\n')
+                .SelectMany(line => line.Split('\t')
+                        .Where(value => long.TryParse(value, out long dummy))
+                        .Select(long.Parse))
+                .ToList();
         }
     }
 }

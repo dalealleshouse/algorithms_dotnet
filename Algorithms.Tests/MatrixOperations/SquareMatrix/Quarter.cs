@@ -1,8 +1,8 @@
-using System;
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.SquareMatrix
 {
+    using System;
+    using Xunit;
+
     public class Quarter
     {
         [Fact]
@@ -32,8 +32,7 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
         public void Should_SplitSize4MatrixIntoQuadrants()
         {
             TestMatrix q1, q2, q3, q4;
-            var a = new TestMatrix(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                    11, 12, 13, 14, 15, 16 });
+            var a = new TestMatrix(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
 
             (q1, q2, q3, q4) =
                 ((TestMatrix, TestMatrix, TestMatrix, TestMatrix))a.Quarter();
@@ -43,6 +42,5 @@ namespace Algorithms.Tests.MatrixOperations.SquareMatrix
             Assert.Equal(new TestMatrix(new int[] { 9, 10, 13, 14 }), q3);
             Assert.Equal(new TestMatrix(new int[] { 11, 12, 15, 16 }), q4);
         }
-
     }
 }

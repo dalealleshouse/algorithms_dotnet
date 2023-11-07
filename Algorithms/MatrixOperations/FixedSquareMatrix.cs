@@ -108,7 +108,7 @@ namespace Algorithms.MatrixOperations
         protected override FixedSquareMatrix Empty(uint size) =>
             new FixedSquareMatrix(size);
 
-        protected (FixedSquareMatrix, FixedSquareMatrix, FixedSquareMatrix, FixedSquareMatrix) TypedQuarter()
+        protected (FixedSquareMatrix QuadA, FixedSquareMatrix QuadB, FixedSquareMatrix QuadC, FixedSquareMatrix QuadD) TypedQuarter()
         {
             return ((FixedSquareMatrix, FixedSquareMatrix,
                   FixedSquareMatrix, FixedSquareMatrix))this.Quarter();

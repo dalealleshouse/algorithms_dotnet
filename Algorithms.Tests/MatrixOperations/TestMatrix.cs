@@ -1,10 +1,11 @@
-using Algorithms.MatrixOperations;
-
 namespace Algorithms.Tests
 {
+    using Algorithms.MatrixOperations;
+
     public class TestMatrix : SquareMatrix<int>
     {
-        public TestMatrix(uint size) : base(size)
+        public TestMatrix(uint size)
+            : base(size)
         {
         }
 
@@ -18,6 +19,4 @@ namespace Algorithms.Tests
 
         protected override SquareMatrix<int> Multiply(SquareMatrix<int> b) => b;
     }
-
-
 }

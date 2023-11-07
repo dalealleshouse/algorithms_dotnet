@@ -9,7 +9,7 @@ namespace Algorithms
     {
         private const uint DEFAULTINITSIZE = 50;
 
-        private readonly Queue<T> window = new ();
+        private readonly Queue<T> window = new();
         private readonly Heap<T>.Priority minPriorityFunc;
         private readonly Average averageFunc;
         private readonly uint slidingWindow;

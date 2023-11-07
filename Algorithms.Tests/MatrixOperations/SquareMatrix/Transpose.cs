@@ -1,7 +1,7 @@
-using Xunit;
-
 namespace Algorithms.Tests.MatrixOperations.SquareMatrix
 {
+    using Xunit;
+
     public class Transpose
     {
         [Fact]
