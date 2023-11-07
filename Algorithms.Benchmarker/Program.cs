@@ -9,8 +9,8 @@
         {
             AppConfig.InitConfg();
 
-            CompareRuntimes.CompareTimes();
-            MatrixOperations.Homework.ExerciseThreeAsync().Wait();
+            /* CompareRuntimes.CompareTimes(); */
+            /* MatrixOperations.Homework.ExerciseThreeAsync().Wait(); */
 
             RunningMedian.Homework.ExerciseThreeAsync().Wait();
             RunningMedian.Homework.ExerciseFiveAsync().Wait();

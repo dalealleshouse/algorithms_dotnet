@@ -34,7 +34,7 @@ namespace Algorithms.Tests.ListDataStructures.Array
         {
             var sut = new Array<int>();
 
-            sut.Enumerate(x => Assert.True(false, "Should not be called"));
+            sut.Enumerate(x => Assert.Fail("Should not be called"));
         }
     }
 }
