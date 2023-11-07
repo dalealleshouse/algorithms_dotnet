@@ -19,14 +19,16 @@ namespace Algorithms.Tests.ListDataStructures.Array
         [Fact]
         public void InsertValueAtHeadOfArray()
         {
-            var sut = new Array<int>();
-            sut.InsertAtHead(1);
-            sut.InsertAtHead(2);
-            sut.InsertAtHead(3);
+            const int max = 20;
+            var sut = SutFactory.IntArray(max);
+            sut.InsertAtHead(138);
 
-            Assert.Equal(3, sut[0]);
-            Assert.Equal(2, sut[1]);
-            Assert.Equal(1, sut[2]);
+            Assert.Equal(138, sut[0]);
+
+            for (int i = 0; i < max; i++)
+            {
+                Assert.Equal(i, sut[i + 1]);
+            }
         }
     }
 }

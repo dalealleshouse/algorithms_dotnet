@@ -28,5 +28,16 @@ namespace Algorithms.Tests.ListDataStructures.Array
             Assert.Equal(expected, result.Index);
             Assert.Equal(expected, result.Value);
         }
+
+        [Fact]
+        public void ReturnFalseSearchResultWhenNoPredicateMatch()
+        {
+            var sut = SutFactory.IntArray(10);
+            var result = sut.Search(x => x == 20);
+
+            Assert.False(result.Found);
+            Assert.Equal(-1, result.Index);
+            Assert.Equal(default(int), result.Value);
+        }
     }
 }

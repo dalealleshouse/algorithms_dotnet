@@ -1,3 +1,5 @@
+#nullable disable
+
 namespace Algorithms.DataStructures
 {
     using System;

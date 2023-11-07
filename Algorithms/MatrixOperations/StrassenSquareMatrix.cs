@@ -1,3 +1,5 @@
+#nullable disable
+
 namespace Algorithms.MatrixOperations
 {
     using System.Collections.Generic;

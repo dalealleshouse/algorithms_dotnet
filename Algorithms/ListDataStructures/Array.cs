@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace Algorithms.ListDataStructures
 {
     using System;
@@ -59,13 +61,24 @@ namespace Algorithms.ListDataStructures
             }
 
             var index = this.array.TakeWhile(x => !predicate(x)).Count();
-            return new(index < this.array.Length, index, this.array[index]);
+
+            return (index == this.array.Length) ?
+                new(false, -1, default(T)) :
+                new(true, index, this.array[index]);
         }
 
-        public readonly record struct ArraySearchResult(bool Found, int Index, T Value);
+        public void Enumerate(Action<T> action)
+        {
+            if (action == null)
+            {
+                throw new System.ArgumentNullException();
+            }
 
-        /* ResultCode Array_Search(const Array*, const void*, void**); */
-        /* ResultCode Array_Enumerate(const Array*, item_handler); */
+            Array.ForEach(this.array, action);
+        }
+
+        public readonly record struct ArraySearchResult(bool Found, int Index, T? Value);
+
         /* ResultCode Array_Max(const Array*, void**); */
         /* ResultCode Array_Predecessor(const Array*, const void*, void**); */
         /* ResultCode Array_Rank(const Array*, const void*, size_t*); */
