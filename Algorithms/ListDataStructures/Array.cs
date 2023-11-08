@@ -27,6 +27,16 @@ public class Array<T>
         }
     }
 
+    public static implicit operator Array<T>(T[] arr)
+    {
+        return new Array<T>(arr);
+    }
+
+    public static implicit operator T[](Array<T> arr)
+    {
+        return arr.array;
+    }
+
     public void InsertAtHead(T item)
     {
         if (item == null) throw new System.ArgumentNullException();

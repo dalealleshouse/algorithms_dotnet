@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 public static class ActionTimer
 {
-    public static (T Result, TimeSpan ElaspedTime) Time<T>(Func<T> action)
+    public static (T Result, TimeSpan RunTime) Time<T>(Func<T> action)
     {
         Stopwatch stopWatch = new Stopwatch();
 

@@ -1,6 +1,8 @@
 ﻿namespace Algorithms.Benchmarker;
 
 using Algorithms.Benchmarker.Configuration;
+using Algorithms.Benchmarker.ListDataStructures;
+using BenchmarkDotNet.Running;
 
 public class Program
 {
@@ -8,10 +10,12 @@ public class Program
     {
         AppConfig.InitConfg();
 
-        /* CompareRuntimes.CompareTimes(); */
-        /* MatrixOperations.Homework.ExerciseThreeAsync().Wait(); */
+        /* /1* CompareRuntimes.CompareTimes(); *1/ */
+        /* /1* MatrixOperations.Homework.ExerciseThreeAsync().Wait(); *1/ */
 
-        RunningMedian.Homework.ExerciseThreeAsync().Wait();
-        RunningMedian.Homework.ExerciseFiveAsync().Wait();
+        /* RunningMedian.Homework.ExerciseThreeAsync().Wait(); */
+        /* RunningMedian.Homework.ExerciseFiveAsync().Wait(); */
+
+        var summary = BenchmarkRunner.Run<ArrayBenchmarks>();
     }
 }
