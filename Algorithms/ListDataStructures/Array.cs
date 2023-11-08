@@ -81,9 +81,10 @@ public class Array<T>
         return new(new(result.Index, result.Value));
     }
 
-    public Maybe<ArrayResult> Predecessor(Comparison<T> comparer, T value)
+    public Maybe<ArrayResult> Predecessor(T value, Comparison<T> comparer)
     {
         if (comparer is null) throw new ArgumentNullException(nameof(comparer));
+        if (value is null) throw new ArgumentNullException(nameof(value));
 
         var result = Maybe<ArrayResult>.None;
 
@@ -91,11 +92,9 @@ public class Array<T>
             .Select((value, index) => new { Value = value, Index = index })
             .Aggregate(result, (acc, x) =>
             {
-                /* if (acc.HasValue) Console.WriteLine(acc.Value.Index); */
-
                 if (comparer(x.Value, value) < 0)
                 {
-                    if (!acc.HasValue || comparer(acc.Value.Item, x.Value) < 0)
+                    if (!acc.HasValue || comparer(x.Value, acc.Value.Item) > 0)
                     {
                         return new(new(x.Index, x.Value));
                     }
@@ -105,8 +104,19 @@ public class Array<T>
             });
     }
 
-    public readonly record struct ArrayResult(int Index, T Item);
+    public Maybe<int> Rank(T value, Comparison<T> comparer)
+    {
+        if (comparer is null) throw new ArgumentNullException(nameof(comparer));
+        if (value is null) throw new ArgumentNullException(nameof(value));
 
-    /* ResultCode Array_Predecessor(const Array*, const void*, void**); */
-    /* ResultCode Array_Rank(const Array*, const void*, size_t*); */
+        var result = new Maybe<int>(0);
+
+        return this.array
+            .Aggregate(result, (acc, x) =>
+            {
+                return (comparer(x, value) < 0) ? new(acc.Value + 1) : acc;
+            });
+    }
+
+    public readonly record struct ArrayResult(int Index, T Item);
 }
