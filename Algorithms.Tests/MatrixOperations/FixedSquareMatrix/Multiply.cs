@@ -1,14 +1,13 @@
-namespace Algorithms.Tests.MatrixOperations.FixedSquareMatrix
-{
-    using Algorithms.MatrixOperations;
-    using Xunit;
+namespace Algorithms.Tests.MatrixOperations.FixedSquareMatrix;
 
-    public class Multiply
+using Algorithms.MatrixOperations;
+using Xunit;
+
+public class Multiply
+{
+    [Fact]
+    public void Multiply_MatchesNaive()
     {
-        [Fact]
-        public void Multiply_MatchesNaive()
-        {
-            TestHelpers.MultiplyMatchesNaive<FixedSquareMatrix>();
-        }
+        TestHelpers.MultiplyMatchesNaive<FixedSquareMatrix>();
     }
 }

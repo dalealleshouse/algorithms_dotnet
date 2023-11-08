@@ -1,13 +1,12 @@
-namespace Algorithms.Benchmarker.Configuration
+namespace Algorithms.Benchmarker.Configuration;
+
+public class MatrixOperations
 {
-    public class MatrixOperations
-    {
-        public string LargeMatrixAUrl { get; set; }
+    public string LargeMatrixAUrl { get; set; }
 
-        public string LargeMatrixBUrl { get; set; }
+    public string LargeMatrixBUrl { get; set; }
 
-        public string SmallMatrixAUrl { get; set; }
+    public string SmallMatrixAUrl { get; set; }
 
-        public string SmallMatrixBUrl { get; set; }
-    }
+    public string SmallMatrixBUrl { get; set; }
 }

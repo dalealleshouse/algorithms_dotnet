@@ -1,17 +1,16 @@
-namespace Algorithms.Tests.RunningMedian
-{
-    using System;
-    using Algorithms;
-    using Xunit;
+namespace Algorithms.Tests.RunningMedian;
 
-    public class Constructor
+using System;
+using Algorithms;
+using Xunit;
+
+public class Constructor
+{
+    [Fact]
+    public void ThrowOnNullArgument()
     {
-        [Fact]
-        public void ThrowOnNullArgument()
-        {
-            Assert.Throws<ArgumentNullException>(() => new RunningMedian<int>(null, null));
-            Assert.Throws<ArgumentNullException>(() => new RunningMedian<int>((x, y) => -1, null));
-            Assert.Throws<ArgumentNullException>(() => new RunningMedian<int>(null, (x, y) => -1));
-        }
+        Assert.Throws<ArgumentNullException>(() => new RunningMedian<int>(null, null));
+        Assert.Throws<ArgumentNullException>(() => new RunningMedian<int>((x, y) => -1, null));
+        Assert.Throws<ArgumentNullException>(() => new RunningMedian<int>(null, (x, y) => -1));
     }
 }

@@ -1,37 +1,36 @@
-namespace Algorithms.Tests.MatrixOperations.SquareMatrix
+namespace Algorithms.Tests.MatrixOperations.SquareMatrix;
+
+using System;
+using Xunit;
+
+public class Subtract
 {
-    using System;
-    using Xunit;
-
-    public class Subtract
+    [Fact]
+    public void Should_RejectDifferntSizeMatrix()
     {
-        [Fact]
-        public void Should_RejectDifferntSizeMatrix()
-        {
-            var a = new TestMatrix(4);
-            var b = new TestMatrix(8);
+        var a = new TestMatrix(4);
+        var b = new TestMatrix(8);
 
-            Assert.Throws<ArgumentException>(() => a - b);
-        }
+        Assert.Throws<ArgumentException>(() => a - b);
+    }
 
-        [Fact]
-        public void Should_RejectNullInput()
-        {
-            var a = new TestMatrix(4);
-            TestMatrix b = null;
+    [Fact]
+    public void Should_RejectNullInput()
+    {
+        var a = new TestMatrix(4);
+        TestMatrix b = null;
 
-            Assert.Throws<ArgumentNullException>(() => a - null);
-            Assert.Throws<ArgumentNullException>(() => null - a);
-            Assert.Throws<ArgumentNullException>(() => b - b);
-        }
+        Assert.Throws<ArgumentNullException>(() => a - null);
+        Assert.Throws<ArgumentNullException>(() => null - a);
+        Assert.Throws<ArgumentNullException>(() => b - b);
+    }
 
-        [Fact]
-        public void Should_Overflow()
-        {
-            var a = new TestMatrix(new int[] { int.MinValue, 8, 3, 7 });
-            var b = new TestMatrix(new int[] { 1, 0, 5, 2 });
+    [Fact]
+    public void Should_Overflow()
+    {
+        var a = new TestMatrix(new int[] { int.MinValue, 8, 3, 7 });
+        var b = new TestMatrix(new int[] { 1, 0, 5, 2 });
 
-            Assert.Throws<OverflowException>(() => a - b);
-        }
+        Assert.Throws<OverflowException>(() => a - b);
     }
 }
