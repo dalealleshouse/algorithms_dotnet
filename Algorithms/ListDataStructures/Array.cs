@@ -29,10 +29,7 @@ public class Array<T>
 
     public void InsertAtHead(T item)
     {
-        if (item == null)
-        {
-            throw new System.ArgumentNullException();
-        }
+        if (item == null) throw new System.ArgumentNullException();
 
         T[] newArray = new T[this.array.Length + 1];
         newArray[0] = item;
@@ -42,10 +39,7 @@ public class Array<T>
 
     public void InsertAtTail(T item)
     {
-        if (item == null)
-        {
-            throw new System.ArgumentNullException();
-        }
+        if (item == null) throw new System.ArgumentNullException();
 
         T[] newArray = new T[this.array.Length + 1];
         newArray[newArray.Length - 1] = item;
@@ -53,33 +47,66 @@ public class Array<T>
         this.array = newArray;
     }
 
-    public ArraySearchResult Search(Predicate<T> predicate)
+    public Maybe<ArrayResult> Search(Predicate<T> predicate)
     {
-        if (predicate == null)
-        {
-            throw new System.ArgumentNullException();
-        }
+        if (predicate == null) throw new System.ArgumentNullException();
 
         var index = this.array.TakeWhile(x => !predicate(x)).Count();
 
         return (index == this.array.Length) ?
-            new(false, -1, default(T)) :
-            new(true, index, this.array[index]);
+            Maybe<ArrayResult>.None :
+            new(new(index, this.array[index]));
     }
 
     public void Enumerate(Action<T> action)
     {
-        if (action == null)
-        {
-            throw new System.ArgumentNullException();
-        }
+        if (action == null) throw new System.ArgumentNullException();
 
         Array.ForEach(this.array, action);
     }
 
-    public readonly record struct ArraySearchResult(bool Found, int Index, T? Value);
+    public Maybe<ArrayResult> Max(Comparison<T> comparer)
+    {
+        if (comparer is null) throw new ArgumentNullException(nameof(comparer));
 
-    /* ResultCode Array_Max(const Array*, void**); */
+        if (this.array.Length == 0) return Maybe<ArrayResult>.None;
+
+        var result = this.array
+            .Select((value, index) => new { Value = value, Index = index })
+            .Aggregate((a, b) =>
+            {
+                return comparer(a.Value, b.Value) > 0 ? a : b;
+            });
+
+        return new(new(result.Index, result.Value));
+    }
+
+    public Maybe<ArrayResult> Predecessor(Comparison<T> comparer, T value)
+    {
+        if (comparer is null) throw new ArgumentNullException(nameof(comparer));
+
+        var result = Maybe<ArrayResult>.None;
+
+        return this.array
+            .Select((value, index) => new { Value = value, Index = index })
+            .Aggregate(result, (acc, x) =>
+            {
+                /* if (acc.HasValue) Console.WriteLine(acc.Value.Index); */
+
+                if (comparer(x.Value, value) < 0)
+                {
+                    if (!acc.HasValue || comparer(acc.Value.Item, x.Value) < 0)
+                    {
+                        return new(new(x.Index, x.Value));
+                    }
+                }
+
+                return acc;
+            });
+    }
+
+    public readonly record struct ArrayResult(int Index, T Item);
+
     /* ResultCode Array_Predecessor(const Array*, const void*, void**); */
     /* ResultCode Array_Rank(const Array*, const void*, size_t*); */
 }
