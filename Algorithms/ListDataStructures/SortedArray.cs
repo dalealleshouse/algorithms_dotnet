@@ -51,18 +51,9 @@ public class SortedArray<T> : Array<T>
             var mid = (start + end) / 2;
             var compResult = this.comparer(this.array[mid], value);
 
-            if (compResult == 0)
-            {
-                return new(new(mid, this.array[mid]));
-            }
-            else if (compResult > 0)
-            {
-                end = mid - 1;
-            }
-            else
-            {
-                start = mid + 1;
-            }
+            if (compResult == 0) return new(new(mid, this.array[mid]));
+            else if (compResult > 0) end = mid - 1;
+            else start = mid + 1;
         }
 
         return Maybe<ArrayResult>.None;
@@ -89,6 +80,24 @@ public class SortedArray<T> : Array<T>
 
     public override Maybe<int> Rank(T value)
     {
-        throw new NotImplementedException();
+        if (value == null) throw new System.ArgumentNullException();
+
+        var mid = 0;
+        var start = 0;
+        var end = this.Length - 1;
+
+        if (this.comparer(this.array[end], value) < 0) return new(this.Length);
+
+        while (start <= end)
+        {
+            mid = (start + end) / 2;
+            var compResult = this.comparer(this.array[mid], value);
+
+            if (compResult == 0) return new(mid);
+            else if (compResult > 0) end = mid - 1;
+            else start = mid + 1;
+        }
+
+        return new(mid);
     }
 }
