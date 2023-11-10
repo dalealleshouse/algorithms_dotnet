@@ -1,22 +1,36 @@
-#nullable enable
-
 namespace Algorithms.ListDataStructures;
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
-public class Array<T>
+[SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1401:FieldsMustBePrivate",
+        Justification = "A protected field is required for the derived class.")]
+public abstract class Array<T>
+    where T : notnull, IComparable<T>
 {
-    private T[] array;
+    protected readonly Comparison<T> comparer;
+    protected T[] array;
 
-    public Array(T[] array)
+    public Array(T[] array, Comparison<T>? comparer = null)
     {
-        this.array = array;
+        this.array = array ?? throw new ArgumentNullException(nameof(array));
+        this.comparer = comparer ?? Comparer<T>.Default.Compare;
     }
 
-    public Array()
+    public Array(Comparison<T>? comparer = null)
+        : this(new T[0], comparer)
     {
-        this.array = new T[0];
+    }
+
+    public int Length
+    {
+        get
+        {
+            return this.array.Length;
+        }
     }
 
     public T this[int index]
@@ -27,47 +41,6 @@ public class Array<T>
         }
     }
 
-    public static implicit operator Array<T>(T[] arr)
-    {
-        return new Array<T>(arr);
-    }
-
-    public static implicit operator T[](Array<T> arr)
-    {
-        return arr.array;
-    }
-
-    public void InsertAtHead(T item)
-    {
-        if (item == null) throw new System.ArgumentNullException();
-
-        T[] newArray = new T[this.array.Length + 1];
-        newArray[0] = item;
-        this.array.CopyTo(newArray, 1);
-        this.array = newArray;
-    }
-
-    public void InsertAtTail(T item)
-    {
-        if (item == null) throw new System.ArgumentNullException();
-
-        T[] newArray = new T[this.array.Length + 1];
-        newArray[newArray.Length - 1] = item;
-        this.array.CopyTo(newArray, 0);
-        this.array = newArray;
-    }
-
-    public Maybe<ArrayResult> Search(Predicate<T> predicate)
-    {
-        if (predicate == null) throw new System.ArgumentNullException();
-
-        var index = this.array.TakeWhile(x => !predicate(x)).Count();
-
-        return (index == this.array.Length) ?
-            Maybe<ArrayResult>.None :
-            new(new(index, this.array[index]));
-    }
-
     public void Enumerate(Action<T> action)
     {
         if (action == null) throw new System.ArgumentNullException();
@@ -75,58 +48,13 @@ public class Array<T>
         Array.ForEach(this.array, action);
     }
 
-    public Maybe<ArrayResult> Max(Comparison<T> comparer)
-    {
-        if (comparer is null) throw new ArgumentNullException(nameof(comparer));
+    public abstract Maybe<ArrayResult> Search(T value);
 
-        if (this.array.Length == 0) return Maybe<ArrayResult>.None;
+    public abstract Maybe<ArrayResult> Max();
 
-        var result = this.array
-            .Select((value, index) => new { Value = value, Index = index })
-            .Aggregate((a, b) =>
-            {
-                return comparer(a.Value, b.Value) > 0 ? a : b;
-            });
+    public abstract Maybe<ArrayResult> Predecessor(T value);
 
-        return new(new(result.Index, result.Value));
-    }
-
-    public Maybe<ArrayResult> Predecessor(T value, Comparison<T> comparer)
-    {
-        if (comparer is null) throw new ArgumentNullException(nameof(comparer));
-        if (value is null) throw new ArgumentNullException(nameof(value));
-
-        var result = Maybe<ArrayResult>.None;
-
-        return this.array
-            .Select((value, index) => new { Value = value, Index = index })
-            .Aggregate(result, (acc, x) =>
-            {
-                if (comparer(x.Value, value) < 0)
-                {
-                    if (!acc.HasValue || comparer(x.Value, acc.Value.Item) > 0)
-                    {
-                        return new(new(x.Index, x.Value));
-                    }
-                }
-
-                return acc;
-            });
-    }
-
-    public Maybe<int> Rank(T value, Comparison<T> comparer)
-    {
-        if (comparer is null) throw new ArgumentNullException(nameof(comparer));
-        if (value is null) throw new ArgumentNullException(nameof(value));
-
-        var result = new Maybe<int>(0);
-
-        return this.array
-            .Aggregate(result, (acc, x) =>
-            {
-                return (comparer(x, value) < 0) ? new(acc.Value + 1) : acc;
-            });
-    }
+    public abstract Maybe<int> Rank(T value);
 
     public readonly record struct ArrayResult(int Index, T Item);
 }

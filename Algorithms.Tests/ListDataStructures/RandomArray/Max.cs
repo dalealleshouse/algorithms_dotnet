@@ -1,6 +1,5 @@
-namespace Algorithms.Tests.ListDataStructures.Array;
+namespace Algorithms.Tests.ListDataStructures.RandomArray;
 
-using System;
 using Algorithms.ListDataStructures;
 using Xunit;
 
@@ -12,7 +11,7 @@ public class Max
         const int max = 10;
         var sut = SutFactory.IntArray(max);
 
-        var result = sut.Max((x, y) => x.CompareTo(y));
+        var result = sut.Max();
         Assert.True(result.HasValue);
         Assert.Equal(max, result.Value.Index);
         Assert.Equal(max, result.Value.Item);
@@ -21,10 +20,9 @@ public class Max
     [Fact]
     public void FindMinBasedOnComparer()
     {
-        const int max = 10;
-        var sut = SutFactory.IntArray(max);
+        var sut = SutFactory.IntArray(10, (x, y) => y.CompareTo(x));
 
-        var result = sut.Max((x, y) => y.CompareTo(x));
+        var result = sut.Max();
         Assert.True(result.HasValue);
         Assert.Equal(0, result.Value.Index);
         Assert.Equal(0, result.Value.Item);
@@ -33,15 +31,8 @@ public class Max
     [Fact]
     public void ReturnNotFoundForEmptyArray()
     {
-        var sut = new Array<int>();
-        var result = sut.Max((x, y) => x.CompareTo(y));
+        var sut = new RandomArray<int>();
+        var result = sut.Max();
         Assert.False(result.HasValue);
-    }
-
-    [Fact]
-    public void ThrowsNullReferanceExeption()
-    {
-        var sut = SutFactory.IntArray(10);
-        Assert.Throws<ArgumentNullException>(() => sut.Max(null));
     }
 }

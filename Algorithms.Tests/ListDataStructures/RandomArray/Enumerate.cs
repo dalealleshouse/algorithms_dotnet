@@ -1,4 +1,4 @@
-namespace Algorithms.Tests.ListDataStructures.Array;
+namespace Algorithms.Tests.ListDataStructures.RandomArray;
 
 using System;
 using Algorithms.ListDataStructures;
@@ -9,10 +9,7 @@ public class Enumerate
     [Fact]
     public void RejectNull()
     {
-        var sut = new Array<object>();
-        Assert.Throws<ArgumentNullException>(() => sut.Enumerate(null));
-
-        var sut2 = new Array<int>();
+        var sut = new RandomArray<ComparableStruct>();
         Assert.Throws<ArgumentNullException>(() => sut.Enumerate(null));
     }
 
@@ -32,7 +29,7 @@ public class Enumerate
     [Fact]
     public void DoesNotFailOnEmptyArray()
     {
-        var sut = new Array<int>();
+        var sut = new RandomArray<int>();
 
         sut.Enumerate(x => Assert.Fail("Should not be called"));
     }
