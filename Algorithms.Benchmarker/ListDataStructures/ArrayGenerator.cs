@@ -6,7 +6,7 @@ using Algorithms.ListDataStructures;
 
 public static class ArrayGenerator
 {
-    public static Array<int> Random(int size)
+    public static RandomArray<int> Random(int size)
     {
         var rand = new Random();
 
@@ -15,7 +15,7 @@ public static class ArrayGenerator
             .ToArray();
     }
 
-    public static Array<int> Ordered(int size)
+    public static SortedArray<int> Ordered(int size)
     {
         var rand = new Random();
 
