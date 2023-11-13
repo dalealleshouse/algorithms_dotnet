@@ -36,7 +36,6 @@ public class Predecessor
     {
         var expected = new Array<int>.ArrayResult(61, 139);
         var sut = SutFactory.SortedIntArray(200, (x, y) => y.CompareTo(x));
-        Console.WriteLine(sut[139]);
         var result = sut.Predecessor(138);
 
         Assert.Equal(expected, result.Value);

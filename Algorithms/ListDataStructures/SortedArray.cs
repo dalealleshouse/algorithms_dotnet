@@ -81,6 +81,7 @@ public class SortedArray<T> : Array<T>
     public override Maybe<int> Rank(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
+        if (this.Length == 0) return new(0);
 
         var mid = 0;
         var start = 0;
