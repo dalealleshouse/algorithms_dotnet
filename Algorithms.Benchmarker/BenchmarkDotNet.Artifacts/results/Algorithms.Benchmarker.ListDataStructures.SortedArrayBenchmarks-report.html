@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Algorithms.Benchmarker.ListDataStructures.SortedArrayBenchmarks-20231113-121217</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.10, Pengwin WSL
+Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 7.0.306
+  [Host]     : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+  Job-SLGRKP : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>IterationCount=3  
+</code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>N</th><th>Mean    </th><th>Error   </th><th>StdDev </th>
+</tr>
+</thead><tbody><tr><td>Insert</td><td>100</td><td>84,072.4 ns</td><td>54,288.5 ns</td><td>2,975.73 ns</td>
+</tr><tr><td>Search</td><td>100</td><td>3,380.6 ns</td><td>5,432.5 ns</td><td>297.77 ns</td>
+</tr><tr><td>Max</td><td>100</td><td>773.9 ns</td><td>631.0 ns</td><td>34.59 ns</td>
+</tr><tr><td>Predecessor</td><td>100</td><td>5,470.5 ns</td><td>3,418.0 ns</td><td>187.35 ns</td>
+</tr><tr><td>Rank</td><td>100</td><td>1,223.0 ns</td><td>883.5 ns</td><td>48.43 ns</td>
+</tr><tr><td>Insert</td><td>1000</td><td>8,243,654.7 ns</td><td>2,991,057.3 ns</td><td>163,949.94 ns</td>
+</tr><tr><td>Search</td><td>1000</td><td>46,537.3 ns</td><td>103,285.2 ns</td><td>5,661.41 ns</td>
+</tr><tr><td>Max</td><td>1000</td><td>8,146.2 ns</td><td>11,457.3 ns</td><td>628.01 ns</td>
+</tr><tr><td>Predecessor</td><td>1000</td><td>73,939.2 ns</td><td>47,923.9 ns</td><td>2,626.87 ns</td>
+</tr><tr><td>Rank</td><td>1000</td><td>12,225.9 ns</td><td>10,426.9 ns</td><td>571.53 ns</td>
+</tr></tbody></table>
+</body>
+</html>

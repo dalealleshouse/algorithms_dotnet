@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Algorithms.Benchmarker.ListDataStructures.RandomArrayBenchmarks-20231113-121019</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.10, Pengwin WSL
+Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 7.0.306
+  [Host]     : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+  Job-SLGRKP : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>IterationCount=3  
+</code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>N</th><th>Mean   </th><th>Error   </th><th>StdDev </th>
+</tr>
+</thead><tbody><tr><td>InsertAtHead</td><td>100</td><td>4.343 &mu;s</td><td>6.8432 &mu;s</td><td>0.3751 &mu;s</td>
+</tr><tr><td>InsertAtTail</td><td>100</td><td>4.106 &mu;s</td><td>0.9803 &mu;s</td><td>0.0537 &mu;s</td>
+</tr><tr><td>Search</td><td>100</td><td>173.516 &mu;s</td><td>174.7729 &mu;s</td><td>9.5799 &mu;s</td>
+</tr><tr><td>Max</td><td>100</td><td>334.814 &mu;s</td><td>257.2868 &mu;s</td><td>14.1028 &mu;s</td>
+</tr><tr><td>Predecessor</td><td>100</td><td>405.117 &mu;s</td><td>410.2119 &mu;s</td><td>22.4851 &mu;s</td>
+</tr><tr><td>Rank</td><td>100</td><td>144.487 &mu;s</td><td>547.9261 &mu;s</td><td>30.0337 &mu;s</td>
+</tr><tr><td>InsertAtHead</td><td>1000</td><td>185.712 &mu;s</td><td>416.0343 &mu;s</td><td>22.8042 &mu;s</td>
+</tr><tr><td>InsertAtTail</td><td>1000</td><td>271.797 &mu;s</td><td>780.8676 &mu;s</td><td>42.8020 &mu;s</td>
+</tr><tr><td>Search</td><td>1000</td><td>23,282.012 &mu;s</td><td>88,807.5220 &mu;s</td><td>4,867.8399 &mu;s</td>
+</tr><tr><td>Max</td><td>1000</td><td>32,717.572 &mu;s</td><td>37,342.3019 &mu;s</td><td>2,046.8576 &mu;s</td>
+</tr><tr><td>Predecessor</td><td>1000</td><td>40,814.786 &mu;s</td><td>81,557.4463 &mu;s</td><td>4,470.4388 &mu;s</td>
+</tr><tr><td>Rank</td><td>1000</td><td>14,466.105 &mu;s</td><td>21,825.1924 &mu;s</td><td>1,196.3124 &mu;s</td>
+</tr></tbody></table>
+</body>
+</html>
