@@ -11,24 +11,12 @@ public class RandomArrayBenchmarks : Benchmarks
     public void Setup() => this.array = ArrayGenerator.Random(this.N);
 
     [Benchmark]
-    public Array<int> InsertAtHead()
+    public Array<int> Insert()
     {
         var arr = new RandomArray<int>();
         for (int i = 0; i < this.N; i++)
         {
             arr.InsertAtHead(i);
-        }
-
-        return arr;
-    }
-
-    [Benchmark]
-    public Array<int> InsertAtTail()
-    {
-        var arr = new RandomArray<int>();
-        for (int i = 0; i < this.N; i++)
-        {
-            arr.InsertAtTail(i);
         }
 
         return arr;

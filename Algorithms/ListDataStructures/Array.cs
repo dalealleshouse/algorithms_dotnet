@@ -48,6 +48,8 @@ public abstract class Array<T>
         Array.ForEach(this.array, action);
     }
 
+    public abstract void Insert(T item);
+
     public abstract Maybe<ArrayResult> Search(T value);
 
     public abstract Maybe<ArrayResult> Max();

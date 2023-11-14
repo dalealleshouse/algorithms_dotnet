@@ -57,6 +57,11 @@ public class Constructor
             return new(new(result.Index, result.Value));
         }
 
+        public override void Insert(ComparableStruct item)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Maybe<ArrayResult> Predecessor(ComparableStruct value)
         {
             throw new NotImplementedException();

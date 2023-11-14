@@ -22,6 +22,11 @@ public class RandomArray<T> : Array<T>
 
     public static implicit operator RandomArray<T>(T[] array) => new(array);
 
+    public override void Insert(T item)
+    {
+        this.InsertAtHead(item);
+    }
+
     public void InsertAtHead(T item)
     {
         if (item == null) throw new System.ArgumentNullException();

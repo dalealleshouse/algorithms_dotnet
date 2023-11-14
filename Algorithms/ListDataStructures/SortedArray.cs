@@ -23,7 +23,7 @@ public class SortedArray<T> : Array<T>
 
     public static implicit operator SortedArray<T>(T[] array) => new(array);
 
-    public void Insert(T item)
+    public override void Insert(T item)
     {
         if (item == null) throw new System.ArgumentNullException();
 

@@ -13,6 +13,6 @@ public abstract class Benchmarks
 {
     protected readonly Random random = new Random();
 
-    [Params(100, 1_000)]
+    [Params(100, 1_000, 10_000)]
     public int N { get; set; }
 }
