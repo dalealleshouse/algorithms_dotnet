@@ -15,8 +15,16 @@ public struct Maybe<T>
 
     private Maybe(T? value, bool hasValue)
     {
-        this.value = value;
-        this.hasValue = hasValue;
+        if (value == null)
+        {
+            this.value = default;
+            this.hasValue = false;
+        }
+        else
+        {
+            this.value = value;
+            this.hasValue = hasValue;
+        }
     }
 
     public static Maybe<T> None => new Maybe<T>(default, false);

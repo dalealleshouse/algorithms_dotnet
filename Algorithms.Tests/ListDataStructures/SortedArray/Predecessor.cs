@@ -24,9 +24,9 @@ public class Predecessor
     [Fact]
     public void ReturnPredecessor()
     {
-        var expected = new Array<int>.ArrayResult(137, 137);
+        var expected = new ArrayResult<int>(137, 137);
         var sut = SutFactory.SortedIntArray(200);
-        var result = sut.Predecessor(138);
+        var result = sut.ArrayPredecessor(138);
 
         Assert.Equal(expected, result.Value);
     }
@@ -34,9 +34,9 @@ public class Predecessor
     [Fact]
     public void ReturnPredecessorWithReverseCompare()
     {
-        var expected = new Array<int>.ArrayResult(61, 139);
+        var expected = new ArrayResult<int>(61, 139);
         var sut = SutFactory.SortedIntArray(200, (x, y) => y.CompareTo(x));
-        var result = sut.Predecessor(138);
+        var result = sut.ArrayPredecessor(138);
 
         Assert.Equal(expected, result.Value);
     }

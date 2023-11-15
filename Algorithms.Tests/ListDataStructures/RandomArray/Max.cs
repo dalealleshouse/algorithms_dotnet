@@ -11,7 +11,7 @@ public class Max
         const int max = 10;
         var sut = SutFactory.IntArray(max);
 
-        var result = sut.Max();
+        var result = sut.ArrayMax();
         Assert.True(result.HasValue);
         Assert.Equal(max, result.Value.Index);
         Assert.Equal(max, result.Value.Item);
@@ -22,7 +22,7 @@ public class Max
     {
         var sut = SutFactory.IntArray(10, (x, y) => y.CompareTo(x));
 
-        var result = sut.Max();
+        var result = sut.ArrayMax();
         Assert.True(result.HasValue);
         Assert.Equal(0, result.Value.Index);
         Assert.Equal(0, result.Value.Item);

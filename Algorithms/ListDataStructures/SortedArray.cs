@@ -39,7 +39,7 @@ public class SortedArray<T> : Array<T>
         this.array = newArray;
     }
 
-    public override Maybe<ArrayResult> Search(T value)
+    public override Maybe<ArrayResult<T>> ArraySearch(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
 
@@ -56,26 +56,26 @@ public class SortedArray<T> : Array<T>
             else start = mid + 1;
         }
 
-        return Maybe<ArrayResult>.None;
+        return Maybe<ArrayResult<T>>.None;
     }
 
-    public override Maybe<ArrayResult> Max()
+    public override Maybe<ArrayResult<T>> ArrayMax()
     {
         var maxIndex = this.Length - 1;
 
         return (maxIndex < 0) ?
-            Maybe<ArrayResult>.None :
+            Maybe<ArrayResult<T>>.None :
             new(new(maxIndex, this.array[maxIndex]));
     }
 
-    public override Maybe<ArrayResult> Predecessor(T value)
+    public override Maybe<ArrayResult<T>> ArrayPredecessor(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
 
-        var searchResult = this.Search(value);
+        var searchResult = this.ArraySearch(value);
         return searchResult.HasValue ?
             new(new(searchResult.Value.Index - 1, this.array[searchResult.Value.Index - 1])) :
-            Maybe<ArrayResult>.None;
+            Maybe<ArrayResult<T>>.None;
     }
 
     public override Maybe<int> Rank(T value)

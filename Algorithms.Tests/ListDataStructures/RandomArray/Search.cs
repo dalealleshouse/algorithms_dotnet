@@ -20,24 +20,24 @@ public class Search
     public void ReturnFirstItemThatMatchesPredicate()
     {
         var expected = 5;
-        var exptectedResult = new Array<int>.ArrayResult(expected, expected);
+        var expectedResult = new ArrayResult<int>(expected, expected);
 
         var sut = SutFactory.IntArray(10);
         var result = sut.Search(x => x == expected);
 
-        Assert.Equal(exptectedResult, result.Value);
+        Assert.Equal(expectedResult, result.Value);
     }
 
     [Fact]
     public void ReturnFirstEqualItem()
     {
         var expected = 5;
-        var exptectedResult = new Array<int>.ArrayResult(expected, expected);
+        var expectedResult = new ArrayResult<int>(expected, expected);
 
         var sut = SutFactory.IntArray(10);
-        var result = sut.Search(5);
+        var result = sut.ArraySearch(5);
 
-        Assert.Equal(exptectedResult, result.Value);
+        Assert.Equal(expectedResult, result.Value);
     }
 
     [Fact]

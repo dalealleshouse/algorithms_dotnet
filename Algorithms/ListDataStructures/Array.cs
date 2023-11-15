@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
         "StyleCop.CSharp.MaintainabilityRules",
         "SA1401:FieldsMustBePrivate",
         Justification = "A protected field is required for the derived class.")]
-public abstract class Array<T>
+public abstract class Array<T> : IList<T>
     where T : notnull, IComparable<T>
 {
     protected readonly Comparison<T> comparer;
@@ -41,6 +41,8 @@ public abstract class Array<T>
         }
     }
 
+    public abstract void Insert(T item);
+
     public void Enumerate(Action<T> action)
     {
         if (action == null) throw new System.ArgumentNullException();
@@ -48,15 +50,32 @@ public abstract class Array<T>
         Array.ForEach(this.array, action);
     }
 
-    public abstract void Insert(T item);
-
-    public abstract Maybe<ArrayResult> Search(T value);
-
-    public abstract Maybe<ArrayResult> Max();
-
-    public abstract Maybe<ArrayResult> Predecessor(T value);
-
     public abstract Maybe<int> Rank(T value);
 
-    public readonly record struct ArrayResult(int Index, T Item);
+    public Maybe<T> Max()
+    {
+        return this.ExtractArrayResult(this.ArrayMax());
+    }
+
+    public abstract Maybe<ArrayResult<T>> ArrayMax();
+
+    public Maybe<T> Predecessor(T value)
+    {
+        if (value == null) throw new System.ArgumentNullException();
+        return this.ExtractArrayResult(this.ArrayPredecessor(value));
+    }
+
+    public abstract Maybe<ArrayResult<T>> ArrayPredecessor(T value);
+
+    public Maybe<T> Search(T value)
+    {
+        if (value == null) throw new System.ArgumentNullException();
+        return this.ExtractArrayResult(this.ArraySearch(value));
+    }
+
+    public abstract Maybe<ArrayResult<T>> ArraySearch(T value);
+
+    private Maybe<T> ExtractArrayResult(Maybe<ArrayResult<T>> result) => result.HasValue ?
+            new(result.Value.Item) :
+            Maybe<T>.None;
 }

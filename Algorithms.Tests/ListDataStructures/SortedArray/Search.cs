@@ -17,12 +17,12 @@ public class Search
     public void ReturnFirstEqualItem()
     {
         var expected = 5;
-        var exptectedResult = new Array<int>.ArrayResult(expected, expected);
+        var expectedResult = new ArrayResult<int>(expected, expected);
 
         var sut = SutFactory.SortedIntArray(10);
-        var result = sut.Search(expected);
+        var result = sut.ArraySearch(expected);
 
-        Assert.Equal(exptectedResult, result.Value);
+        Assert.Equal(expectedResult, result.Value);
     }
 
     [Fact]
@@ -39,29 +39,29 @@ public class Search
     {
         var sut = new SortedArray<char>(
                 new[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' });
-        var exptectedResult = new Array<char>.ArrayResult(4, 'e');
-        var result = sut.Search('e');
+        var expectedResult = new ArrayResult<char>(4, 'e');
+        var result = sut.ArraySearch('e');
 
-        Assert.Equal(exptectedResult, result.Value);
+        Assert.Equal(expectedResult, result.Value);
     }
 
     [Fact]
     public void FindFirstItem()
     {
-        var exptectedResult = new Array<int>.ArrayResult(0, 0);
+        var expectedResult = new ArrayResult<int>(0, 0);
         var sut = SutFactory.SortedIntArray(10);
-        var result = sut.Search(0);
+        var result = sut.ArraySearch(0);
 
-        Assert.Equal(exptectedResult, result.Value);
+        Assert.Equal(expectedResult, result.Value);
     }
 
     [Fact]
     public void FindLastItem()
     {
-        var exptectedResult = new Array<int>.ArrayResult(10, 10);
+        var expectedResult = new ArrayResult<int>(10, 10);
         var sut = SutFactory.SortedIntArray(10);
-        var result = sut.Search(10);
+        var result = sut.ArraySearch(10);
 
-        Assert.Equal(exptectedResult, result.Value);
+        Assert.Equal(expectedResult, result.Value);
     }
 }
