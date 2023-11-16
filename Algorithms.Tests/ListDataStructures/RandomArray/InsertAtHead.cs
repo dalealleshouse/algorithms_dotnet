@@ -17,7 +17,7 @@ public class InsertAtHead
     public void InsertValueAtHeadOfArray()
     {
         const int max = 20;
-        var sut = SutFactory.IntArray(max);
+        var sut = SutFactory.RandomArray(max);
         sut.InsertAtHead(138);
 
         Assert.Equal(138, sut[0]);

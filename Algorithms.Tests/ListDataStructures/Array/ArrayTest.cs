@@ -46,7 +46,7 @@ public class ArrayTest<T> : Array<T>
         return new(new(1, default));
     }
 
-    public override Maybe<int> Rank(T value)
+    public override int Rank(T value)
     {
         throw new NotImplementedException();
     }

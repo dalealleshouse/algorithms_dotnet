@@ -11,7 +11,7 @@ public interface IList<T>
 
     void Enumerate(Action<T> action);
 
-    Maybe<int> Rank(T value);
+    int Rank(T value);
 
     Maybe<T> Max();
 

@@ -50,7 +50,7 @@ public abstract class Array<T> : IList<T>
         Array.ForEach(this.array, action);
     }
 
-    public abstract Maybe<int> Rank(T value);
+    public abstract int Rank(T value);
 
     public Maybe<T> Max()
     {

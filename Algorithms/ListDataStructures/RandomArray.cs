@@ -100,16 +100,16 @@ public class RandomArray<T> : Array<T>
             });
     }
 
-    public override Maybe<int> Rank(T value)
+    public override int Rank(T value)
     {
         if (value is null) throw new ArgumentNullException(nameof(value));
 
-        var result = new Maybe<int>(0);
+        var result = 0;
 
         return this.array
             .Aggregate(result, (acc, x) =>
             {
-                return (this.comparer(x, value) < 0) ? new(acc.Value + 1) : acc;
+                return (this.comparer(x, value) < 0) ? acc + 1 : acc;
             });
     }
 }

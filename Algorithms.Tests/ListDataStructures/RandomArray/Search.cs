@@ -22,7 +22,7 @@ public class Search
         var expected = 5;
         var expectedResult = new ArrayResult<int>(expected, expected);
 
-        var sut = SutFactory.IntArray(10);
+        var sut = SutFactory.RandomArray(10);
         var result = sut.Search(x => x == expected);
 
         Assert.Equal(expectedResult, result.Value);
@@ -34,7 +34,7 @@ public class Search
         var expected = 5;
         var expectedResult = new ArrayResult<int>(expected, expected);
 
-        var sut = SutFactory.IntArray(10);
+        var sut = SutFactory.RandomArray(10);
         var result = sut.ArraySearch(5);
 
         Assert.Equal(expectedResult, result.Value);
@@ -43,7 +43,7 @@ public class Search
     [Fact]
     public void ReturnFalseSearchResultWhenNoPredicateMatch()
     {
-        var sut = SutFactory.IntArray(10);
+        var sut = SutFactory.RandomArray(10);
         var result = sut.Search(x => x == 20);
 
         Assert.False(result.HasValue);

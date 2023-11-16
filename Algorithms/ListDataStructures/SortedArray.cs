@@ -12,6 +12,7 @@ public class SortedArray<T> : Array<T>
     public SortedArray(T[] array, Comparison<T>? comparer = null)
         : base(array, comparer)
     {
+        Array.Sort(this.array, this.comparer);
     }
 
     public SortedArray(Comparison<T>? comparer = null)
@@ -71,34 +72,62 @@ public class SortedArray<T> : Array<T>
     public override Maybe<ArrayResult<T>> ArrayPredecessor(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
+        if (this.Length == 0) return Maybe<ArrayResult<T>>.None;
 
-        var searchResult = this.ArraySearch(value);
-        return searchResult.HasValue ?
-            new(new(searchResult.Value.Index - 1, this.array[searchResult.Value.Index - 1])) :
-            Maybe<ArrayResult<T>>.None;
-    }
-
-    public override Maybe<int> Rank(T value)
-    {
-        if (value == null) throw new System.ArgumentNullException();
-        if (this.Length == 0) return new(0);
-
-        var mid = 0;
-        var start = 0;
+        int mid, start = 0;
         var end = this.Length - 1;
+        var candiate = Maybe<int>.None;
 
-        if (this.comparer(this.array[end], value) < 0) return new(this.Length);
+        if (this.comparer(this.array[end], value) < 0) return new(new(end, this.array[end]));
 
         while (start <= end)
         {
             mid = (start + end) / 2;
             var compResult = this.comparer(this.array[mid], value);
 
-            if (compResult == 0) return new(mid);
+            if (compResult == 0)
+            {
+                if (mid == 0) return Maybe<ArrayResult<T>>.None;
+
+                return new(new(mid - 1, this.array[mid - 1]));
+            }
+            else if (compResult > 0)
+            {
+                end = mid - 1;
+            }
+            else
+            {
+                candiate = new(mid);
+                start = mid + 1;
+            }
+        }
+
+        return candiate.HasValue ?
+            new(new(candiate.Value, this.array[candiate.Value])) :
+            Maybe<ArrayResult<T>>.None;
+    }
+
+    public override int Rank(T value)
+    {
+        if (value == null) throw new System.ArgumentNullException();
+        if (this.Length == 0) return 0;
+
+        var mid = 0;
+        var start = 0;
+        var end = this.Length - 1;
+
+        if (this.comparer(this.array[end], value) < 0) return this.Length;
+
+        while (start <= end)
+        {
+            mid = (start + end) / 2;
+            var compResult = this.comparer(this.array[mid], value);
+
+            if (compResult == 0) return mid;
             else if (compResult > 0) end = mid - 1;
             else start = mid + 1;
         }
 
-        return new(mid);
+        return mid;
     }
 }

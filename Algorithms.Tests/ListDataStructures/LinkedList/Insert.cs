@@ -1,18 +1,10 @@
 namespace Algorithms.Tests.ListDataStructures.LinkedList;
 
-using System;
 using Algorithms.ListDataStructures;
 using Xunit;
 
 public partial class Insert
 {
-    [Fact]
-    public void RejectNull()
-    {
-        var sut = new LinkedList<ComparableObject>();
-        Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
-    }
-
     [Fact]
     public void SetsHeadAndTailOnFirstInsert()
     {

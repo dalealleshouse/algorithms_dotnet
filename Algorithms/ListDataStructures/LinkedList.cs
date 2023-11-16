@@ -6,14 +6,12 @@ using System.Collections.Generic;
 public class LinkedList<T> : IList<T>
     where T : notnull, IComparable<T>
 {
-    private readonly T[] array;
     private readonly Comparison<T> comparer;
 
     public LinkedList(T[] array, Comparison<T>? comparer = null)
     {
-        this.array = array ?? throw new ArgumentNullException(nameof(array));
-
-        Array.ForEach(this.array, x => this.Insert(x));
+        if (array == null) throw new ArgumentNullException(nameof(array));
+        Array.ForEach(array, x => this.Insert(x));
 
         this.comparer = comparer ?? Comparer<T>.Default.Compare;
     }
@@ -77,17 +75,59 @@ public class LinkedList<T> : IList<T>
 
     public Maybe<T> Predecessor(T value)
     {
-        throw new NotImplementedException();
+        if (value == null) throw new ArgumentNullException(nameof(value));
+
+        var result = Maybe<T>.None;
+        var n = this.Head;
+        while (n.HasValue)
+        {
+            if (this.comparer(n.Value.Value, value) < 0)
+            {
+                if (!result.HasValue || this.comparer(result.Value, n.Value.Value) < 0)
+                {
+                    result = new(n.Value.Value);
+                }
+            }
+
+            n = n.Value.Next;
+        }
+
+        return result;
     }
 
-    public Maybe<int> Rank(T value)
+    public int Rank(T value)
     {
-        throw new NotImplementedException();
+        if (value == null) throw new ArgumentNullException(nameof(value));
+
+        var rank = 0;
+        var n = this.Head;
+        while (n.HasValue)
+        {
+            if (this.comparer(n.Value.Value, value) < 0) rank++;
+            n = n.Value.Next;
+        }
+
+        return rank;
     }
 
     public Maybe<T> Search(T value)
     {
-        throw new NotImplementedException();
+        if (value == null) throw new ArgumentNullException(nameof(value));
+        return this.Search(x => this.comparer(x, value) == 0);
+    }
+
+    public Maybe<T> Search(Predicate<T> predicate)
+    {
+        if (predicate == null) throw new System.ArgumentNullException();
+
+        var n = this.Head;
+        while (n.HasValue)
+        {
+            if (predicate(n.Value.Value)) return new(n.Value.Value);
+            n = n.Value.Next;
+        }
+
+        return Maybe<T>.None;
     }
 
     public class Node
@@ -115,7 +155,7 @@ public class LinkedList<T> : IList<T>
 
         public T Value { get; }
 
-        public Maybe<Node> Next { get; internal set; }
+        public Maybe<Node> Next { get; private set; }
 
         public Maybe<Node> Previous { get; internal set; }
     }
