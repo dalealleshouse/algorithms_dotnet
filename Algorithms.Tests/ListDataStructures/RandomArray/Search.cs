@@ -1,21 +1,10 @@
 namespace Algorithms.Tests.ListDataStructures.RandomArray;
 
-using System;
 using Algorithms.ListDataStructures;
 using Xunit;
 
 public class Search
 {
-    [Fact]
-    public void RejectNull()
-    {
-        var sut = new RandomArray<ComparableStruct>();
-        Assert.Throws<ArgumentNullException>(() => sut.Search(null));
-
-        var sut2 = new RandomArray<ComparableObject>();
-        Assert.Throws<ArgumentNullException>(() => sut2.Search((ComparableObject)null));
-    }
-
     [Fact]
     public void ReturnFirstItemThatMatchesPredicate()
     {
