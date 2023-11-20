@@ -1,7 +1,6 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
 using System;
-using System.Linq;
 using Xunit;
 
 public class Rank : ListTests

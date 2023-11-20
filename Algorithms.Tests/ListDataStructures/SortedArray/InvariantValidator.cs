@@ -16,6 +16,11 @@ public class InvariantValidator<T> : IInvariantValidator<T>
 
     public void Validate()
     {
+        this.ValidateSorting();
+    }
+
+    private void ValidateSorting()
+    {
         if (this.sut.Length == 0) return;
 
         var previous = this.sut[0];
