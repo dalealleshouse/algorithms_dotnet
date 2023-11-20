@@ -4,84 +4,66 @@ using System;
 using System.Linq;
 using Xunit;
 
-public class Predecessor
+public class Predecessor : ListTests
 {
     private readonly int[] data = new int[] { 1, 2, 137, 4, 5, 6, 7, 8, 139 };
 
     [Fact]
     public void ThrowsNullReferanceExeption()
     {
-        SutFactory
-            .AllLists<ComparableObject>()
-            .Select(sut =>
+        this.RunTestOnAllLists<ComparableObject>(sut =>
         {
             Assert.Throws<ArgumentNullException>(() => sut.Predecessor(null));
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        });
     }
 
     [Fact]
     public void ReturnNotFoundForEmpty()
     {
-        SutFactory
-            .AllLists<ComparableStruct>()
-            .Select(sut =>
+        this.RunTestOnAllLists<ComparableObject>(sut =>
         {
             var result = sut.Predecessor(new(1));
             Assert.False(result.HasValue);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        });
     }
 
     [Fact]
     public void ReturnPredecessor()
     {
         var expected = 137;
-        SutFactory
-            .AllLists<int>(this.data)
-            .Select(sut =>
-        {
-            var result = sut.Predecessor(138);
-            Assert.Equal(expected, result.Value);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<int>(
+            sut =>
+            {
+                var result = sut.Predecessor(138);
+                Assert.Equal(expected, result.Value);
+            },
+            this.data);
     }
 
     [Fact]
     public void ReturnPredecessorWithReverseCompare()
     {
         var expected = 139;
-        SutFactory
-           .AllLists<int>(this.data, (x, y) => y.CompareTo(x))
-           .Select(sut =>
-       {
-           var result = sut.Predecessor(138);
-           Assert.Equal(expected, result.Value);
-           return sut;
-       })
-       .Select(InvariantValidatorFactory.CreateValidator)
-       .Validate();
+        this.RunTestOnAllLists<int>(
+            sut =>
+            {
+                var result = sut.Predecessor(138);
+                Assert.Equal(expected, result.Value);
+            },
+            this.data,
+            (x, y) => y.CompareTo(x));
     }
 
     [Fact]
     public void ReturnNotFoundWhenValueLowerThanItem()
     {
-        SutFactory
-            .AllLists<int>(this.data)
-            .Select(sut =>
-        {
-            var result = sut.Predecessor(-1);
-            Assert.False(result.HasValue);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<int>(
+            sut =>
+            {
+                var result = sut.Predecessor(-1);
+                Assert.False(result.HasValue);
+            },
+            this.data);
     }
 
     [Theory]
@@ -105,15 +87,12 @@ public class Predecessor
             Maybe<char>.None :
             new(expected);
 
-        SutFactory
-            .AllLists<char>(new[] { 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l' })
-            .Select(sut =>
-        {
-            var result = sut.Predecessor(value);
-            Assert.Equal(expectedResult, result);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<char>(
+            sut =>
+            {
+                var result = sut.Predecessor(value);
+                Assert.Equal(expectedResult, result);
+            },
+            new[] { 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l' });
     }
 }

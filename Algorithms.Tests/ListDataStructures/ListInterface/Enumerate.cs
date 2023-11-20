@@ -1,23 +1,17 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
 using System;
-using System.Linq;
 using Xunit;
 
-public class Enumerate
+public class Enumerate : ListTests
 {
     [Fact]
     public void RejectNull()
     {
-        SutFactory
-            .AllLists<ComparableStruct>()
-            .Select(sut =>
+        this.RunTestOnAllLists<ComparableStruct>(sut =>
         {
             Assert.Throws<ArgumentNullException>(() => sut.Enumerate(null));
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        });
     }
 
     [Fact]
@@ -25,34 +19,26 @@ public class Enumerate
     {
         const int expected = 10;
 
-        SutFactory
-            .AllLists<int>(SutFactory.BuildArray(expected - 1))
-            .Select(sut =>
-        {
-            var invokeCount = 0;
-            sut.Enumerate(x =>
+        this.RunTestOnAllLists<int>(
+            sut =>
             {
-                invokeCount++;
-            });
+                var invokeCount = 0;
+                sut.Enumerate(x =>
+                {
+                    invokeCount++;
+                });
 
-            Assert.Equal(expected, invokeCount);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+                Assert.Equal(expected, invokeCount);
+            },
+            SutFactory.BuildArray(expected - 1));
     }
 
     [Fact]
     public void DoesNotFailOnEmpty()
     {
-        SutFactory
-            .AllLists<int>()
-            .Select(sut =>
+        this.RunTestOnAllLists<int>(sut =>
         {
             sut.Enumerate(x => Assert.Fail("Should not be called"));
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        });
     }
 }

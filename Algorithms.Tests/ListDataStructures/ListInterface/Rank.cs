@@ -4,96 +4,77 @@ using System;
 using System.Linq;
 using Xunit;
 
-public class Rank
+public class Rank : ListTests
 {
     [Fact]
     public void ThrowsNullReferanceExeption()
     {
-        SutFactory
-            .AllLists<ComparableObject>()
-            .Select(sut =>
-        {
-            Assert.Throws<ArgumentNullException>(() => sut.Rank(null));
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<ComparableObject>(
+            sut =>
+            {
+                Assert.Throws<ArgumentNullException>(() => sut.Rank(null));
+            });
     }
 
     [Fact]
     public void ReturnZeroForEmptyList()
     {
-        SutFactory
-            .AllLists<ComparableObject>()
-            .Select(sut =>
-        {
-            var result = sut.Rank(new(1));
-            Assert.Equal(0, result);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<ComparableObject>(
+            sut =>
+            {
+                var result = sut.Rank(new(1));
+                Assert.Equal(0, result);
+            });
     }
 
     [Fact]
     public void ReturnRank()
     {
-        SutFactory
-            .AllLists<int>(SutFactory.BuildArray(200))
-            .Select(sut =>
-        {
-            var result = sut.Rank(138);
-            Assert.Equal(138, result);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<int>(
+            sut =>
+            {
+                var result = sut.Rank(138);
+                Assert.Equal(138, result);
+            },
+            SutFactory.BuildArray(200));
     }
 
     [Fact]
     public void ReturnRankWithRandom()
     {
-        SutFactory
-            .AllLists<char>(new[] { 'a', 'h', 'f', 'd', 'e', 'c', 'g', 'b' })
-            .Select(sut =>
-        {
-            var result = sut.Rank('b');
-            Assert.Equal(1, result);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<char>(
+            sut =>
+            {
+                var result = sut.Rank('b');
+                Assert.Equal(1, result);
+            },
+            new[] { 'a', 'h', 'f', 'd', 'e', 'c', 'g', 'b' });
     }
 
     [Fact]
     public void ReturnRankWithReverseCompare()
     {
-        SutFactory
-            .AllLists<int>(SutFactory.BuildArray(200), (x, y) => y.CompareTo(x))
-            .Select(sut =>
-        {
-            var result = sut.Rank(138);
-            Assert.Equal(200 - 138, result);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<int>(
+            sut =>
+            {
+                var result = sut.Rank(138);
+                Assert.Equal(200 - 138, result);
+            },
+            SutFactory.BuildArray(200),
+            (x, y) => y.CompareTo(x));
     }
 
     [Fact]
     public void ReturnArrayLengthPlusOneWhenItemHigherThanAll()
     {
         const int expected = 201;
-        SutFactory
-            .AllLists<int>(SutFactory.BuildArray(expected - 1))
-            .Select(sut =>
-        {
-            var result = sut.Rank(expected * 2);
-            Assert.Equal(expected, result);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<int>(
+            sut =>
+            {
+                var result = sut.Rank(expected * 2);
+                Assert.Equal(expected, result);
+            },
+            SutFactory.BuildArray(200));
     }
 
     [Theory]
@@ -112,15 +93,12 @@ public class Rank
     [InlineData('m', 10)]
     public void ReturnRankAtEveryPosition(char value, int expected)
     {
-        SutFactory
-            .AllLists<char>(new[] { 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l' })
-            .Select(sut =>
-        {
-            var result = sut.Rank(value);
-            Assert.Equal(expected, result);
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        this.RunTestOnAllLists<char>(
+            sut =>
+            {
+                var result = sut.Rank(value);
+                Assert.Equal(expected, result);
+            },
+            new[] { 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l' });
     }
 }

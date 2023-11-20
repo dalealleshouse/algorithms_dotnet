@@ -1,22 +1,16 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
 using System;
-using System.Linq;
 using Xunit;
 
-public class Insert
+public class Insert : ListTests
 {
     [Fact]
     public void ThrowForNullInput()
     {
-        SutFactory
-            .AllLists<ComparableObject>()
-            .Select(sut =>
+        this.RunTestOnAllLists<ComparableObject>(sut =>
         {
             Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        });
     }
 }

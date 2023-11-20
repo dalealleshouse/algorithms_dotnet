@@ -1,26 +1,19 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
-using System.Linq;
 using Xunit;
 
-public class Length
+public class Length : ListTests
 {
     [Fact]
-    public void ThrowForNullInput()
+    public void IncrementsLengthForEachInsert()
     {
-        SutFactory
-            .AllLists<int>()
-            .Select(sut =>
+        this.RunTestOnAllLists<int>(sut =>
         {
             for (int i = 1; i < 10; i++)
             {
                 sut.Insert(i * 2);
                 Assert.Equal(i, sut.Length);
             }
-
-            return sut;
-        })
-        .Select(InvariantValidatorFactory.CreateValidator)
-        .Validate();
+        });
     }
 }

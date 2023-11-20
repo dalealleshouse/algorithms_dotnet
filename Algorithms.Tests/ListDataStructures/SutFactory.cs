@@ -7,17 +7,6 @@ using Algorithms.ListDataStructures;
 
 public static class SutFactory
 {
-    public static IEnumerable<IStructuredList<T>> AllLists<T>(Comparison<T> comparer = null)
-        where T : notnull, IComparable<T> => AllLists(new T[0], comparer);
-
-    public static IEnumerable<IStructuredList<T>> AllLists<T>(
-            T[] data,
-            Comparison<T> comparer = null)
-        where T : notnull, IComparable<T> => Enum.GetValues(typeof(StructuredListType))
-            .Cast<StructuredListType>()
-            .Where(t => t != StructuredListType.Invalid)
-            .Select(listType => StructuredListFactory<T>.CreateList(listType, data, comparer));
-
     public static RandomArray<int> RandomArray(
             int size,
             Comparison<int> comparer = null) => comparer == null ?
