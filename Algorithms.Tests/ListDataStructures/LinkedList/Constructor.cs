@@ -30,8 +30,8 @@ public partial class Constructor
     {
         var sut = new StructuredLinkedList<int>(new int[] { 1, 2, 3 });
         Assert.Equal(3, sut.Length);
-        Assert.Equal(3, sut.Head.Value.Value);
-        Assert.Equal(1, sut.Tail.Value.Value);
+        Assert.Equal(3, sut.Head.Value.Payload);
+        Assert.Equal(1, sut.Tail.Value.Payload);
     }
 
     [Fact]

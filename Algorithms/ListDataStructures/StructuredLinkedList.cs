@@ -36,7 +36,7 @@ public class StructuredLinkedList<T> : IStructuredList<T>
         var n = this.Head;
         while (n.HasValue)
         {
-            action(n.Value.Value);
+            action(n.Value.Payload);
             n = n.Value.Next;
         }
     }
@@ -64,11 +64,11 @@ public class StructuredLinkedList<T> : IStructuredList<T>
     {
         if (this.Length == 0) return Maybe<T>.None;
 
-        T max = this.Head.Value.Value;
+        T max = this.Head.Value.Payload;
         var n = this.Head.Value.Next;
         while (n.HasValue)
         {
-            max = this.comparer(max, n.Value.Value) > 0 ? max : n.Value.Value;
+            max = this.comparer(max, n.Value.Payload) > 0 ? max : n.Value.Payload;
             n = n.Value.Next;
         }
 
@@ -83,11 +83,11 @@ public class StructuredLinkedList<T> : IStructuredList<T>
         var n = this.Head;
         while (n.HasValue)
         {
-            if (this.comparer(n.Value.Value, value) < 0)
+            if (this.comparer(n.Value.Payload, value) < 0)
             {
-                if (!result.HasValue || this.comparer(result.Value, n.Value.Value) < 0)
+                if (!result.HasValue || this.comparer(result.Value, n.Value.Payload) < 0)
                 {
-                    result = new(n.Value.Value);
+                    result = new(n.Value.Payload);
                 }
             }
 
@@ -105,7 +105,7 @@ public class StructuredLinkedList<T> : IStructuredList<T>
         var n = this.Head;
         while (n.HasValue)
         {
-            if (this.comparer(n.Value.Value, value) < 0) rank++;
+            if (this.comparer(n.Value.Payload, value) < 0) rank++;
             n = n.Value.Next;
         }
 
@@ -125,7 +125,7 @@ public class StructuredLinkedList<T> : IStructuredList<T>
         var n = this.Head;
         while (n.HasValue)
         {
-            if (predicate(n.Value.Value)) return new(n.Value.Value);
+            if (predicate(n.Value.Payload)) return new(n.Value.Payload);
             n = n.Value.Next;
         }
 
@@ -136,26 +136,26 @@ public class StructuredLinkedList<T> : IStructuredList<T>
     {
         public Node(T value)
         {
-            this.Value = value;
+            this.Payload = value;
             this.Next = Maybe<Node>.None;
             this.Previous = Maybe<Node>.None;
         }
 
         public Node(T value, Node next)
         {
-            this.Value = value;
+            this.Payload = value;
             this.Next = new(next);
             this.Previous = Maybe<Node>.None;
         }
 
         public Node(T value, Node next, Node previous)
         {
-            this.Value = value;
+            this.Payload = value;
             this.Next = new(next);
             this.Previous = new(previous);
         }
 
-        public T Value { get; }
+        public T Payload { get; }
 
         public Maybe<Node> Next { get; private set; }
 

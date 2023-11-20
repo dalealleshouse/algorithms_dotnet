@@ -14,7 +14,7 @@ public partial class Insert
         sut.Insert(1);
 
         Assert.Equal(1, sut.Length);
-        Assert.Equal(1, sut.Head.Value.Value);
+        Assert.Equal(1, sut.Head.Value.Payload);
         Assert.False(sut.Head.Value.Next.HasValue);
         Assert.False(sut.Head.Value.Previous.HasValue);
     }
@@ -30,12 +30,12 @@ public partial class Insert
         Assert.Equal(2, sut.Length);
 
         Assert.True(sut.Head.HasValue);
-        Assert.Equal(2, sut.Head.Value.Value);
+        Assert.Equal(2, sut.Head.Value.Payload);
         Assert.Equal(sut.Head.Value.Next, sut.Tail);
         Assert.False(sut.Head.Value.Previous.HasValue);
 
         Assert.True(sut.Tail.HasValue);
-        Assert.Equal(1, sut.Tail.Value.Value);
+        Assert.Equal(1, sut.Tail.Value.Payload);
         Assert.Equal(sut.Tail.Value.Previous, sut.Head);
         Assert.False(sut.Tail.Value.Next.HasValue);
     }
@@ -49,7 +49,7 @@ public partial class Insert
         var head = sut.Head.Value;
         for (int i = 10; i >= 1; i--)
         {
-            Assert.Equal(i, head.Value);
+            Assert.Equal(i, head.Payload);
             if (head.Next.HasValue) head = head.Next.Value;
         }
 
@@ -65,7 +65,7 @@ public partial class Insert
         var tail = sut.Tail.Value;
         for (int i = 1; i <= 10; i++)
         {
-            Assert.Equal(i, tail.Value);
+            Assert.Equal(i, tail.Payload);
             if (tail.Previous.HasValue) tail = tail.Previous.Value;
         }
 

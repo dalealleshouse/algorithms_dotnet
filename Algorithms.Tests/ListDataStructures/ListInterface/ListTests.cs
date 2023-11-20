@@ -38,6 +38,7 @@ public abstract class ListTests
             SortedArray<T> _ => new SortedArray.InvariantValidator<T>(structuredList),
             RandomArray<T> _ => new RandomArray.InvariantValidator<T>(structuredList),
             StructuredLinkedList<T> _ => new LinkedList.InvariantValidator<T>(structuredList),
+            StructuredBinaryTree<T> _ => new BinaryTree.InvariantValidator<T>(structuredList),
             _ => throw new ArgumentException("Unsupported IStructuredList type.", nameof(structuredList)),
         };
 }

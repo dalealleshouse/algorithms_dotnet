@@ -18,6 +18,7 @@ public static class StructuredListFactory<T>
         StructuredListType.LinkedList => new StructuredLinkedList<T>(data, comparer),
         StructuredListType.SortedArray => new SortedArray<T>(data, comparer),
         StructuredListType.RandomArray => new RandomArray<T>(data, comparer),
+        StructuredListType.BinaryTree => new StructuredBinaryTree<T>(data, comparer),
         _ => throw new ArgumentException(nameof(listType)),
     };
 }

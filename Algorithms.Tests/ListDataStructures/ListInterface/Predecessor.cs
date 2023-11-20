@@ -92,6 +92,6 @@ public class Predecessor : ListTests
                 var result = sut.Predecessor(value);
                 Assert.Equal(expectedResult, result);
             },
-            new[] { 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l' });
+            new[] { 'b', 'c', 'l', 'e', 'f', 'g', 'h', 'i', 'k', 'd' });
     }
 }
