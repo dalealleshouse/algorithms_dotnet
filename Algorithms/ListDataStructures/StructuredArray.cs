@@ -8,19 +8,19 @@ using System.Diagnostics.CodeAnalysis;
         "StyleCop.CSharp.MaintainabilityRules",
         "SA1401:FieldsMustBePrivate",
         Justification = "A protected field is required for the derived class.")]
-public abstract class Array<T> : IList<T>
+public abstract class StructuredArray<T> : IStructuredList<T>
     where T : notnull, IComparable<T>
 {
     protected readonly Comparison<T> comparer;
     protected T[] array;
 
-    public Array(T[] array, Comparison<T>? comparer = null)
+    public StructuredArray(T[] array, Comparison<T>? comparer = null)
     {
         this.array = array ?? throw new ArgumentNullException(nameof(array));
         this.comparer = comparer ?? Comparer<T>.Default.Compare;
     }
 
-    public Array(Comparison<T>? comparer = null)
+    public StructuredArray(Comparison<T>? comparer = null)
         : this(new T[0], comparer)
     {
     }
@@ -32,6 +32,8 @@ public abstract class Array<T> : IList<T>
             return this.array.Length;
         }
     }
+
+    public Comparison<T> Comparer => this.comparer;
 
     public T this[int index]
     {
@@ -57,7 +59,7 @@ public abstract class Array<T> : IList<T>
         return this.ExtractArrayResult(this.ArrayMax());
     }
 
-    public abstract Maybe<ArrayResult<T>> ArrayMax();
+    public abstract Maybe<StructuredArrayResult<T>> ArrayMax();
 
     public Maybe<T> Predecessor(T value)
     {
@@ -65,7 +67,7 @@ public abstract class Array<T> : IList<T>
         return this.ExtractArrayResult(this.ArrayPredecessor(value));
     }
 
-    public abstract Maybe<ArrayResult<T>> ArrayPredecessor(T value);
+    public abstract Maybe<StructuredArrayResult<T>> ArrayPredecessor(T value);
 
     public Maybe<T> Search(T value)
     {
@@ -73,9 +75,9 @@ public abstract class Array<T> : IList<T>
         return this.ExtractArrayResult(this.ArraySearch(value));
     }
 
-    public abstract Maybe<ArrayResult<T>> ArraySearch(T value);
+    public abstract Maybe<StructuredArrayResult<T>> ArraySearch(T value);
 
-    private Maybe<T> ExtractArrayResult(Maybe<ArrayResult<T>> result) => result.HasValue ?
+    private Maybe<T> ExtractArrayResult(Maybe<StructuredArrayResult<T>> result) => result.HasValue ?
             new(result.Value.Item) :
             Maybe<T>.None;
 }

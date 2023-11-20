@@ -9,7 +9,7 @@ public class Search
     public void ReturnFirstEqualItem()
     {
         var expected = 5;
-        var expectedResult = new ArrayResult<int>(expected, expected);
+        var expectedResult = new StructuredArrayResult<int>(expected, expected);
 
         var sut = SutFactory.SortedArray(10);
         var result = sut.ArraySearch(expected);
@@ -22,7 +22,7 @@ public class Search
     {
         var sut = new SortedArray<char>(
                 new[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' });
-        var expectedResult = new ArrayResult<char>(4, 'e');
+        var expectedResult = new StructuredArrayResult<char>(4, 'e');
         var result = sut.ArraySearch('e');
 
         Assert.Equal(expectedResult, result.Value);
@@ -31,7 +31,7 @@ public class Search
     [Fact]
     public void FindFirstItem()
     {
-        var expectedResult = new ArrayResult<int>(0, 0);
+        var expectedResult = new StructuredArrayResult<int>(0, 0);
         var sut = SutFactory.SortedArray(10);
         var result = sut.ArraySearch(0);
 
@@ -41,7 +41,7 @@ public class Search
     [Fact]
     public void FindLastItem()
     {
-        var expectedResult = new ArrayResult<int>(10, 10);
+        var expectedResult = new StructuredArrayResult<int>(10, 10);
         var sut = SutFactory.SortedArray(10);
         var result = sut.ArraySearch(10);
 

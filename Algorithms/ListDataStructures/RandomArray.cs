@@ -5,7 +5,7 @@ namespace Algorithms.ListDataStructures;
 using System;
 using System.Linq;
 
-public class RandomArray<T> : Array<T>
+public class RandomArray<T> : StructuredArray<T>
     where T : notnull, IComparable<T>
 {
     public RandomArray(T[] array, Comparison<T>? comparer = null)
@@ -47,26 +47,26 @@ public class RandomArray<T> : Array<T>
         this.array = newArray;
     }
 
-    public override Maybe<ArrayResult<T>> ArraySearch(T value)
+    public override Maybe<StructuredArrayResult<T>> ArraySearch(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
         return this.Search(x => x.CompareTo(value) == 0);
     }
 
-    public Maybe<ArrayResult<T>> Search(Predicate<T> predicate)
+    public Maybe<StructuredArrayResult<T>> Search(Predicate<T> predicate)
     {
         if (predicate == null) throw new System.ArgumentNullException();
 
         var index = this.array.TakeWhile(x => !predicate(x)).Count();
 
         return (index == this.array.Length) ?
-            Maybe<ArrayResult<T>>.None :
+            Maybe<StructuredArrayResult<T>>.None :
             new(new(index, this.array[index]));
     }
 
-    public override Maybe<ArrayResult<T>> ArrayMax()
+    public override Maybe<StructuredArrayResult<T>> ArrayMax()
     {
-        if (this.array.Length == 0) return Maybe<ArrayResult<T>>.None;
+        if (this.array.Length == 0) return Maybe<StructuredArrayResult<T>>.None;
 
         var result = this.array
             .Select((value, index) => new { Value = value, Index = index })
@@ -78,11 +78,11 @@ public class RandomArray<T> : Array<T>
         return new(new(result.Index, result.Value));
     }
 
-    public override Maybe<ArrayResult<T>> ArrayPredecessor(T value)
+    public override Maybe<StructuredArrayResult<T>> ArrayPredecessor(T value)
     {
         if (value is null) throw new ArgumentNullException(nameof(value));
 
-        var result = Maybe<ArrayResult<T>>.None;
+        var result = Maybe<StructuredArrayResult<T>>.None;
 
         return this.array
             .Select((value, index) => new { Value = value, Index = index })

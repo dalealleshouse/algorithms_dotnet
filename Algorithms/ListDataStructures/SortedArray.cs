@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using Algorithms;
 
-public class SortedArray<T> : Array<T>
+public class SortedArray<T> : StructuredArray<T>
     where T : notnull, IComparable<T>
 {
     public SortedArray(T[] array, Comparison<T>? comparer = null)
@@ -40,7 +40,7 @@ public class SortedArray<T> : Array<T>
         this.array = newArray;
     }
 
-    public override Maybe<ArrayResult<T>> ArraySearch(T value)
+    public override Maybe<StructuredArrayResult<T>> ArraySearch(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
 
@@ -57,22 +57,22 @@ public class SortedArray<T> : Array<T>
             else start = mid + 1;
         }
 
-        return Maybe<ArrayResult<T>>.None;
+        return Maybe<StructuredArrayResult<T>>.None;
     }
 
-    public override Maybe<ArrayResult<T>> ArrayMax()
+    public override Maybe<StructuredArrayResult<T>> ArrayMax()
     {
         var maxIndex = this.Length - 1;
 
         return (maxIndex < 0) ?
-            Maybe<ArrayResult<T>>.None :
+            Maybe<StructuredArrayResult<T>>.None :
             new(new(maxIndex, this.array[maxIndex]));
     }
 
-    public override Maybe<ArrayResult<T>> ArrayPredecessor(T value)
+    public override Maybe<StructuredArrayResult<T>> ArrayPredecessor(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
-        if (this.Length == 0) return Maybe<ArrayResult<T>>.None;
+        if (this.Length == 0) return Maybe<StructuredArrayResult<T>>.None;
 
         int mid, start = 0;
         var end = this.Length - 1;
@@ -87,7 +87,7 @@ public class SortedArray<T> : Array<T>
 
             if (compResult == 0)
             {
-                if (mid == 0) return Maybe<ArrayResult<T>>.None;
+                if (mid == 0) return Maybe<StructuredArrayResult<T>>.None;
 
                 return new(new(mid - 1, this.array[mid - 1]));
             }
@@ -104,7 +104,7 @@ public class SortedArray<T> : Array<T>
 
         return candiate.HasValue ?
             new(new(candiate.Value, this.array[candiate.Value])) :
-            Maybe<ArrayResult<T>>.None;
+            Maybe<StructuredArrayResult<T>>.None;
     }
 
     public override int Rank(T value)

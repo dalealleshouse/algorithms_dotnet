@@ -1,6 +1,7 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
 using System;
+using System.Linq;
 using Xunit;
 
 public class Insert
@@ -10,9 +11,12 @@ public class Insert
     {
         SutFactory
             .AllLists<ComparableObject>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 }

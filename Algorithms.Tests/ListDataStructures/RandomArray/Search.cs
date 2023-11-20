@@ -9,7 +9,7 @@ public class Search
     public void ReturnFirstItemThatMatchesPredicate()
     {
         var expected = 5;
-        var expectedResult = new ArrayResult<int>(expected, expected);
+        var expectedResult = new StructuredArrayResult<int>(expected, expected);
 
         var sut = SutFactory.RandomArray(10);
         var result = sut.Search(x => x == expected);
@@ -21,7 +21,7 @@ public class Search
     public void ReturnFirstEqualItem()
     {
         var expected = 5;
-        var expectedResult = new ArrayResult<int>(expected, expected);
+        var expectedResult = new StructuredArrayResult<int>(expected, expected);
 
         var sut = SutFactory.RandomArray(10);
         var result = sut.ArraySearch(5);

@@ -7,18 +7,16 @@ using Algorithms.ListDataStructures;
 
 public static class SutFactory
 {
-    public static List<Algorithms.ListDataStructures.IList<T>> AllLists<T>(
-            Comparison<T> comparer = null)
+    public static IEnumerable<IStructuredList<T>> AllLists<T>(Comparison<T> comparer = null)
         where T : notnull, IComparable<T> => AllLists(new T[0], comparer);
 
-    public static List<Algorithms.ListDataStructures.IList<T>> AllLists<T>(
+    public static IEnumerable<IStructuredList<T>> AllLists<T>(
             T[] data,
             Comparison<T> comparer = null)
-        where T : notnull, IComparable<T> => Enum.GetValues(typeof(ListType))
-            .Cast<ListType>()
-            .Where(t => t != ListType.Invalid)
-            .Select(listType => ListFactory<T>.CreateList(listType, data, comparer))
-            .ToList();
+        where T : notnull, IComparable<T> => Enum.GetValues(typeof(StructuredListType))
+            .Cast<StructuredListType>()
+            .Where(t => t != StructuredListType.Invalid)
+            .Select(listType => StructuredListFactory<T>.CreateList(listType, data, comparer));
 
     public static RandomArray<int> RandomArray(
             int size,
@@ -40,5 +38,14 @@ public static class SutFactory
         var array = BuildArray(size);
         System.Array.Sort(array, comparer);
         return array;
+    }
+
+    public static void Validate<T>(this IEnumerable<IInvariantValidator<T>> validators)
+        where T : notnull, IComparable<T>
+    {
+        foreach (var val in validators)
+        {
+            val.Validate();
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using Algorithms;
 using Algorithms.ListDataStructures;
 
-public class ArrayTest<T> : Array<T>
+public class ArrayTest<T> : StructuredArray<T>
     where T : notnull, IComparable<T>
 {
     public ArrayTest()
@@ -18,9 +18,9 @@ public class ArrayTest<T> : Array<T>
     {
     }
 
-    public override Maybe<ArrayResult<T>> ArrayMax()
+    public override Maybe<StructuredArrayResult<T>> ArrayMax()
     {
-        if (this.array.Length == 0) return Maybe<ArrayResult<T>>.None;
+        if (this.array.Length == 0) return Maybe<StructuredArrayResult<T>>.None;
 
         var result = this.array
             .Select((value, index) => new { Value = value, Index = index })
@@ -37,11 +37,11 @@ public class ArrayTest<T> : Array<T>
         throw new NotImplementedException();
     }
 
-    public override Maybe<ArrayResult<T>> ArrayPredecessor(T value)
+    public override Maybe<StructuredArrayResult<T>> ArrayPredecessor(T value)
     {
         // For test purposes, return None for nullable values and a result for
         // non-nullable values.
-        if (default(T) == null) return Maybe<ArrayResult<T>>.None;
+        if (default(T) == null) return Maybe<StructuredArrayResult<T>>.None;
 
         return new(new(1, default));
     }
@@ -51,11 +51,11 @@ public class ArrayTest<T> : Array<T>
         throw new NotImplementedException();
     }
 
-    public override Maybe<ArrayResult<T>> ArraySearch(T value)
+    public override Maybe<StructuredArrayResult<T>> ArraySearch(T value)
     {
         // For test purposes, return None for nullable values and a result for
         // non-nullable values.
-        if (default(T) == null) return Maybe<ArrayResult<T>>.None;
+        if (default(T) == null) return Maybe<StructuredArrayResult<T>>.None;
 
         return new(new(1, default));
     }

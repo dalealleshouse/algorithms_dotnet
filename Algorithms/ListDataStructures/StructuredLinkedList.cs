@@ -3,12 +3,12 @@ namespace Algorithms.ListDataStructures;
 using System;
 using System.Collections.Generic;
 
-public class LinkedList<T> : IList<T>
+public class StructuredLinkedList<T> : IStructuredList<T>
     where T : notnull, IComparable<T>
 {
     private readonly Comparison<T> comparer;
 
-    public LinkedList(T[] array, Comparison<T>? comparer = null)
+    public StructuredLinkedList(T[] array, Comparison<T>? comparer = null)
     {
         if (array == null) throw new ArgumentNullException(nameof(array));
         Array.ForEach(array, x => this.Insert(x));
@@ -16,7 +16,7 @@ public class LinkedList<T> : IList<T>
         this.comparer = comparer ?? Comparer<T>.Default.Compare;
     }
 
-    public LinkedList(Comparison<T>? comparer = null)
+    public StructuredLinkedList(Comparison<T>? comparer = null)
         : this(new T[0], comparer)
     {
     }
@@ -26,6 +26,8 @@ public class LinkedList<T> : IList<T>
     public Maybe<Node> Head { get; private set; }
 
     public Maybe<Node> Tail { get; private set; }
+
+    public Comparison<T> Comparer => throw new NotImplementedException();
 
     public void Enumerate(Action<T> action)
     {

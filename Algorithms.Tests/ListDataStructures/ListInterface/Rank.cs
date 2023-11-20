@@ -1,6 +1,7 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
 using System;
+using System.Linq;
 using Xunit;
 
 public class Rank
@@ -10,10 +11,13 @@ public class Rank
     {
         SutFactory
             .AllLists<ComparableObject>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.Throws<ArgumentNullException>(() => sut.Rank(null));
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -21,11 +25,14 @@ public class Rank
     {
         SutFactory
             .AllLists<ComparableObject>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Rank(new(1));
             Assert.Equal(0, result);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -33,11 +40,14 @@ public class Rank
     {
         SutFactory
             .AllLists<int>(SutFactory.BuildArray(200))
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Rank(138);
             Assert.Equal(138, result);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -45,11 +55,14 @@ public class Rank
     {
         SutFactory
             .AllLists<char>(new[] { 'a', 'h', 'f', 'd', 'e', 'c', 'g', 'b' })
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Rank('b');
             Assert.Equal(1, result);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -57,11 +70,14 @@ public class Rank
     {
         SutFactory
             .AllLists<int>(SutFactory.BuildArray(200), (x, y) => y.CompareTo(x))
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Rank(138);
             Assert.Equal(200 - 138, result);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -70,11 +86,14 @@ public class Rank
         const int expected = 201;
         SutFactory
             .AllLists<int>(SutFactory.BuildArray(expected - 1))
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Rank(expected * 2);
             Assert.Equal(expected, result);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Theory]
@@ -95,10 +114,13 @@ public class Rank
     {
         SutFactory
             .AllLists<char>(new[] { 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l' })
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Rank(value);
             Assert.Equal(expected, result);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 }

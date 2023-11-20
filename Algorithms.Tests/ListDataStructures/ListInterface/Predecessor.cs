@@ -1,6 +1,7 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
 using System;
+using System.Linq;
 using Xunit;
 
 public class Predecessor
@@ -12,10 +13,13 @@ public class Predecessor
     {
         SutFactory
             .AllLists<ComparableObject>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.Throws<ArgumentNullException>(() => sut.Predecessor(null));
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -23,11 +27,14 @@ public class Predecessor
     {
         SutFactory
             .AllLists<ComparableStruct>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Predecessor(new(1));
             Assert.False(result.HasValue);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -36,11 +43,14 @@ public class Predecessor
         var expected = 137;
         SutFactory
             .AllLists<int>(this.data)
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Predecessor(138);
             Assert.Equal(expected, result.Value);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -49,12 +59,14 @@ public class Predecessor
         var expected = 139;
         SutFactory
            .AllLists<int>(this.data, (x, y) => y.CompareTo(x))
-           .ForEach(sut =>
+           .Select(sut =>
        {
            var result = sut.Predecessor(138);
-
            Assert.Equal(expected, result.Value);
-       });
+           return sut;
+       })
+       .Select(InvariantValidatorFactory.CreateValidator)
+       .Validate();
     }
 
     [Fact]
@@ -62,11 +74,14 @@ public class Predecessor
     {
         SutFactory
             .AllLists<int>(this.data)
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Predecessor(-1);
             Assert.False(result.HasValue);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Theory]
@@ -92,10 +107,13 @@ public class Predecessor
 
         SutFactory
             .AllLists<char>(new[] { 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l' })
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var result = sut.Predecessor(value);
             Assert.Equal(expectedResult, result);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 }

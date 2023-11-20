@@ -10,7 +10,7 @@ public class Search
     {
         var expected = 5;
 
-        var sut = new LinkedList<int>(SutFactory.BuildArray(10));
+        var sut = new StructuredLinkedList<int>(SutFactory.BuildArray(10));
         var result = sut.Search(x => x == expected);
 
         Assert.Equal(expected, result.Value);
@@ -19,7 +19,7 @@ public class Search
     [Fact]
     public void ReturnFalseWhenNoPredicateMatch()
     {
-        var sut = new LinkedList<int>(SutFactory.BuildArray(10));
+        var sut = new StructuredLinkedList<int>(SutFactory.BuildArray(10));
         var result = sut.Search(x => x == 200);
 
         Assert.False(result.HasValue);

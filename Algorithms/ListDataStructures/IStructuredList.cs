@@ -2,10 +2,12 @@ namespace Algorithms.ListDataStructures;
 
 using System;
 
-public interface IList<T>
+public interface IStructuredList<T>
     where T : notnull, IComparable<T>
 {
     int Length { get; }
+
+    Comparison<T> Comparer { get; }
 
     void Insert(T item);
 

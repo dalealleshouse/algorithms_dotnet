@@ -1,6 +1,7 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
 using System;
+using System.Linq;
 using Xunit;
 
 public class Enumerate
@@ -10,10 +11,13 @@ public class Enumerate
     {
         SutFactory
             .AllLists<ComparableStruct>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.Throws<ArgumentNullException>(() => sut.Enumerate(null));
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -23,7 +27,7 @@ public class Enumerate
 
         SutFactory
             .AllLists<int>(SutFactory.BuildArray(expected - 1))
-            .ForEach(sut =>
+            .Select(sut =>
         {
             var invokeCount = 0;
             sut.Enumerate(x =>
@@ -32,7 +36,10 @@ public class Enumerate
             });
 
             Assert.Equal(expected, invokeCount);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -40,9 +47,12 @@ public class Enumerate
     {
         SutFactory
             .AllLists<int>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             sut.Enumerate(x => Assert.Fail("Should not be called"));
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 }

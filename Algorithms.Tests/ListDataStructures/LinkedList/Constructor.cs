@@ -11,15 +11,15 @@ public partial class Constructor
     [Fact]
     public void RejectNull()
     {
-        Assert.Throws<ArgumentNullException>(() => new LinkedList<ComparableObject>(null, null));
+        Assert.Throws<ArgumentNullException>(() => new StructuredLinkedList<ComparableObject>(null, null));
     }
 
     [Fact]
     public void InitHeadAndTail()
     {
-        var expected = Maybe<LinkedList<int>.Node>.None;
+        var expected = Maybe<StructuredLinkedList<int>.Node>.None;
 
-        var sut = new LinkedList<int>();
+        var sut = new StructuredLinkedList<int>();
         Assert.Equal(0, sut.Length);
         Assert.Equal(expected, sut.Head);
         Assert.Equal(expected, sut.Tail);
@@ -28,7 +28,7 @@ public partial class Constructor
     [Fact]
     public void GeneratsListFromConstructorArray()
     {
-        var sut = new LinkedList<int>(new int[] { 1, 2, 3 });
+        var sut = new StructuredLinkedList<int>(new int[] { 1, 2, 3 });
         Assert.Equal(3, sut.Length);
         Assert.Equal(3, sut.Head.Value.Value);
         Assert.Equal(1, sut.Tail.Value.Value);
@@ -37,7 +37,7 @@ public partial class Constructor
     [Fact]
     public void UseDefaultComparer()
     {
-        var sut = new LinkedList<ComparableStruct>(this.testData);
+        var sut = new StructuredLinkedList<ComparableStruct>(this.testData);
 
         var arrayResult = sut.Max();
         var result = sut.Max();
@@ -48,7 +48,7 @@ public partial class Constructor
     [Fact]
     public void UseCustomComparer()
     {
-        var sut = new LinkedList<ComparableStruct>(this.testData, (x, y) => y.CompareTo(x));
+        var sut = new StructuredLinkedList<ComparableStruct>(this.testData, (x, y) => y.CompareTo(x));
 
         var result = sut.Max();
         Assert.True(result.HasValue);

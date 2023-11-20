@@ -1,5 +1,6 @@
 namespace Algorithms.Tests.ListDataStructures.ListInterface;
 
+using System.Linq;
 using Xunit;
 
 public partial class Max
@@ -9,10 +10,13 @@ public partial class Max
     {
         SutFactory
             .AllLists<int>()
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.False(sut.Max().HasValue);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -20,10 +24,13 @@ public partial class Max
     {
         SutFactory
             .AllLists<int>(new int[] { 1, 2, 138, 3, 4, 5 })
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.Equal(138, sut.Max().Value);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -33,10 +40,13 @@ public partial class Max
             .AllLists<int>(
                 new int[] { 1, 2, 138, 3, 4, 5 },
                 (x, y) => y.CompareTo(x))
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.Equal(1, sut.Max().Value);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 
     [Fact]
@@ -44,9 +54,12 @@ public partial class Max
     {
         SutFactory
             .AllLists<int>(new int[] { 138 })
-            .ForEach(sut =>
+            .Select(sut =>
         {
             Assert.Equal(138, sut.Max().Value);
-        });
+            return sut;
+        })
+        .Select(InvariantValidatorFactory.CreateValidator)
+        .Validate();
     }
 }

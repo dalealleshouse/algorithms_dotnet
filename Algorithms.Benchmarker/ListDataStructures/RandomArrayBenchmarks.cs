@@ -11,7 +11,7 @@ public class RandomArrayBenchmarks : Benchmarks
     public void Setup() => this.array = ArrayGenerator.Random(this.N);
 
     [Benchmark]
-    public Array<int> Insert()
+    public StructuredArray<int> Insert()
     {
         var arr = new RandomArray<int>();
         for (int i = 0; i < this.N; i++)
@@ -23,7 +23,7 @@ public class RandomArrayBenchmarks : Benchmarks
     }
 
     [Benchmark]
-    public Array<int> Search()
+    public StructuredArray<int> Search()
     {
         for (int i = 0; i < this.N; i++)
         {
@@ -34,7 +34,7 @@ public class RandomArrayBenchmarks : Benchmarks
     }
 
     [Benchmark]
-    public Array<int> Max()
+    public StructuredArray<int> Max()
     {
         for (int i = 0; i < this.N; i++)
         {
@@ -45,7 +45,7 @@ public class RandomArrayBenchmarks : Benchmarks
     }
 
     [Benchmark]
-    public Array<int> Predecessor()
+    public StructuredArray<int> Predecessor()
     {
         for (int i = 0; i < this.N; i++)
         {
@@ -56,7 +56,7 @@ public class RandomArrayBenchmarks : Benchmarks
     }
 
     [Benchmark]
-    public Array<int> Rank()
+    public StructuredArray<int> Rank()
     {
         for (int i = 0; i < this.N; i++)
         {

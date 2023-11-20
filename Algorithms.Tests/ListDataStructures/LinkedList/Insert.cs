@@ -8,8 +8,8 @@ public partial class Insert
     [Fact]
     public void SetsHeadAndTailOnFirstInsert()
     {
-        var expected = new LinkedList<int>.Node(1, null, null);
-        var sut = new LinkedList<int>();
+        var expected = new StructuredLinkedList<int>.Node(1, null, null);
+        var sut = new StructuredLinkedList<int>();
 
         sut.Insert(1);
 
@@ -22,7 +22,7 @@ public partial class Insert
     [Fact]
     public void SetsHeadAndTailOnSecondInsert()
     {
-        var sut = new LinkedList<int>();
+        var sut = new StructuredLinkedList<int>();
 
         sut.Insert(1);
         sut.Insert(2);
@@ -44,7 +44,7 @@ public partial class Insert
     public void SetNextLinks()
     {
         var data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        var sut = new LinkedList<int>(data);
+        var sut = new StructuredLinkedList<int>(data);
 
         var head = sut.Head.Value;
         for (int i = 10; i >= 1; i--)
@@ -60,7 +60,7 @@ public partial class Insert
     public void SetPreviousLinks()
     {
         var data = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        var sut = new LinkedList<int>(data);
+        var sut = new StructuredLinkedList<int>(data);
 
         var tail = sut.Tail.Value;
         for (int i = 1; i <= 10; i++)

@@ -1,6 +1,6 @@
 namespace Algorithms.ListDataStructures;
 
-public enum ListType
+public enum StructuredListType
 {
     Invalid = 0,
     LinkedList,
