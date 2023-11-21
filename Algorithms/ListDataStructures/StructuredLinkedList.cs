@@ -27,7 +27,7 @@ public class StructuredLinkedList<T> : IStructuredList<T>
 
     public Maybe<Node> Tail { get; private set; }
 
-    public Comparison<T> Comparer => throw new NotImplementedException();
+    public Comparison<T> Comparer => this.comparer;
 
     public void Enumerate(Action<T> action)
     {
@@ -121,15 +121,49 @@ public class StructuredLinkedList<T> : IStructuredList<T>
     public Maybe<T> Search(Predicate<T> predicate)
     {
         if (predicate == null) throw new System.ArgumentNullException();
+        return this.SearchForNode(predicate).Unwrap();
+    }
 
+    public Maybe<T> Delete(T value)
+    {
+        if (value == null) throw new ArgumentNullException(nameof(value));
+        var node = this.SearchForNode(x => this.comparer(x, value) == 0);
+
+        if (!node.HasValue) return Maybe<T>.None;
+
+        var rawNode = node.Value;
+
+        if (rawNode.IsHead)
+        {
+            this.Head = node.Value.Next;
+            this.Head.Value.Previous = Maybe<Node>.None;
+        }
+        else if (rawNode.IsTail)
+        {
+            this.Tail = node.Value.Previous;
+            this.Tail.Value.Next = Maybe<Node>.None;
+        }
+        else
+        {
+            node.Value.Previous.Value.Next = node.Value.Next;
+            node.Value.Next.Value.Previous = node.Value.Previous;
+        }
+
+        this.Length--;
+
+        return node.Unwrap();
+    }
+
+    private Maybe<Node> SearchForNode(Predicate<T> predicate)
+    {
         var n = this.Head;
         while (n.HasValue)
         {
-            if (predicate(n.Value.Payload)) return new(n.Value.Payload);
+            if (predicate(n.Value.Payload)) return n;
             n = n.Value.Next;
         }
 
-        return Maybe<T>.None;
+        return Maybe<Node>.None;
     }
 
     public class Node
@@ -157,8 +191,12 @@ public class StructuredLinkedList<T> : IStructuredList<T>
 
         public T Payload { get; }
 
-        public Maybe<Node> Next { get; private set; }
+        public Maybe<Node> Next { get; internal set; }
 
         public Maybe<Node> Previous { get; internal set; }
+
+        public bool IsHead => !this.Previous.HasValue;
+
+        public bool IsTail => !this.Next.HasValue;
     }
 }

@@ -16,4 +16,19 @@ public class Length : ListTests
             }
         });
     }
+
+    [Fact]
+    public void DecrementsLengthForEachDelete()
+    {
+        this.RunTestOnAllLists<int>(
+            sut =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    sut.Delete(i);
+                    Assert.Equal(10 - i, sut.Length);
+                }
+            },
+            SutFactory.BuildArray(10));
+    }
 }

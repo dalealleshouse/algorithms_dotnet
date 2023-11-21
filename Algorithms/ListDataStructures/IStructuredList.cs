@@ -20,4 +20,6 @@ public interface IStructuredList<T>
     Maybe<T> Predecessor(T value);
 
     Maybe<T> Search(T value);
+
+    Maybe<T> Delete(T value);
 }

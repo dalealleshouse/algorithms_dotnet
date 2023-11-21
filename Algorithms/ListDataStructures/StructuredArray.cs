@@ -56,7 +56,7 @@ public abstract class StructuredArray<T> : IStructuredList<T>
 
     public Maybe<T> Max()
     {
-        return this.ExtractArrayResult(this.ArrayMax());
+        return this.ArrayMax().Unwrap();
     }
 
     public abstract Maybe<StructuredArrayResult<T>> ArrayMax();
@@ -64,7 +64,7 @@ public abstract class StructuredArray<T> : IStructuredList<T>
     public Maybe<T> Predecessor(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
-        return this.ExtractArrayResult(this.ArrayPredecessor(value));
+        return this.ArrayPredecessor(value).Unwrap();
     }
 
     public abstract Maybe<StructuredArrayResult<T>> ArrayPredecessor(T value);
@@ -72,12 +72,28 @@ public abstract class StructuredArray<T> : IStructuredList<T>
     public Maybe<T> Search(T value)
     {
         if (value == null) throw new System.ArgumentNullException();
-        return this.ExtractArrayResult(this.ArraySearch(value));
+        return this.ArraySearch(value).Unwrap();
     }
 
     public abstract Maybe<StructuredArrayResult<T>> ArraySearch(T value);
 
-    private Maybe<T> ExtractArrayResult(Maybe<StructuredArrayResult<T>> result) => result.HasValue ?
-            new(result.Value.Item) :
-            Maybe<T>.None;
+    public Maybe<T> Delete(T value)
+    {
+        if (value == null) throw new System.ArgumentNullException();
+
+        var result = this.ArraySearch(value);
+        if (!result.HasValue) return Maybe<T>.None;
+
+        var array = new T[this.array.Length - 1];
+        Array.Copy(this.array, 0, array, 0, result.Value.Index);
+        Array.Copy(
+                this.array,
+                result.Value.Index + 1,
+                array,
+                result.Value.Index,
+                array.Length - result.Value.Index);
+        this.array = array;
+
+        return result.Unwrap();
+    }
 }

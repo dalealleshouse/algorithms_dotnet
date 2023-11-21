@@ -22,7 +22,8 @@ public class InvariantValidator<T> : IInvariantValidator<T>
             Maybe<StructuredBinaryTree<T>.Node>.None,
             this.sut.Root);
         this.LeftRightInvariant(this.sut.Root);
-        this.SizeIsEqualToTheNumberOfChildNodes();
+        this.SizeIsEqualToNumberOfChildNodes();
+        this.RootSizeIsEqualToNodeCount();
     }
 
     private void ParentIsSet(
@@ -45,6 +46,7 @@ public class InvariantValidator<T> : IInvariantValidator<T>
         else
         {
             Assert.True(this.sut.Root.HasValue);
+            Assert.True(this.sut.Root.Value.IsRoot);
         }
     }
 
@@ -63,7 +65,7 @@ public class InvariantValidator<T> : IInvariantValidator<T>
         this.LeftRightInvariant(node.Value.Right);
     }
 
-    private void SizeIsEqualToTheNumberOfChildNodes()
+    private void RootSizeIsEqualToNodeCount()
     {
         if (!this.sut.Root.HasValue)
         {
@@ -76,5 +78,27 @@ public class InvariantValidator<T> : IInvariantValidator<T>
             Assert.Equal(count, this.sut.Length);
             Assert.Equal(this.sut.Length, this.sut.Root.Value.Size);
         }
+    }
+
+    private void SizeIsEqualToNumberOfChildNodes()
+    {
+        if (!this.sut.Root.HasValue)
+        {
+            Assert.Equal(0, this.sut.Length);
+        }
+        else
+        {
+            this.SizeIsEqualToNumberOfChildNodes(this.sut.Root);
+        }
+    }
+
+    private void SizeIsEqualToNumberOfChildNodes(Maybe<StructuredBinaryTree<T>.Node> node)
+    {
+        if (!node.HasValue) return;
+
+        Assert.Equal(node.Size(), node.Value.LeftSize + node.Value.RightSize + 1);
+
+        this.SizeIsEqualToNumberOfChildNodes(node.Value.Left);
+        this.SizeIsEqualToNumberOfChildNodes(node.Value.Right);
     }
 }
