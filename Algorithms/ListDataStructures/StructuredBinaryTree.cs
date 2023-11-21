@@ -88,8 +88,7 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
         }
         else
         {
-            var result = this.Predecessor(value, unwrapped.Left);
-            return result.HasValue ? result : Maybe<T>.None;
+            return this.Predecessor(value, unwrapped.Left);
         }
     }
 
@@ -155,14 +154,11 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
 
     private Maybe<T> MaxOfSubtree(Maybe<Node> node)
     {
-        if (node.HasValue)
-        {
-            return (!node.Value.Right.HasValue) ?
-                new(node.Value.Payload) :
-                this.MaxOfSubtree(node.Value.Right);
-        }
+        if (!node.HasValue) return Maybe<T>.None;
 
-        return Maybe<T>.None;
+        return (!node.Value.Right.HasValue) ?
+            new(node.Value.Payload) :
+            this.MaxOfSubtree(node.Value.Right);
     }
 
     public class Node
