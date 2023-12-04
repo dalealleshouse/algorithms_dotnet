@@ -3,43 +3,56 @@ namespace Algorithms.ListDataStructures;
 using System;
 using System.Collections.Generic;
 
-public class StructuredBinaryTree<T> : IStructuredList<T>
+public abstract class StructuredBinaryTree<T> : IStructuredList<T>
     where T : notnull, IComparable<T>
 {
-    private readonly Comparison<T> comparer;
-    private int length = 0;
-
     public StructuredBinaryTree(T[] array, Comparison<T>? comparer = null)
     {
         this.Root = Maybe<Node>.None;
-        this.comparer = comparer ?? Comparer<T>.Default.Compare;
+        this.Comparer = comparer ?? Comparer<T>.Default.Compare;
 
-        if (array == null) throw new ArgumentNullException(nameof(array));
+        if (array == null)
+            throw new ArgumentNullException(nameof(array));
         Array.ForEach(array, x => this.Insert(x));
     }
 
     public StructuredBinaryTree(Comparison<T>? comparer = null)
-        : this(new T[0], comparer)
+        : this(Array.Empty<T>(), comparer)
     {
     }
 
     public Maybe<Node> Root { get; private set; }
 
-    public int Length => this.length;
+    public int Length { get; private set; } = 0;
 
-    public Comparison<T> Comparer => this.comparer;
+    public Comparison<T> Comparer { get; }
+
+    public Maybe<T> Delete(T payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+        var node = this.SearchSubtree(payload, this.Root);
+
+        if (!node.HasValue)
+            return Maybe<T>.None;
+
+        this.Delete(node.Value);
+        return node.Unwrap();
+    }
 
     public void Enumerate(Action<T> action)
     {
-        if (action == null) throw new ArgumentNullException(nameof(action));
+        if (action == null)
+            throw new ArgumentNullException(nameof(action));
         this.EnumerateSubtree(action, this.Root);
     }
 
     public void Insert(T payload)
     {
-        if (payload == null) throw new ArgumentNullException(nameof(payload));
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
 
-        this.length++;
+        this.Length++;
 
         if (!this.Root.HasValue)
         {
@@ -50,35 +63,36 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
         this.InsertInSubtree(payload, this.Root.Value);
     }
 
-    public Maybe<T> Delete(T payload)
-    {
-        if (payload == null) throw new ArgumentNullException(nameof(payload));
-        var node = this.SearchSubtree(payload, this.Root);
-
-        if (!node.HasValue) return Maybe<T>.None;
-
-        this.Delete(node.Value);
-        return node.Unwrap();
-    }
-
     public Maybe<T> Max() => this.MaxOfSubtree(this.Root).Unwrap();
 
     public Maybe<T> Predecessor(T value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        if (value == null)
+            throw new ArgumentNullException(nameof(value));
         return this.Predecessor(value, this.Root).Unwrap();
     }
 
     public int Rank(T value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        if (value == null)
+            throw new ArgumentNullException(nameof(value));
         return this.Rank(value, this.Root);
     }
 
     public Maybe<T> Search(T value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        if (value == null)
+            throw new ArgumentNullException(nameof(value));
         return this.SearchSubtree(value, this.Root).Unwrap();
+    }
+
+    private void DecrementSize(Maybe<Node> node)
+    {
+        if (!node.HasValue)
+            return;
+
+        node.Value.Size--;
+        this.DecrementSize(node.Value.Parent);
     }
 
     private void Delete(Node node)
@@ -97,32 +111,17 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
         }
     }
 
-    private void DecrementSize(Maybe<Node> node)
-    {
-        if (!node.HasValue) return;
-
-        node.Value.Size--;
-        this.DecrementSize(node.Value.Parent);
-    }
-
-    private void DeleteDegreeTwo(Node node)
-    {
-        if (node.Degree != 2) throw new InvalidOperationException("Node is not Degree Two");
-
-        var largestLeft = this.MaxOfSubtree(node.Left);
-        node.Payload = largestLeft.Value.Payload;
-        this.Delete(largestLeft.Value);
-    }
-
     private void DeleteDegreeOneOrLeaf(Node node)
     {
-        if (node.Degree > 1) throw new InvalidOperationException("Node is not leaf or degree one");
+        if (node.Degree > 1)
+            throw new InvalidOperationException("Node is not leaf or degree one");
 
         var child = node.FirstChildWithValue;
-        if (child.HasValue) child.Value.Parent = node.Parent;
+        if (child.HasValue)
+            child.Value.Parent = node.Parent;
 
         this.DecrementSize(node.Parent);
-        this.length--;
+        this.Length--;
 
         if (node.IsRoot)
             this.Root = child;
@@ -132,12 +131,61 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
             node.Parent.Value.Right = child;
     }
 
+    private void DeleteDegreeTwo(Node node)
+    {
+        if (node.Degree != 2)
+            throw new InvalidOperationException("Node is not Degree Two");
+
+        var largestLeft = this.MaxOfSubtree(node.Left);
+        node.Payload = largestLeft.Value.Payload;
+        this.Delete(largestLeft.Value);
+    }
+
+    private void EnumerateSubtree(Action<T> action, Maybe<Node> node)
+    {
+        if (!node.HasValue)
+            return;
+
+        this.EnumerateSubtree(action, node.Value.Left);
+        action(node.Value.Payload);
+        this.EnumerateSubtree(action, node.Value.Right);
+    }
+
+    private void InsertInSubtree(T payload, Node parent)
+    {
+        parent.Size++;
+
+        if (this.Comparer(payload, parent.Payload) < 0)
+        {
+            if (parent.Left.HasValue)
+                this.InsertInSubtree(payload, parent.Left.Value);
+            else
+                parent.Left = new(new(payload, parent));
+        }
+        else
+        {
+            if (parent.Right.HasValue)
+                this.InsertInSubtree(payload, parent.Right.Value);
+            else
+                parent.Right = new(new(payload, parent));
+        }
+    }
+
+    private Maybe<Node> MaxOfSubtree(Maybe<Node> node)
+    {
+        if (!node.HasValue)
+            return Maybe<Node>.None;
+
+        return (!node.Value.Right.HasValue) ? node : this.MaxOfSubtree(node.Value.Right);
+    }
+
     private Maybe<Node> Predecessor(T value, Maybe<Node> node)
     {
-        if (!node.HasValue) return Maybe<Node>.None;
+        if (!node.HasValue)
+            return Maybe<Node>.None;
 
         var rawNode = node.Value;
-        var comparison = this.comparer(rawNode.Payload, value);
+        var comparison = this.Comparer(rawNode.Payload, value);
 
         if (comparison == 0)
         {
@@ -156,10 +204,11 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
 
     private int Rank(T value, Maybe<Node> node, int offset = 0)
     {
-        if (!node.HasValue) return offset;
+        if (!node.HasValue)
+            return offset;
 
         var rawNode = node.Value;
-        var comparison = this.comparer(rawNode.Payload, value);
+        var comparison = this.Comparer(rawNode.Payload, value);
 
         return comparison switch
         {
@@ -171,9 +220,10 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
 
     private Maybe<Node> SearchSubtree(T value, Maybe<Node> node)
     {
-        if (!node.HasValue) return Maybe<Node>.None;
+        if (!node.HasValue)
+            return Maybe<Node>.None;
 
-        var comparison = this.comparer(node.Value.Payload, value);
+        var comparison = this.Comparer(node.Value.Payload, value);
 
         return comparison switch
         {
@@ -181,44 +231,6 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
             < 0 => this.SearchSubtree(value, node.Value.Right),
             _ => this.SearchSubtree(value, node.Value.Left),
         };
-    }
-
-    private void InsertInSubtree(T payload, Node parent)
-    {
-        parent.Size++;
-
-        if (this.comparer(payload, parent.Payload) < 0)
-        {
-            if (parent.Left.HasValue)
-                this.InsertInSubtree(payload, parent.Left.Value);
-            else
-                parent.Left = new(new(payload, parent));
-        }
-        else
-        {
-            if (parent.Right.HasValue)
-                this.InsertInSubtree(payload, parent.Right.Value);
-            else
-                parent.Right = new(new(payload, parent));
-        }
-    }
-
-    private void EnumerateSubtree(Action<T> action, Maybe<Node> node)
-    {
-        if (!node.HasValue) return;
-
-        this.EnumerateSubtree(action, node.Value.Left);
-        action(node.Value.Payload);
-        this.EnumerateSubtree(action, node.Value.Right);
-    }
-
-    private Maybe<Node> MaxOfSubtree(Maybe<Node> node)
-    {
-        if (!node.HasValue) return Maybe<Node>.None;
-
-        return (!node.Value.Right.HasValue) ?
-            node :
-            this.MaxOfSubtree(node.Value.Right);
     }
 
     public class Node
@@ -245,9 +257,15 @@ public class StructuredBinaryTree<T> : IStructuredList<T>
 
         public bool IsRoot => !this.Parent.HasValue;
 
-        public bool IsLeftChild => this.Parent.HasValue && this.Parent.Value.Left.HasValue && this.Parent.Value.Left.Value == this;
+        public bool IsLeftChild =>
+            this.Parent.HasValue
+            && this.Parent.Value.Left.HasValue
+            && this.Parent.Value.Left.Value == this;
 
-        public bool IsRightChild => this.Parent.HasValue && this.Parent.Value.Right.HasValue && this.Parent.Value.Right.Value == this;
+        public bool IsRightChild =>
+            this.Parent.HasValue
+            && this.Parent.Value.Right.HasValue
+            && this.Parent.Value.Right.Value == this;
 
         public int Degree => (int)(this.Left.HasValue ? 1 : 0) + (this.Right.HasValue ? 1 : 0);
 

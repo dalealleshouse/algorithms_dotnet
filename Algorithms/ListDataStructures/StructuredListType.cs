@@ -6,5 +6,5 @@ public enum StructuredListType
     LinkedList,
     SortedArray,
     RandomArray,
-    BinaryTree,
+    UnbalancedBinaryTree,
 }

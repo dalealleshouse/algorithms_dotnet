@@ -11,15 +11,15 @@ public partial class Constructor
     [Fact]
     public void RejectNull()
     {
-        Assert.Throws<ArgumentNullException>(() => new StructuredBinaryTree<ComparableObject>(null, null));
+        Assert.Throws<ArgumentNullException>(() => new UnbalancedBinaryTree<ComparableObject>(null, null));
     }
 
     [Fact]
     public void InitRoot()
     {
-        var expected = Maybe<StructuredBinaryTree<int>.Node>.None;
+        var expected = Maybe<UnbalancedBinaryTree<int>.Node>.None;
 
-        var sut = new StructuredBinaryTree<int>();
+        var sut = new UnbalancedBinaryTree<int>();
         Assert.Equal(0, sut.Length);
         Assert.Equal(expected, sut.Root);
     }
@@ -27,7 +27,7 @@ public partial class Constructor
     [Fact]
     public void GeneratsListFromConstructorArray()
     {
-        var sut = new StructuredBinaryTree<int>(new int[] { 1, 2, 3 });
+        var sut = new UnbalancedBinaryTree<int>(new int[] { 1, 2, 3 });
         Assert.Equal(3, sut.Length);
     }
 }

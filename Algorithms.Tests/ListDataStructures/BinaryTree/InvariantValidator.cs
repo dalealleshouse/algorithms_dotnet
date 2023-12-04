@@ -8,18 +8,18 @@ using Xunit;
 public class InvariantValidator<T> : IInvariantValidator<T>
     where T : notnull, IComparable<T>
 {
-    private readonly StructuredBinaryTree<T> sut;
+    private readonly UnbalancedBinaryTree<T> sut;
 
     public InvariantValidator(IStructuredList<T> sut)
     {
-        this.sut = (StructuredBinaryTree<T>)sut;
+        this.sut = (UnbalancedBinaryTree<T>)sut;
     }
 
     public void Validate()
     {
         this.RootIsSet();
         this.ParentIsSet(
-            Maybe<StructuredBinaryTree<T>.Node>.None,
+            Maybe<UnbalancedBinaryTree<T>.Node>.None,
             this.sut.Root);
         this.LeftRightInvariant(this.sut.Root);
         this.SizeIsEqualToNumberOfChildNodes();
@@ -27,8 +27,8 @@ public class InvariantValidator<T> : IInvariantValidator<T>
     }
 
     private void ParentIsSet(
-            Maybe<StructuredBinaryTree<T>.Node> parent,
-            Maybe<StructuredBinaryTree<T>.Node> node)
+            Maybe<UnbalancedBinaryTree<T>.Node> parent,
+            Maybe<UnbalancedBinaryTree<T>.Node> node)
     {
         if (!node.HasValue) return;
 
@@ -50,7 +50,7 @@ public class InvariantValidator<T> : IInvariantValidator<T>
         }
     }
 
-    private void LeftRightInvariant(Maybe<StructuredBinaryTree<T>.Node> node)
+    private void LeftRightInvariant(Maybe<UnbalancedBinaryTree<T>.Node> node)
     {
         if (!node.HasValue) return;
 
@@ -92,7 +92,7 @@ public class InvariantValidator<T> : IInvariantValidator<T>
         }
     }
 
-    private void SizeIsEqualToNumberOfChildNodes(Maybe<StructuredBinaryTree<T>.Node> node)
+    private void SizeIsEqualToNumberOfChildNodes(Maybe<UnbalancedBinaryTree<T>.Node> node)
     {
         if (!node.HasValue) return;
 
