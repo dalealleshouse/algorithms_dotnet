@@ -8,7 +8,7 @@ public static class ExtensionMethods
         where T : notnull, IComparable<T>
         => node.HasValue ? new(node.Value.Payload) : Maybe<T>.None;
 
-    public static Maybe<T> Unwrap<T>(this Maybe<StructuredBinaryTree<T>.Node> node)
+    public static Maybe<T> Unwrap<T>(this Maybe<TreeNode<T>> node)
         where T : notnull, IComparable<T>
         => node.HasValue ? new(node.Value.Payload) : Maybe<T>.None;
 
@@ -16,7 +16,7 @@ public static class ExtensionMethods
         where T : notnull, IComparable<T>
         => result.HasValue ? new(result.Value.Item) : Maybe<T>.None;
 
-    public static int Size<T>(this Maybe<StructuredBinaryTree<T>.Node> node)
+    public static int Size<T>(this Maybe<TreeNode<T>> node)
         where T : notnull, IComparable<T>
         => node.HasValue ? node.Value.Size : 0;
 }

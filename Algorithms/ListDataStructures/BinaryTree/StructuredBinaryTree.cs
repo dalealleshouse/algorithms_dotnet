@@ -8,7 +8,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
 {
     public StructuredBinaryTree(T[] array, Comparison<T>? comparer = null)
     {
-        this.Root = Maybe<Node>.None;
+        this.Root = Maybe<TreeNode<T>>.None;
         this.Comparer = comparer ?? Comparer<T>.Default.Compare;
 
         if (array == null)
@@ -21,7 +21,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
     {
     }
 
-    public Maybe<Node> Root { get; private set; }
+    public Maybe<TreeNode<T>> Root { get; private set; }
 
     public int Length { get; private set; } = 0;
 
@@ -86,7 +86,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         return this.SearchSubtree(value, this.Root).Unwrap();
     }
 
-    private void DecrementSize(Maybe<Node> node)
+    private void DecrementSize(Maybe<TreeNode<T>> node)
     {
         if (!node.HasValue)
             return;
@@ -95,7 +95,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         this.DecrementSize(node.Value.Parent);
     }
 
-    private void Delete(Node node)
+    private void Delete(TreeNode<T> node)
     {
         switch (node.Degree)
         {
@@ -111,7 +111,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         }
     }
 
-    private void DeleteDegreeOneOrLeaf(Node node)
+    private void DeleteDegreeOneOrLeaf(TreeNode<T> node)
     {
         if (node.Degree > 1)
             throw new InvalidOperationException("Node is not leaf or degree one");
@@ -131,7 +131,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
             node.Parent.Value.Right = child;
     }
 
-    private void DeleteDegreeTwo(Node node)
+    private void DeleteDegreeTwo(TreeNode<T> node)
     {
         if (node.Degree != 2)
             throw new InvalidOperationException("Node is not Degree Two");
@@ -141,7 +141,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         this.Delete(largestLeft.Value);
     }
 
-    private void EnumerateSubtree(Action<T> action, Maybe<Node> node)
+    private void EnumerateSubtree(Action<T> action, Maybe<TreeNode<T>> node)
     {
         if (!node.HasValue)
             return;
@@ -151,7 +151,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         this.EnumerateSubtree(action, node.Value.Right);
     }
 
-    private void InsertInSubtree(T payload, Node parent)
+    private void InsertInSubtree(T payload, TreeNode<T> parent)
     {
         parent.Size++;
 
@@ -171,18 +171,18 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         }
     }
 
-    private Maybe<Node> MaxOfSubtree(Maybe<Node> node)
+    private Maybe<TreeNode<T>> MaxOfSubtree(Maybe<TreeNode<T>> node)
     {
         if (!node.HasValue)
-            return Maybe<Node>.None;
+            return Maybe<TreeNode<T>>.None;
 
         return (!node.Value.Right.HasValue) ? node : this.MaxOfSubtree(node.Value.Right);
     }
 
-    private Maybe<Node> Predecessor(T value, Maybe<Node> node)
+    private Maybe<TreeNode<T>> Predecessor(T value, Maybe<TreeNode<T>> node)
     {
         if (!node.HasValue)
-            return Maybe<Node>.None;
+            return Maybe<TreeNode<T>>.None;
 
         var rawNode = node.Value;
         var comparison = this.Comparer(rawNode.Payload, value);
@@ -202,7 +202,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         }
     }
 
-    private int Rank(T value, Maybe<Node> node, int offset = 0)
+    private int Rank(T value, Maybe<TreeNode<T>> node, int offset = 0)
     {
         if (!node.HasValue)
             return offset;
@@ -218,10 +218,10 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         };
     }
 
-    private Maybe<Node> SearchSubtree(T value, Maybe<Node> node)
+    private Maybe<TreeNode<T>> SearchSubtree(T value, Maybe<TreeNode<T>> node)
     {
         if (!node.HasValue)
-            return Maybe<Node>.None;
+            return Maybe<TreeNode<T>>.None;
 
         var comparison = this.Comparer(node.Value.Payload, value);
 
@@ -231,48 +231,5 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
             < 0 => this.SearchSubtree(value, node.Value.Right),
             _ => this.SearchSubtree(value, node.Value.Left),
         };
-    }
-
-    public class Node
-    {
-        public Node(T value, Node? parent = null, Node? left = null, Node? right = null)
-        {
-            this.Payload = value;
-            this.Parent = parent == null ? Maybe<Node>.None : new(parent);
-            this.Left = left == null ? Maybe<Node>.None : new(left);
-            this.Right = right == null ? Maybe<Node>.None : new(right);
-        }
-
-        public int Size { get; internal set; } = 1;
-
-        public T Payload { get; internal set; }
-
-        public Maybe<Node> Parent { get; internal set; }
-
-        public Maybe<Node> Left { get; internal set; }
-
-        public Maybe<Node> Right { get; internal set; }
-
-        public bool IsLeaf => this.Degree == 0;
-
-        public bool IsRoot => !this.Parent.HasValue;
-
-        public bool IsLeftChild =>
-            this.Parent.HasValue
-            && this.Parent.Value.Left.HasValue
-            && this.Parent.Value.Left.Value == this;
-
-        public bool IsRightChild =>
-            this.Parent.HasValue
-            && this.Parent.Value.Right.HasValue
-            && this.Parent.Value.Right.Value == this;
-
-        public int Degree => (int)(this.Left.HasValue ? 1 : 0) + (this.Right.HasValue ? 1 : 0);
-
-        public Maybe<Node> FirstChildWithValue => this.Left.HasValue ? this.Left : this.Right;
-
-        public int LeftSize => this.Left.HasValue ? this.Left.Value.Size : 0;
-
-        public int RightSize => this.Right.HasValue ? this.Right.Value.Size : 0;
     }
 }

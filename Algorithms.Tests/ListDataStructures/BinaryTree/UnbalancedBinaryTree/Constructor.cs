@@ -1,4 +1,4 @@
-namespace Algorithms.Tests.ListDataStructures.BinaryTree;
+namespace Algorithms.Tests.ListDataStructures.UnbalancedBinaryTree;
 
 using System;
 using Algorithms.ListDataStructures;
@@ -17,7 +17,7 @@ public partial class Constructor
     [Fact]
     public void InitRoot()
     {
-        var expected = Maybe<UnbalancedBinaryTree<int>.Node>.None;
+        var expected = Maybe<TreeNode<int>>.None;
 
         var sut = new UnbalancedBinaryTree<int>();
         Assert.Equal(0, sut.Length);
