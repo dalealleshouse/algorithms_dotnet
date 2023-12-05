@@ -19,4 +19,8 @@ public static class ExtensionMethods
     public static int Size<T>(this Maybe<TreeNode<T>> node)
         where T : notnull, IComparable<T>
         => node.HasValue ? node.Value.Size : 0;
+
+    public static NodeColor Color<T>(this Maybe<TreeNode<T>> node)
+        where T : notnull, IComparable<T>
+        => node.HasValue ? node.Value.Color : NodeColor.Black;
 }
