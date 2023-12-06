@@ -4,7 +4,7 @@ using System;
 using Algorithms.ListDataStructures;
 using Xunit;
 
-public partial class Constructor
+public class Constructor
 {
     private ComparableStruct[] testData = new ComparableStruct[] { new(1), new(2), new(3) };
 

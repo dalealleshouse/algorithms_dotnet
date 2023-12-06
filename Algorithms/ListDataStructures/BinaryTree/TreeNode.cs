@@ -1,6 +1,9 @@
 namespace Algorithms.ListDataStructures;
 
+using System;
+
 public class TreeNode<T>
+    where T : notnull, IComparable<T>
 {
     public TreeNode(T value, TreeNode<T>? parent = null, TreeNode<T>? left = null, TreeNode<T>? right = null)
     {

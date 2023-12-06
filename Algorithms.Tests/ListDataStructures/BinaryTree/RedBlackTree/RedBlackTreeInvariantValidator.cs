@@ -22,6 +22,7 @@ public class RedBlackTreeInvariantValidator<T> : BinaryTreeInvariantValidator<T>
         this.EveryNodeIsRedOrBlack(this.sut.Root);
         this.RootNodeIsBlack();
         this.NoConsecutiveRedNodes(this.sut.Root);
+        this.ValidateBlackHeight(this.sut.Root);
     }
 
     private void EveryNodeIsRedOrBlack(Maybe<TreeNode<T>> node)
@@ -33,11 +34,7 @@ public class RedBlackTreeInvariantValidator<T> : BinaryTreeInvariantValidator<T>
         this.EveryNodeIsRedOrBlack(node.Value.Right);
     }
 
-    private void RootNodeIsBlack()
-    {
-        if (this.sut.Root.HasValue)
-            Assert.True(this.sut.Root.Value.Color == NodeColor.Black);
-    }
+    private void RootNodeIsBlack() => Assert.Equal(NodeColor.Black, this.sut.Root.Color());
 
     private void NoConsecutiveRedNodes(Maybe<TreeNode<T>> node)
     {
@@ -52,5 +49,17 @@ public class RedBlackTreeInvariantValidator<T> : BinaryTreeInvariantValidator<T>
 
         this.NoConsecutiveRedNodes(node.Value.Left);
         this.NoConsecutiveRedNodes(node.Value.Right);
+    }
+
+    private int ValidateBlackHeight(Maybe<TreeNode<T>> node)
+    {
+        if (!node.HasValue) return 0;
+
+        int leftBlackHeight = this.ValidateBlackHeight(node.Value.Left);
+        int rightBlackHeight = this.ValidateBlackHeight(node.Value.Right);
+
+        Assert.Equal(leftBlackHeight, rightBlackHeight);
+
+        return (node.Value.Color == NodeColor.Black ? 1 : 0) + leftBlackHeight;
     }
 }

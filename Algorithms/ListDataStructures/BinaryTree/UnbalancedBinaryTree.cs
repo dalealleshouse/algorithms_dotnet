@@ -14,4 +14,20 @@ public class UnbalancedBinaryTree<T> : StructuredBinaryTree<T>
         : this(new T[0], comparer)
     {
     }
+
+    public override void Insert(T payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+
+        this.Length++;
+
+        if (!this.Root.HasValue)
+        {
+            this.Root = new(new(payload));
+            return;
+        }
+
+        this.InsertInSubtree(payload, this.Root.Value);
+    }
 }

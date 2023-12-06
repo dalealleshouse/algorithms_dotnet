@@ -21,9 +21,9 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
     {
     }
 
-    public Maybe<TreeNode<T>> Root { get; private set; }
+    public Maybe<TreeNode<T>> Root { get; protected set; }
 
-    public int Length { get; private set; } = 0;
+    public int Length { get; protected set; } = 0;
 
     public Comparison<T> Comparer { get; }
 
@@ -47,21 +47,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         this.EnumerateSubtree(action, this.Root);
     }
 
-    public void Insert(T payload)
-    {
-        if (payload == null)
-            throw new ArgumentNullException(nameof(payload));
-
-        this.Length++;
-
-        if (!this.Root.HasValue)
-        {
-            this.Root = new(new(payload));
-            return;
-        }
-
-        this.InsertInSubtree(payload, this.Root.Value);
-    }
+    public abstract void Insert(T payload);
 
     public Maybe<T> Max() => this.MaxOfSubtree(this.Root).Unwrap();
 
@@ -84,6 +70,30 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         if (value == null)
             throw new ArgumentNullException(nameof(value));
         return this.SearchSubtree(value, this.Root).Unwrap();
+    }
+
+    protected Maybe<TreeNode<T>> InsertInSubtree(T payload, TreeNode<T> parent)
+    {
+        parent.Size++;
+
+        if (this.Comparer(payload, parent.Payload) < 0)
+        {
+            if (parent.Left.HasValue)
+                return this.InsertInSubtree(payload, parent.Left.Value);
+            else
+                parent.Left = new(new(payload, parent));
+
+            return parent.Left;
+        }
+        else
+        {
+            if (parent.Right.HasValue)
+                return this.InsertInSubtree(payload, parent.Right.Value);
+            else
+                parent.Right = new(new(payload, parent));
+
+            return parent.Right;
+        }
     }
 
     private void DecrementSize(Maybe<TreeNode<T>> node)
@@ -149,26 +159,6 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         this.EnumerateSubtree(action, node.Value.Left);
         action(node.Value.Payload);
         this.EnumerateSubtree(action, node.Value.Right);
-    }
-
-    private void InsertInSubtree(T payload, TreeNode<T> parent)
-    {
-        parent.Size++;
-
-        if (this.Comparer(payload, parent.Payload) < 0)
-        {
-            if (parent.Left.HasValue)
-                this.InsertInSubtree(payload, parent.Left.Value);
-            else
-                parent.Left = new(new(payload, parent));
-        }
-        else
-        {
-            if (parent.Right.HasValue)
-                this.InsertInSubtree(payload, parent.Right.Value);
-            else
-                parent.Right = new(new(payload, parent));
-        }
     }
 
     private Maybe<TreeNode<T>> MaxOfSubtree(Maybe<TreeNode<T>> node)
