@@ -85,47 +85,40 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
         {
             var uncle = root.Uncle();
 
+            if (uncle.IsRed())
+            {
+                root.Parent().SetColor(NodeColor.Black);
+                uncle.SetColor(NodeColor.Black);
+                root.GrandParent().SetColor(NodeColor.Red);
+                root = root.GrandParent();
+                continue;
+            }
+
             if (root.Parent().IsLeftChild())
             {
-                if (uncle.IsRed())
-                {
-                    root.Parent().SetColor(NodeColor.Black);
-                    uncle.SetColor(NodeColor.Black);
-                    root.GrandParent().SetColor(NodeColor.Red);
-                    root = root.GrandParent();
-                }
-                else if (root.IsRightChild())
+                if (root.IsRightChild())
                 {
                     root = root.Parent();
                     this.LeftRotate(root);
+                    continue;
                 }
-                else
-                {
-                    root.Parent().SetColor(NodeColor.Black);
-                    root.GrandParent().SetColor(NodeColor.Red);
-                    this.RightRotate(root.GrandParent());
-                }
+
+                root.Parent().SetColor(NodeColor.Black);
+                root.GrandParent().SetColor(NodeColor.Red);
+                this.RightRotate(root.GrandParent());
             }
             else
             {
-                if (uncle.IsRed())
-                {
-                    root.Parent().SetColor(NodeColor.Black);
-                    uncle.SetColor(NodeColor.Black);
-                    root.GrandParent().SetColor(NodeColor.Red);
-                    root = root.GrandParent();
-                }
-                else if (root.IsLeftChild())
+                if (root.IsLeftChild())
                 {
                     root = root.Parent();
                     this.RightRotate(root);
+                    continue;
                 }
-                else
-                {
-                    root.Parent().SetColor(NodeColor.Black);
-                    root.GrandParent().SetColor(NodeColor.Red);
-                    this.LeftRotate(root.GrandParent());
-                }
+
+                root.Parent().SetColor(NodeColor.Black);
+                root.GrandParent().SetColor(NodeColor.Red);
+                this.LeftRotate(root.GrandParent());
             }
         }
 

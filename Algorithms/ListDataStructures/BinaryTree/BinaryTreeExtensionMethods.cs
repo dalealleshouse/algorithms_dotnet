@@ -13,21 +13,56 @@ public static class BinaryTreeExtensionMethods
         where T : notnull, IComparable<T>
         => node.HasValue ? node.Value.Size : 0;
 
+    public static void SetSize<T>(this Maybe<TreeNode<T>> node, int size)
+        where T : notnull, IComparable<T>
+    {
+        if (node.HasValue)
+            node.Value.Size = size;
+    }
+
     public static NodeColor Color<T>(this Maybe<TreeNode<T>> node)
         where T : notnull, IComparable<T>
         => node.HasValue ? node.Value.Color : NodeColor.Black;
+
+    public static void SetColor<T>(this Maybe<TreeNode<T>> node, NodeColor color)
+        where T : notnull, IComparable<T>
+    {
+        if (node.HasValue)
+            node.Value.Color = color;
+    }
 
     public static Maybe<TreeNode<T>> Left<T>(this Maybe<TreeNode<T>> node)
         where T : notnull, IComparable<T>
         => node.HasValue ? node.Value.Left : Maybe<TreeNode<T>>.None;
 
+    public static void SetLeft<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> left)
+        where T : notnull, IComparable<T>
+    {
+        if (node.HasValue)
+            node.Value.Left = left;
+    }
+
     public static Maybe<TreeNode<T>> Right<T>(this Maybe<TreeNode<T>> node)
       where T : notnull, IComparable<T>
       => node.HasValue ? node.Value.Right : Maybe<TreeNode<T>>.None;
 
+    public static void SetRight<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> right)
+        where T : notnull, IComparable<T>
+    {
+        if (node.HasValue)
+            node.Value.Right = right;
+    }
+
     public static Maybe<TreeNode<T>> Parent<T>(this Maybe<TreeNode<T>> node)
       where T : notnull, IComparable<T>
       => node.HasValue ? node.Value.Parent : Maybe<TreeNode<T>>.None;
+
+    public static void SetParent<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> parent)
+        where T : notnull, IComparable<T>
+    {
+        if (node.HasValue)
+            node.Value.Parent = parent;
+    }
 
     public static Maybe<TreeNode<T>> GrandParent<T>(this Maybe<TreeNode<T>> node)
       where T : notnull, IComparable<T>
@@ -56,20 +91,6 @@ public static class BinaryTreeExtensionMethods
       where T : notnull, IComparable<T>
       => node.HasValue ? node.Value.IsRightChild : false;
 
-    public static void SetLeft<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> left)
-        where T : notnull, IComparable<T>
-    {
-        if (node.HasValue)
-            node.Value.Left = left;
-    }
-
-    public static void SetRight<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> right)
-        where T : notnull, IComparable<T>
-    {
-        if (node.HasValue)
-            node.Value.Right = right;
-    }
-
     public static void SetLeftParent<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> parent)
         where T : notnull, IComparable<T>
     {
@@ -82,27 +103,6 @@ public static class BinaryTreeExtensionMethods
     {
         if (node.HasValue && node.Value.Right.HasValue)
             node.Value.Right.Value.Parent = parent;
-    }
-
-    public static void SetParent<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> parent)
-        where T : notnull, IComparable<T>
-    {
-        if (node.HasValue)
-            node.Value.Parent = parent;
-    }
-
-    public static void SetSize<T>(this Maybe<TreeNode<T>> node, int size)
-        where T : notnull, IComparable<T>
-    {
-        if (node.HasValue)
-            node.Value.Size = size;
-    }
-
-    public static void SetColor<T>(this Maybe<TreeNode<T>> node, NodeColor color)
-        where T : notnull, IComparable<T>
-    {
-        if (node.HasValue)
-            node.Value.Color = color;
     }
 
     public static string StringValue<T>(this Maybe<TreeNode<T>> node)
