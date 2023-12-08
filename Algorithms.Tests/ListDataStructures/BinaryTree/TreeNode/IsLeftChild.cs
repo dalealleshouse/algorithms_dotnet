@@ -1,5 +1,6 @@
-namespace Algorithms.Tests.ListDataStructures.BinaryTree.BinaryTreeExtensionMethods;
+namespace Algorithms.Tests.ListDataStructures.BinaryTree.TreeNode;
 
+using System;
 using Algorithms.ListDataStructures;
 using Xunit;
 
@@ -8,29 +9,29 @@ public class IsLeftChild
     private readonly UnbalancedBinaryTree<int> sut = BuildSut();
 
     [Fact]
-    public void ReturnFalseWhenNotSet()
+    public void ReturnTureForNullNode()
     {
-        var sut = Maybe<TreeNode<int>>.None;
-        Assert.False(sut.IsLeftChild());
+        var sut = TreeNode<int>.GetNullNode();
+        Assert.True(sut.IsLeftChild);
     }
 
     [Fact]
-    public void ReturnNotSetWhenNoParent()
+    public void ReturnFalseWhenNoParent()
     {
-        Maybe<TreeNode<int>> sut = new(new(1));
-        Assert.False(sut.IsLeftChild());
+        TreeNode<int> sut = new(1);
+        Assert.False(sut.IsLeftChild);
     }
 
     [Fact]
     public void ReturnTrueWhenIsLeft()
     {
-        Assert.True(this.sut.Root.Left().IsLeftChild());
+        Assert.True(this.sut.Root.Left.IsLeftChild);
     }
 
     [Fact]
     public void ReturnFalseWhenIsRight()
     {
-        Assert.False(this.sut.Root.Right().IsLeftChild());
+        Assert.False(this.sut.Root.Right.IsLeftChild);
     }
 
     private static UnbalancedBinaryTree<int> BuildSut()

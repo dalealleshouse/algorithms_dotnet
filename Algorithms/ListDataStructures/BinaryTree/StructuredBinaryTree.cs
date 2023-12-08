@@ -8,7 +8,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
 {
     public StructuredBinaryTree(T[] array, Comparison<T>? comparer = null)
     {
-        this.Root = Maybe<TreeNode<T>>.None;
+        this.Root = TreeNode<T>.GetNullNode();
         this.Comparer = comparer ?? Comparer<T>.Default.Compare;
 
         if (array == null)
@@ -21,24 +21,13 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
     {
     }
 
-    public Maybe<TreeNode<T>> Root { get; protected set; }
+    public TreeNode<T> Root { get; protected set; }
 
     public int Length { get; protected set; } = 0;
 
     public Comparison<T> Comparer { get; }
 
-    public Maybe<T> Delete(T payload)
-    {
-        if (payload == null)
-            throw new ArgumentNullException(nameof(payload));
-        var node = this.SearchSubtree(payload, this.Root);
-
-        if (!node.HasValue)
-            return Maybe<T>.None;
-
-        this.Delete(node.Value);
-        return node.Unwrap();
-    }
+    public abstract Maybe<T> Delete(T payload);
 
     public void Enumerate(Action<T> action)
     {
@@ -55,6 +44,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
     {
         if (value == null)
             throw new ArgumentNullException(nameof(value));
+
         return this.Predecessor(value, this.Root).Unwrap();
     }
 
@@ -72,63 +62,75 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         return this.SearchSubtree(value, this.Root).Unwrap();
     }
 
-    protected Maybe<TreeNode<T>> InsertInSubtree(T payload, TreeNode<T> parent)
+    protected TreeNode<T> InsertInSubtree(T payload, TreeNode<T> parent)
     {
         parent.Size++;
 
         if (this.Comparer(payload, parent.Payload) < 0)
         {
-            if (parent.Left.HasValue)
-                return this.InsertInSubtree(payload, parent.Left.Value);
+            if (!parent.Left.IsNull)
+                return this.InsertInSubtree(payload, parent.Left);
             else
-                parent.Left = new(new(payload, parent));
+                parent.Left = new(payload, parent);
 
             return parent.Left;
         }
         else
         {
-            if (parent.Right.HasValue)
-                return this.InsertInSubtree(payload, parent.Right.Value);
+            if (!parent.Right.IsNull)
+                return this.InsertInSubtree(payload, parent.Right);
             else
-                parent.Right = new(new(payload, parent));
+                parent.Right = new(payload, parent);
 
             return parent.Right;
         }
     }
 
-    private void DecrementSize(Maybe<TreeNode<T>> node)
+    protected TreeNode<T> SearchSubtree(T value, TreeNode<T> node)
     {
-        if (!node.HasValue)
-            return;
+        if (node.IsNull)
+            return node;
 
-        node.Value.Size--;
-        this.DecrementSize(node.Value.Parent);
+        var comparison = this.Comparer(node.Payload, value);
+
+        return comparison switch
+        {
+            0 => node,
+            < 0 => this.SearchSubtree(value, node.Right),
+            _ => this.SearchSubtree(value, node.Left),
+        };
     }
 
-    private void Delete(TreeNode<T> node)
+    protected TreeNode<T> Delete(TreeNode<T> node)
     {
         switch (node.Degree)
         {
             case 0:
             case 1:
-                this.DeleteDegreeOneOrLeaf(node);
-                break;
+                return this.DeleteDegreeOneOrLeaf(node);
             case 2:
-                this.DeleteDegreeTwo(node);
-                break;
+                return this.DeleteDegreeTwo(node);
             default:
                 throw new InvalidOperationException("Invalid node degree");
         }
     }
 
-    private void DeleteDegreeOneOrLeaf(TreeNode<T> node)
+    private void DecrementSize(TreeNode<T> node)
+    {
+        if (node.IsNull)
+            return;
+
+        node.Size--;
+        this.DecrementSize(node.Parent);
+    }
+
+    private TreeNode<T> DeleteDegreeOneOrLeaf(TreeNode<T> node)
     {
         if (node.Degree > 1)
             throw new InvalidOperationException("Node is not leaf or degree one");
 
         var child = node.FirstChildWithValue;
-        if (child.HasValue)
-            child.Value.Parent = node.Parent;
+        child.Parent = node.Parent;
 
         this.DecrementSize(node.Parent);
         this.Length--;
@@ -136,90 +138,75 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
         if (node.IsRoot)
             this.Root = child;
         else if (node.IsLeftChild)
-            node.Parent.Value.Left = child;
+            node.Parent.Left = child;
         else
-            node.Parent.Value.Right = child;
+            node.Parent.Right = child;
+
+        return child;
     }
 
-    private void DeleteDegreeTwo(TreeNode<T> node)
+    private TreeNode<T> DeleteDegreeTwo(TreeNode<T> node)
     {
         if (node.Degree != 2)
             throw new InvalidOperationException("Node is not Degree Two");
 
         var largestLeft = this.MaxOfSubtree(node.Left);
-        node.Payload = largestLeft.Value.Payload;
-        this.Delete(largestLeft.Value);
+        node.Payload = largestLeft.Payload;
+        return this.Delete(largestLeft);
     }
 
-    private void EnumerateSubtree(Action<T> action, Maybe<TreeNode<T>> node)
+    private void EnumerateSubtree(Action<T> action, TreeNode<T> node)
     {
-        if (!node.HasValue)
+        if (node.IsNull)
             return;
 
-        this.EnumerateSubtree(action, node.Value.Left);
-        action(node.Value.Payload);
-        this.EnumerateSubtree(action, node.Value.Right);
+        this.EnumerateSubtree(action, node.Left);
+        action(node.Payload);
+        this.EnumerateSubtree(action, node.Right);
     }
 
-    private Maybe<TreeNode<T>> MaxOfSubtree(Maybe<TreeNode<T>> node)
+    private TreeNode<T> MaxOfSubtree(TreeNode<T> node)
     {
-        if (!node.HasValue)
-            return Maybe<TreeNode<T>>.None;
+        if (node.IsNull)
+            return node;
 
-        return (!node.Value.Right.HasValue) ? node : this.MaxOfSubtree(node.Value.Right);
+        return node.Right.IsNull ? node : this.MaxOfSubtree(node.Right);
     }
 
-    private Maybe<TreeNode<T>> Predecessor(T value, Maybe<TreeNode<T>> node)
+    private TreeNode<T> Predecessor(T value, TreeNode<T> node)
     {
-        if (!node.HasValue)
-            return Maybe<TreeNode<T>>.None;
+        if (node.IsNull)
+            return node;
 
-        var rawNode = node.Value;
-        var comparison = this.Comparer(rawNode.Payload, value);
+        var comparison = this.Comparer(node.Payload, value);
 
         if (comparison == 0)
         {
-            return this.MaxOfSubtree(rawNode.Left);
+            return this.MaxOfSubtree(node.Left);
         }
         else if (comparison < 0)
         {
-            var result = this.Predecessor(value, rawNode.Right);
-            return result.HasValue ? result : new(rawNode);
+            var result = this.Predecessor(value, node.Right);
+            return !result.IsNull ? result : node;
         }
         else
         {
-            return this.Predecessor(value, rawNode.Left);
+            return this.Predecessor(value, node.Left);
         }
     }
 
-    private int Rank(T value, Maybe<TreeNode<T>> node, int offset = 0)
+    private int Rank(T value, TreeNode<T> node, int offset = 0)
     {
-        if (!node.HasValue)
+        if (node.IsNull)
             return offset;
 
-        var rawNode = node.Value;
-        var comparison = this.Comparer(rawNode.Payload, value);
+        var comparison = this.Comparer(node.Payload, value);
 
         return comparison switch
         {
-            0 => offset + rawNode.LeftSize,
-            < 0 => this.Rank(value, rawNode.Right, offset + rawNode.LeftSize + 1),
-            _ => this.Rank(value, rawNode.Left, offset),
-        };
-    }
-
-    private Maybe<TreeNode<T>> SearchSubtree(T value, Maybe<TreeNode<T>> node)
-    {
-        if (!node.HasValue)
-            return Maybe<TreeNode<T>>.None;
-
-        var comparison = this.Comparer(node.Value.Payload, value);
-
-        return comparison switch
-        {
-            0 => node,
-            < 0 => this.SearchSubtree(value, node.Value.Right),
-            _ => this.SearchSubtree(value, node.Value.Left),
+            0 => offset + node.LeftSize,
+            < 0 => this.Rank(value, node.Right, offset + node.LeftSize + 1),
+            _ => this.Rank(value, node.Left, offset),
         };
     }
 }

@@ -58,8 +58,26 @@ public class RedBlackTreeInvariantValidator<T> : BinaryTreeInvariantValidator<T>
         int leftBlackHeight = this.ValidateBlackHeight(node.Value.Left);
         int rightBlackHeight = this.ValidateBlackHeight(node.Value.Right);
 
-        Assert.Equal(leftBlackHeight, rightBlackHeight);
+        if (leftBlackHeight != rightBlackHeight)
+        {
+            this.sut.Root.PrintTree();
 
-        return (node.Value.Color == NodeColor.Black ? 1 : 0) + leftBlackHeight;
+            // Optionally, throw a more informative exception here
+            throw new InvalidOperationException($"Black height imbalance detected at node {node.StringValue()}. Left height: {leftBlackHeight}, Right height: {rightBlackHeight}");
+        }
+
+        return (node.IsBlack() ? 1 : 0) + leftBlackHeight;
     }
+
+    /* private int ValidateBlackHeight(Maybe<TreeNode<T>> node) */
+    /* { */
+    /*     if (!node.HasValue) return 0; */
+
+    /*     int leftBlackHeight = this.ValidateBlackHeight(node.Value.Left); */
+    /*     int rightBlackHeight = this.ValidateBlackHeight(node.Value.Right); */
+
+    /*     Assert.Equal(leftBlackHeight, rightBlackHeight); */
+
+    /*     return (node.Value.Color == NodeColor.Black ? 1 : 0) + leftBlackHeight; */
+    /* } */
 }

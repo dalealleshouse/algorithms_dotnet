@@ -17,11 +17,9 @@ public partial class Constructor
     [Fact]
     public void InitRoot()
     {
-        var expected = Maybe<TreeNode<int>>.None;
-
         var sut = new UnbalancedBinaryTree<int>();
         Assert.Equal(0, sut.Length);
-        Assert.Equal(expected, sut.Root);
+        Assert.True(sut.Root.IsNull);
     }
 
     [Fact]

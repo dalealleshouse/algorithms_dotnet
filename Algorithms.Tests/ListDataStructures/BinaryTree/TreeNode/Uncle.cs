@@ -1,4 +1,4 @@
-namespace Algorithms.Tests.ListDataStructures.BinaryTree.BinaryTreeExtensionMethods;
+namespace Algorithms.Tests.ListDataStructures.BinaryTree.TreeNode;
 
 using Algorithms.ListDataStructures;
 using Xunit;
@@ -8,17 +8,17 @@ public class Uncle
     [Fact]
     public void ReturnNotSetWhenNotSet()
     {
-        var sut = Maybe<TreeNode<int>>.None;
+        var sut = TreeNode<int>.GetNullNode();
         var result = sut.Uncle();
-        Assert.False(result.HasValue);
+        Assert.True(result.IsNull);
     }
 
     [Fact]
     public void ReturnNotSetWhenNoChildren()
     {
-        Maybe<TreeNode<int>> sut = new(new(1));
+        TreeNode<int> sut = new(1);
         var result = sut.Uncle();
-        Assert.False(result.HasValue);
+        Assert.True(result.IsNull);
     }
 
     [Fact]
@@ -32,9 +32,9 @@ public class Uncle
         var tree = this.BuildSut();
         tree.Insert(0);
 
-        var result = tree.Root.Left().Left().Uncle();
-        Assert.True(result.HasValue);
-        Assert.Equal(tree.Root.Right(), result);
+        var result = tree.Root.Left.Left.Uncle();
+        Assert.False(result.IsNull);
+        Assert.Equal(tree.Root.Right, result);
     }
 
     [Fact]
@@ -48,9 +48,9 @@ public class Uncle
         var tree = this.BuildSut();
         tree.Insert(4);
 
-        var result = tree.Root.Right().Right().Uncle();
-        Assert.True(result.HasValue);
-        Assert.Equal(tree.Root.Left(), result);
+        var result = tree.Root.Right.Right.Uncle();
+        Assert.False(result.IsNull);
+        Assert.Equal(tree.Root.Left, result);
     }
 
     private UnbalancedBinaryTree<int> BuildSut()

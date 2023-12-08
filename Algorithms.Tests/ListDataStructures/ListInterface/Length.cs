@@ -17,7 +17,7 @@ public class Length : ListTests
         });
     }
 
-    [Fact(Skip = "Not implemented")]
+    [Fact]
     public void DecrementsLengthForEachDelete()
     {
         this.RunTestOnAllLists<int>(

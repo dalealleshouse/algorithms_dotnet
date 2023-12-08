@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public static class BinaryTreeExtensionMethods
 {
-    public static Maybe<T> Unwrap<T>(this Maybe<TreeNode<T>> node)
+    public static Maybe<T> Unwrap<T>(this TreeNode<T> node)
         where T : notnull, IComparable<T>
-        => node.HasValue ? new(node.Value.Payload) : Maybe<T>.None;
+        => !node.IsNull ? new(node.Payload) : Maybe<T>.None;
 
     public static int Size<T>(this Maybe<TreeNode<T>> node)
         where T : notnull, IComparable<T>
@@ -24,18 +24,19 @@ public static class BinaryTreeExtensionMethods
         where T : notnull, IComparable<T>
         => node.HasValue ? node.Value.Color : NodeColor.Black;
 
-    public static void SetColor<T>(this Maybe<TreeNode<T>> node, NodeColor color)
+    public static void Color<T>(this Maybe<TreeNode<T>> node, NodeColor color)
         where T : notnull, IComparable<T>
     {
         if (node.HasValue)
             node.Value.Color = color;
     }
 
+    /*
     public static Maybe<TreeNode<T>> Left<T>(this Maybe<TreeNode<T>> node)
         where T : notnull, IComparable<T>
         => node.HasValue ? node.Value.Left : Maybe<TreeNode<T>>.None;
 
-    public static void SetLeft<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> left)
+    public static void Left<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> left)
         where T : notnull, IComparable<T>
     {
         if (node.HasValue)
@@ -46,7 +47,7 @@ public static class BinaryTreeExtensionMethods
       where T : notnull, IComparable<T>
       => node.HasValue ? node.Value.Right : Maybe<TreeNode<T>>.None;
 
-    public static void SetRight<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> right)
+    public static void Right<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> right)
         where T : notnull, IComparable<T>
     {
         if (node.HasValue)
@@ -57,7 +58,7 @@ public static class BinaryTreeExtensionMethods
       where T : notnull, IComparable<T>
       => node.HasValue ? node.Value.Parent : Maybe<TreeNode<T>>.None;
 
-    public static void SetParent<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> parent)
+    public static void Parent<T>(this Maybe<TreeNode<T>> node, Maybe<TreeNode<T>> parent)
         where T : notnull, IComparable<T>
     {
         if (node.HasValue)
@@ -81,7 +82,11 @@ public static class BinaryTreeExtensionMethods
 
     public static bool IsRed<T>(this Maybe<TreeNode<T>> node)
       where T : notnull, IComparable<T>
-      => node.HasValue ? node.Value.Color == NodeColor.Red : false;
+      => node.Color() == NodeColor.Red;
+
+    public static bool IsBlack<T>(this Maybe<TreeNode<T>> node)
+      where T : notnull, IComparable<T>
+      => node.Color() == NodeColor.Black;
 
     public static bool IsLeftChild<T>(this Maybe<TreeNode<T>> node)
       where T : notnull, IComparable<T>
@@ -105,31 +110,34 @@ public static class BinaryTreeExtensionMethods
             node.Value.Right.Value.Parent = parent;
     }
 
-    public static string StringValue<T>(this Maybe<TreeNode<T>> node)
+
+    */
+
+    public static string StringValue<T>(this TreeNode<T> node)
         where T : notnull, IComparable<T>
-        => node.HasValue ? node.Value.Payload.ToString() ?? "NULL" : "Maybe<T>.None";
+        => !node.IsNull ? node.Payload.ToString() ?? "NULL" : "Maybe<T>.None";
 
     public static string Direction<T>(this TreeNode<T> node)
         where T : notnull, IComparable<T>
       => node switch
       {
           _ when node.IsRoot => "Root",
-          _ when node.IsLeftChild => "Left",
-          _ when node.IsRightChild => "Right",
+          _ when node.IsLeftChild => "L",
+          _ when node.IsRightChild => "R",
           _ => "None",
       };
 
-    public static void PrintTree<T>(this Maybe<TreeNode<T>> root)
+    public static void PrintTree<T>(this TreeNode<T> root)
         where T : notnull, IComparable<T>
     {
-        if (!root.HasValue)
+        if (root.IsNull)
         {
             Console.WriteLine("Tree is empty");
             return;
         }
 
         Queue<TreeNode<T>> queue = new Queue<TreeNode<T>>();
-        queue.Enqueue(root.Value);
+        queue.Enqueue(root);
 
         while (queue.Count > 0)
         {
@@ -146,14 +154,16 @@ public static class BinaryTreeExtensionMethods
 
                 Console.ResetColor();
 
-                if (currentNode.Left.HasValue)
-                    queue.Enqueue(currentNode.Left.Value);
+                if (!currentNode.Left.IsNull)
+                    queue.Enqueue(currentNode.Left);
 
-                if (currentNode.Right.HasValue)
-                    queue.Enqueue(currentNode.Right.Value);
+                if (!currentNode.Right.IsNull)
+                    queue.Enqueue(currentNode.Right);
             }
 
             Console.WriteLine(); // Move to the next line after each level
         }
+
+        Console.WriteLine();
     }
 }

@@ -33,4 +33,19 @@ public class Balance
         var validator = new RedBlackTreeInvariantValidator<int>(sut);
         validator.Validate();
     }
+
+    [Fact]
+    public void DeleteReblances()
+    {
+        var sut = new RedBlackTree<int>(SutFactory.BuildArray(10));
+        var doomed = 4;
+        var deleteResult = sut.Delete(doomed);
+
+        Assert.Equal(doomed, deleteResult.Value);
+        var searchResult = sut.Search(doomed);
+        Assert.False(searchResult.HasValue);
+
+        var validator = new RedBlackTreeInvariantValidator<int>(sut);
+        validator.Validate();
+    }
 }

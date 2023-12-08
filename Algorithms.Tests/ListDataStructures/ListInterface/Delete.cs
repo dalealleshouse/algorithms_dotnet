@@ -5,7 +5,7 @@ using Xunit;
 
 public class Delete : ListTests
 {
-    [Fact(Skip = "Not implemented")]
+    [Fact]
     public void RejectNull()
     {
         this.RunTestOnAllLists<ComparableObject>(sut =>
@@ -14,7 +14,7 @@ public class Delete : ListTests
         });
     }
 
-    [Fact(Skip = "Not implemented")]
+    [Fact]
     public void DeleteRemovesValue()
     {
         this.RunTestOnAllLists<int>(
@@ -30,7 +30,7 @@ public class Delete : ListTests
             SutFactory.BuildArray(10));
     }
 
-    [Fact(Skip = "Not implemented")]
+    [Fact]
     public void ReturnsNotFoundForNonExistantValues()
     {
         this.RunTestOnAllLists<int>(
@@ -42,7 +42,7 @@ public class Delete : ListTests
             SutFactory.BuildArray(10));
     }
 
-    [Theory(Skip = "Not implemented")]
+    [Theory]
     [InlineData('b')]
     [InlineData('c')]
     [InlineData('d')]
@@ -53,7 +53,7 @@ public class Delete : ListTests
     [InlineData('i')]
     [InlineData('k')]
     [InlineData('l')]
-    public void ReturnPredecessorAtEveryPosition(char doomed)
+    public void DeleteAtEveryPosition(char doomed)
     {
         this.RunTestOnAllLists<char>(
             sut =>

@@ -22,12 +22,25 @@ public class UnbalancedBinaryTree<T> : StructuredBinaryTree<T>
 
         this.Length++;
 
-        if (!this.Root.HasValue)
+        if (this.Root.IsNull)
         {
-            this.Root = new(new(payload));
+            this.Root = new(payload);
             return;
         }
 
-        this.InsertInSubtree(payload, this.Root.Value);
+        this.InsertInSubtree(payload, this.Root);
+    }
+
+    public override Maybe<T> Delete(T payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+        var node = this.SearchSubtree(payload, this.Root);
+
+        if (node.IsNull)
+            return Maybe<T>.None;
+
+        this.Delete(node);
+        return node.Unwrap();
     }
 }

@@ -5,45 +5,65 @@ using System;
 public class TreeNode<T>
     where T : notnull, IComparable<T>
 {
+    private static readonly TreeNode<T> NullNode;
+
+    static TreeNode()
+    {
+        NullNode = new TreeNode<T>();
+        NullNode.Size = 0;
+        NullNode.Parent = NullNode;
+        NullNode.Left = NullNode;
+        NullNode.Right = NullNode;
+    }
+
     public TreeNode(T value, TreeNode<T>? parent = null, TreeNode<T>? left = null, TreeNode<T>? right = null)
     {
         this.Payload = value;
-        this.Parent = parent == null ? Maybe<TreeNode<T>>.None : new(parent);
-        this.Left = left == null ? Maybe<TreeNode<T>>.None : new(left);
-        this.Right = right == null ? Maybe<TreeNode<T>>.None : new(right);
+        this.Parent = parent == null ? NullNode : parent;
+        this.Left = left == null ? NullNode : left;
+        this.Right = right == null ? NullNode : right;
+    }
+
+    private TreeNode()
+    {
+        this.Payload = default!;
     }
 
     public int Size { get; internal set; } = 1;
 
     public T Payload { get; internal set; }
 
-    public Maybe<TreeNode<T>> Parent { get; internal set; }
+    public TreeNode<T> Parent { get; internal set; } = NullNode;
 
-    public Maybe<TreeNode<T>> Left { get; internal set; }
+    public TreeNode<T> Left { get; internal set; } = NullNode;
 
-    public Maybe<TreeNode<T>> Right { get; internal set; }
+    public TreeNode<T> Right { get; internal set; } = NullNode;
 
     public NodeColor Color { get; internal set; } = NodeColor.Black;
 
+    public bool IsNull => this == NullNode;
+
     public bool IsLeaf => this.Degree == 0;
 
-    public bool IsRoot => !this.Parent.HasValue;
+    public bool IsRoot => this.Parent == NullNode;
 
-    public bool IsLeftChild =>
-        this.Parent.HasValue
-        && this.Parent.Value.Left.HasValue
-        && this.Parent.Value.Left.Value == this;
+    public bool IsLeftChild => this.Parent.Left == this;
 
-    public bool IsRightChild =>
-        this.Parent.HasValue
-        && this.Parent.Value.Right.HasValue
-        && this.Parent.Value.Right.Value == this;
+    public bool IsRightChild => this.Parent.Right == this;
 
-    public int Degree => (int)(this.Left.HasValue ? 1 : 0) + (this.Right.HasValue ? 1 : 0);
+    public int Degree => (int)(!this.Left.IsNull ? 1 : 0) + (!this.Right.IsNull ? 1 : 0);
 
-    public Maybe<TreeNode<T>> FirstChildWithValue => this.Left.HasValue ? this.Left : this.Right;
+    public TreeNode<T> FirstChildWithValue => !this.Left.IsNull ? this.Left : this.Right;
 
-    public int LeftSize => this.Left.HasValue ? this.Left.Value.Size : 0;
+    public int LeftSize => !this.Left.IsNull ? this.Left.Size : 0;
 
-    public int RightSize => this.Right.HasValue ? this.Right.Value.Size : 0;
+    public int RightSize => !this.Right.IsNull ? this.Right.Size : 0;
+
+    public static TreeNode<T> GetNullNode() => NullNode;
+
+    public TreeNode<T> Sibling()
+      => this.IsLeftChild ? this.Parent.Right : this.Parent.Left;
+
+    public TreeNode<T> Uncle()
+      => this.Parent.Sibling();
 }

@@ -1,0 +1,234 @@
+namespace Algorithms.ListDataStructures;
+
+using System;
+
+public class RedBlackTree<T> : StructuredBinaryTree<T>
+    where T : notnull, IComparable<T>
+{
+    public RedBlackTree(T[] array, Comparison<T>? comparer = null)
+      : base(array, comparer)
+    {
+    }
+
+    public RedBlackTree(Comparison<T>? comparer = null)
+        : this(new T[0], comparer)
+    {
+    }
+
+    public override void Insert(T payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+
+        this.Length++;
+
+        if (!this.Root.HasValue)
+        {
+            this.Root = new(new(payload));
+            return;
+        }
+
+        var node = this.InsertInSubtree(payload, this.Root.Value);
+        node.Color(NodeColor.Red);
+        this.Balance(node);
+    }
+
+    public override Maybe<T> Delete(T payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+        var node = this.SearchSubtree(payload, this.Root);
+
+        if (!node.HasValue)
+            return Maybe<T>.None;
+
+        var replacement = this.Delete(node.Value);
+
+        if (node.Color() == NodeColor.Black)
+            this.BlanceAfterDelete(replacement);
+
+        return node.Unwrap();
+    }
+
+    private void BlanceAfterDelete(Maybe<TreeNode<T>> startingAt)
+    {
+        Console.WriteLine($"startingAt: {startingAt.StringValue()}");
+
+        while (startingAt.HasValue && !startingAt.Equals(this.Root) && startingAt.Color() == NodeColor.Black)
+        {
+            Console.WriteLine($"startingAt: {startingAt.StringValue()}");
+            Console.WriteLine($"root: {this.Root.StringValue()}");
+
+            if (startingAt.IsLeftChild())
+            {
+                var sibling = startingAt.Parent().Right();
+
+                if (sibling.IsRed())
+                {
+                    // case 3.1
+                    sibling.IsBlack();
+                    startingAt.Parent().Color(NodeColor.Red);
+                    this.LeftRotate(startingAt.Parent());
+                    sibling = startingAt.Parent().Right();
+                }
+
+                if (sibling.Left().IsBlack() && sibling.Right().IsBlack())
+                {
+                    // case 3.2
+                    sibling.Color(NodeColor.Red);
+                    startingAt = startingAt.Parent();
+                }
+                else
+                {
+                    if (sibling.Right().IsBlack())
+                    {
+                        // case 3.3
+                        sibling.Left().Color(NodeColor.Black);
+                        sibling.Color(NodeColor.Red);
+                        this.RightRotate(sibling);
+                        sibling = startingAt.Parent().Right();
+                    }
+
+                    // case 3.4
+                    sibling.Color(startingAt.Parent().Color());
+                    startingAt.Parent().Color(NodeColor.Black);
+                    startingAt.Right().Color(NodeColor.Black);
+                    this.LeftRotate(startingAt.Parent());
+                    startingAt = this.Root;
+                }
+            }
+            else
+            {
+                var sibling = startingAt.Parent().Left();
+
+                if (sibling.IsRed())
+                {
+                    // case 3.1
+                    startingAt.Color(NodeColor.Black);
+                    startingAt.Parent().Color(NodeColor.Red);
+                    this.RightRotate(startingAt.Parent());
+                    sibling = startingAt.Parent().Left();
+                }
+
+                if (sibling.Left().Color() == NodeColor.Black && sibling.Right().Color() == NodeColor.Black)
+                {
+                    // case 3.2
+                    sibling.Color(NodeColor.Red);
+                    startingAt = startingAt.Parent();
+                }
+                else
+                {
+                    if (sibling.Left().Color() == NodeColor.Black)
+                    {
+                        // case 3.3
+                        sibling.Right().Color(NodeColor.Black);
+                        sibling.Color(NodeColor.Red);
+                        this.LeftRotate(sibling);
+                        sibling = startingAt.Parent().Left();
+                    }
+
+                    // case 3.4
+                    sibling.Color(startingAt.Parent().Color());
+                    sibling.Parent().Color(NodeColor.Black);
+                    sibling.Left().Color(NodeColor.Black);
+                    this.RightRotate(startingAt.Parent());
+                    startingAt = this.Root;
+                }
+            }
+        }
+
+        startingAt.Color(NodeColor.Black);
+    }
+
+    private void LeftRotate(Maybe<TreeNode<T>> pivot)
+    {
+        var temp = pivot.Right();
+        pivot.Right(temp.Left());
+
+        temp.SetLeftParent(pivot);
+
+        temp.Parent(pivot.Parent());
+
+        if (!pivot.Parent().HasValue)
+            this.Root = temp;
+        else if (pivot.IsLeftChild())
+            pivot.Parent().Left(temp);
+        else
+            pivot.Parent().Right(temp);
+
+        temp.Left(pivot);
+        pivot.Parent(temp);
+
+        pivot.SetSize(pivot.Left().Size() + pivot.Right().Size() + 1);
+        pivot.Parent().SetSize(pivot.Size() + pivot.Parent().Right().Size() + 1);
+    }
+
+    private void RightRotate(Maybe<TreeNode<T>> pivot)
+    {
+        var temp = pivot.Left();
+        pivot.Left(temp.Right());
+
+        temp.SetRightParent(pivot);
+
+        temp.Parent(pivot.Parent());
+
+        if (!pivot.Parent().HasValue)
+            this.Root = temp;
+        else if (pivot.IsRightChild())
+            pivot.Parent().Right(temp);
+        else
+            pivot.Parent().Left(temp);
+
+        temp.Right(pivot);
+        pivot.Parent(temp);
+
+        pivot.SetSize(pivot.Left().Size() + pivot.Right().Size() + 1);
+        pivot.Parent().SetSize(pivot.Size() + pivot.Parent().Left().Size() + 1);
+    }
+
+    private void Balance(Maybe<TreeNode<T>> root)
+    {
+        while (root.Parent().IsRed())
+        {
+            var uncle = root.Uncle();
+
+            if (uncle.IsRed())
+            {
+                root.Parent().Color(NodeColor.Black);
+                uncle.Color(NodeColor.Black);
+                root.GrandParent().Color(NodeColor.Red);
+                root = root.GrandParent();
+                continue;
+            }
+
+            if (root.Parent().IsLeftChild())
+            {
+                if (root.IsRightChild())
+                {
+                    root = root.Parent();
+                    this.LeftRotate(root);
+                    continue;
+                }
+
+                root.Parent().Color(NodeColor.Black);
+                root.GrandParent().Color(NodeColor.Red);
+                this.RightRotate(root.GrandParent());
+            }
+            else
+            {
+                if (root.IsLeftChild())
+                {
+                    root = root.Parent();
+                    this.RightRotate(root);
+                    continue;
+                }
+
+                root.Parent().Color(NodeColor.Black);
+                root.GrandParent().Color(NodeColor.Red);
+                this.LeftRotate(root.GrandParent());
+            }
+        }
+
+        this.Root.Color(NodeColor.Black);
+    }
+}
