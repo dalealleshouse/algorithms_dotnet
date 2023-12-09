@@ -43,7 +43,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
             return Maybe<T>.None;
 
         var returnValue = node.Unwrap();
-        var isBlack = node.IsBlack;
+        var isBlack = node.IsBlack();
         var replacement = this.Delete(node);
 
         if (isBlack)
@@ -54,13 +54,13 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
 
     private void BlanceAfterDelete(TreeNode<T> node)
     {
-        while (node != this.Root && node.IsBlack)
+        while (node != this.Root && node.IsBlack())
         {
             var sibling = node.Sibling();
 
-            if (node.IsLeftChild)
+            if (node.IsLeftChild())
             {
-                if (sibling.IsRed)
+                if (sibling.IsRed())
                 {
                     // case 3.1
                     sibling.Color = NodeColor.Black;
@@ -69,7 +69,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
                     sibling = node.Parent.Right;
                 }
 
-                if (sibling.Left.IsBlack && sibling.Right.IsBlack)
+                if (sibling.Left.IsBlack() && sibling.Right.IsBlack())
                 {
                     // case 3.2
                     sibling.Color = NodeColor.Red;
@@ -77,7 +77,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
                 }
                 else
                 {
-                    if (sibling.Right.IsBlack)
+                    if (sibling.Right.IsBlack())
                     {
                         // case 3.3
                         sibling.Left.Color = NodeColor.Black;
@@ -96,7 +96,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
             }
             else
             {
-                if (sibling.IsRed)
+                if (sibling.IsRed())
                 {
                     // case 3.1
                     sibling.Color = NodeColor.Black;
@@ -105,7 +105,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
                     sibling = node.Parent.Left;
                 }
 
-                if (sibling.Left.IsBlack && sibling.Right.IsBlack)
+                if (sibling.Left.IsBlack() && sibling.Right.IsBlack())
                 {
                     // case 3.2
                     sibling.Color = NodeColor.Red;
@@ -113,7 +113,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
                 }
                 else
                 {
-                    if (sibling.Left.IsBlack)
+                    if (sibling.Left.IsBlack())
                     {
                         // case 3.3
                         sibling.Right.Color = NodeColor.Black;
@@ -147,7 +147,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
 
         if (pivot.Parent.IsNull)
             this.Root = temp;
-        else if (pivot.IsLeftChild)
+        else if (pivot.IsLeftChild())
             pivot.Parent.Left = temp;
         else
             pivot.Parent.Right = temp;
@@ -170,7 +170,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
 
         if (pivot.Parent.IsNull)
             this.Root = temp;
-        else if (pivot.IsRightChild)
+        else if (pivot.IsRightChild())
             pivot.Parent.Right = temp;
         else
             pivot.Parent.Left = temp;
@@ -184,11 +184,11 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
 
     private void Balance(TreeNode<T> root)
     {
-        while (root.Parent.IsRed)
+        while (root.Parent.IsRed())
         {
             var uncle = root.Uncle();
 
-            if (uncle.IsRed)
+            if (uncle.IsRed())
             {
                 root.Parent.Color = NodeColor.Black;
                 uncle.Color = NodeColor.Black;
@@ -197,9 +197,9 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
                 continue;
             }
 
-            if (root.Parent.IsLeftChild)
+            if (root.Parent.IsLeftChild())
             {
-                if (root.IsRightChild)
+                if (root.IsRightChild())
                 {
                     root = root.Parent;
                     this.LeftRotate(root);
@@ -212,7 +212,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
             }
             else
             {
-                if (root.IsLeftChild)
+                if (root.IsLeftChild())
                 {
                     root = root.Parent;
                     this.RightRotate(root);

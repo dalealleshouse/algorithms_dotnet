@@ -37,30 +37,30 @@ public class TreeNode<T>
 
     public bool IsNull { get; private set; } = false;
 
-    public bool IsLeaf => this.Degree == 0;
-
-    public bool IsRoot => this.Parent.IsNull;
-
-    public bool IsLeftChild => this.Parent.Left == this;
-
-    public bool IsRightChild => this.Parent.Right == this;
-
-    public int Degree => (int)(!this.Left.IsNull ? 1 : 0) + (!this.Right.IsNull ? 1 : 0);
-
-    public TreeNode<T> FirstChildWithValue => !this.Left.IsNull ? this.Left : this.Right;
-
-    public int LeftSize => !this.Left.IsNull ? this.Left.Size : 0;
-
-    public int RightSize => !this.Right.IsNull ? this.Right.Size : 0;
-
-    public bool IsRed => this.Color == NodeColor.Red;
-
-    public bool IsBlack => this.Color == NodeColor.Black;
-
     public static TreeNode<T> CreateNullNode() => new();
 
+    public bool IsRoot() => this.Parent.IsNull;
+
+    public bool IsLeftChild() => this.Parent.Left == this;
+
+    public bool IsRightChild() => this.Parent.Right == this;
+
+    public int Degree() => (int)(!this.Left.IsNull ? 1 : 0) + (!this.Right.IsNull ? 1 : 0);
+
+    public TreeNode<T> FirstChildWithValue() => !this.Left.IsNull ? this.Left : this.Right;
+
+    public int LeftSize() => !this.Left.IsNull ? this.Left.Size : 0;
+
+    public int RightSize() => !this.Right.IsNull ? this.Right.Size : 0;
+
+    public bool IsRed() => this.Color == NodeColor.Red;
+
+    public bool IsBlack() => this.Color == NodeColor.Black;
+
+    public bool IsLeaf() => this.Degree() == 0;
+
     public TreeNode<T> Sibling()
-      => this.IsLeftChild ? this.Parent.Right : this.Parent.Left;
+      => this.IsLeftChild() ? this.Parent.Right : this.Parent.Left;
 
     public TreeNode<T> Uncle()
       => this.Parent.Sibling();

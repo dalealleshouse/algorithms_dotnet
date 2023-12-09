@@ -112,7 +112,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
 
     protected TreeNode<T> Delete(TreeNode<T> node)
     {
-        switch (node.Degree)
+        switch (node.Degree())
         {
             case 0:
             case 1:
@@ -135,18 +135,18 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
 
     private TreeNode<T> DeleteDegreeOneOrLeaf(TreeNode<T> node)
     {
-        if (node.Degree > 1)
+        if (node.Degree() > 1)
             throw new InvalidOperationException("Node is not leaf or degree one");
 
-        var child = node.FirstChildWithValue;
+        var child = node.FirstChildWithValue();
         child.Parent = node.Parent;
 
         this.DecrementSize(node.Parent);
         this.Length--;
 
-        if (node.IsRoot)
+        if (node.IsRoot())
             this.Root = child;
-        else if (node.IsLeftChild)
+        else if (node.IsLeftChild())
             node.Parent.Left = child;
         else
             node.Parent.Right = child;
@@ -156,7 +156,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
 
     private TreeNode<T> DeleteDegreeTwo(TreeNode<T> node)
     {
-        if (node.Degree != 2)
+        if (node.Degree() != 2)
             throw new InvalidOperationException("Node is not Degree Two");
 
         var largestLeft = this.MaxOfSubtree(node.Left);
@@ -189,18 +189,18 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
 
         var comparison = this.Comparer(node.Payload, value);
 
-        if (comparison == 0)
+        switch (comparison)
         {
-            return this.MaxOfSubtree(node.Left);
-        }
-        else if (comparison < 0)
-        {
-            var result = this.Predecessor(value, node.Right);
-            return !result.IsNull ? result : node;
-        }
-        else
-        {
-            return this.Predecessor(value, node.Left);
+            case 0:
+                return this.MaxOfSubtree(node.Left);
+            case < 0:
+                {
+                    var result = this.Predecessor(value, node.Right);
+                    return !result.IsNull ? result : node;
+                }
+
+            default:
+                return this.Predecessor(value, node.Left);
         }
     }
 
@@ -213,8 +213,8 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
 
         return comparison switch
         {
-            0 => offset + node.LeftSize,
-            < 0 => this.Rank(value, node.Right, offset + node.LeftSize + 1),
+            0 => offset + node.LeftSize(),
+            < 0 => this.Rank(value, node.Right, offset + node.LeftSize() + 1),
             _ => this.Rank(value, node.Left, offset),
         };
     }

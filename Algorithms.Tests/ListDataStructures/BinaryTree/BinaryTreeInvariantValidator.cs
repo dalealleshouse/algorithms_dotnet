@@ -45,7 +45,7 @@ public class BinaryTreeInvariantValidator<T> : IInvariantValidator<T>
         else
         {
             Assert.False(this.sut.Root.IsNull);
-            Assert.True(this.sut.Root.IsRoot);
+            Assert.True(this.sut.Root.IsRoot());
         }
     }
 
@@ -95,7 +95,7 @@ public class BinaryTreeInvariantValidator<T> : IInvariantValidator<T>
     {
         if (node.IsNull) return;
 
-        Assert.Equal(node.Size, node.LeftSize + node.RightSize + 1);
+        Assert.Equal(node.Size, node.LeftSize() + node.RightSize() + 1);
 
         this.SizeIsEqualToNumberOfChildNodes(node.Left);
         this.SizeIsEqualToNumberOfChildNodes(node.Right);

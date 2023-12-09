@@ -11,7 +11,7 @@ public class IsLeftChild
     public void ReturnTureForNullNode()
     {
         var sut = TreeNode<int>.CreateNullNode();
-        Assert.True(sut.IsLeftChild);
+        Assert.True(sut.IsLeftChild());
     }
 
     [Fact]
@@ -19,19 +19,19 @@ public class IsLeftChild
     {
         var nullNode = TreeNode<int>.CreateNullNode();
         TreeNode<int> sut = new(1, nullNode, nullNode);
-        Assert.False(sut.IsLeftChild);
+        Assert.False(sut.IsLeftChild());
     }
 
     [Fact]
     public void ReturnTrueWhenIsLeft()
     {
-        Assert.True(this.sut.Root.Left.IsLeftChild);
+        Assert.True(this.sut.Root.Left.IsLeftChild());
     }
 
     [Fact]
     public void ReturnFalseWhenIsRight()
     {
-        Assert.False(this.sut.Root.Right.IsLeftChild);
+        Assert.False(this.sut.Root.Right.IsLeftChild());
     }
 
     private static UnbalancedBinaryTree<int> BuildSut()

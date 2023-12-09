@@ -17,9 +17,9 @@ public static class BinaryTreeExtensionMethods
         where T : notnull, IComparable<T>
       => node switch
       {
-          _ when node.IsRoot => "Root",
-          _ when node.IsLeftChild => "L",
-          _ when node.IsRightChild => "R",
+          _ when node.IsRoot() => "Root",
+          _ when node.IsLeftChild() => "L",
+          _ when node.IsRightChild() => "R",
           _ => "None",
       };
 

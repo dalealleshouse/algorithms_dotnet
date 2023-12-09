@@ -29,18 +29,18 @@ public class RedBlackTreeInvariantValidator<T> : BinaryTreeInvariantValidator<T>
     {
         if (node.IsNull) return;
 
-        Assert.True(node.IsRed || node.IsBlack);
+        Assert.True(node.IsRed() || node.IsBlack());
         this.EveryNodeIsRedOrBlack(node.Left);
         this.EveryNodeIsRedOrBlack(node.Right);
     }
 
-    private void RootNodeIsBlack() => Assert.True(this.sut.Root.IsBlack);
+    private void RootNodeIsBlack() => Assert.True(this.sut.Root.IsBlack());
 
     private void NoConsecutiveRedNodes(TreeNode<T> node)
     {
         if (node.IsNull) return;
 
-        if (node.IsRed)
+        if (node.IsRed())
         {
             Assert.Equal(NodeColor.Black, node.Left.Color);
             Assert.Equal(NodeColor.Black, node.Right.Color);
@@ -66,6 +66,6 @@ public class RedBlackTreeInvariantValidator<T> : BinaryTreeInvariantValidator<T>
             throw new InvalidOperationException($"Black height imbalance detected at node {node.StringValue()}. Left height: {leftBlackHeight}, Right height: {rightBlackHeight}");
         }
 
-        return (node.IsBlack ? 1 : 0) + leftBlackHeight;
+        return (node.IsBlack() ? 1 : 0) + leftBlackHeight;
     }
 }
