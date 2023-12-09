@@ -2,13 +2,20 @@ namespace Algorithms.ListDataStructures;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
+[SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1401:FieldsMustBePrivate",
+        Justification = "A protected field is required for the derived class.")]
 public abstract class StructuredBinaryTree<T> : IStructuredList<T>
     where T : notnull, IComparable<T>
 {
+    private readonly TreeNode<T> nullNode = TreeNode<T>.CreateNullNode();
+
     public StructuredBinaryTree(T[] array, Comparison<T>? comparer = null)
     {
-        this.Root = TreeNode<T>.GetNullNode();
+        this.Root = this.nullNode;
         this.Comparer = comparer ?? Comparer<T>.Default.Compare;
 
         if (array == null)
@@ -26,6 +33,8 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
     public int Length { get; protected set; } = 0;
 
     public Comparison<T> Comparer { get; }
+
+    public TreeNode<T> NullNode => this.nullNode;
 
     public abstract Maybe<T> Delete(T payload);
 
@@ -71,7 +80,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
             if (!parent.Left.IsNull)
                 return this.InsertInSubtree(payload, parent.Left);
             else
-                parent.Left = new(payload, parent);
+                parent.Left = new(payload, parent, this.NullNode, this.NullNode);
 
             return parent.Left;
         }
@@ -80,7 +89,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
             if (!parent.Right.IsNull)
                 return this.InsertInSubtree(payload, parent.Right);
             else
-                parent.Right = new(payload, parent);
+                parent.Right = new(payload, parent, this.NullNode, this.NullNode);
 
             return parent.Right;
         }

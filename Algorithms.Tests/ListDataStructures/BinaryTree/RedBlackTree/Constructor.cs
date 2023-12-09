@@ -17,11 +17,9 @@ public class Constructor
     [Fact]
     public void InitRoot()
     {
-        var expected = Maybe<TreeNode<int>>.None;
-
         var sut = new RedBlackTree<int>();
         Assert.Equal(0, sut.Length);
-        Assert.Equal(expected, sut.Root);
+        Assert.Equal(sut.NullNode, sut.Root);
     }
 
     [Fact]

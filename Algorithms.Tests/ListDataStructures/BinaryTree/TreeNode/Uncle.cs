@@ -6,17 +6,18 @@ using Xunit;
 public class Uncle
 {
     [Fact]
-    public void ReturnNotSetWhenNotSet()
+    public void ReturnNullNodeWhenNotSet()
     {
-        var sut = TreeNode<int>.GetNullNode();
+        var sut = TreeNode<int>.CreateNullNode();
         var result = sut.Uncle();
         Assert.True(result.IsNull);
     }
 
     [Fact]
-    public void ReturnNotSetWhenNoChildren()
+    public void ReturnNullNodeWhenNoChildren()
     {
-        TreeNode<int> sut = new(1);
+        var nullNode = TreeNode<int>.CreateNullNode();
+        TreeNode<int> sut = new(1, nullNode, nullNode, nullNode);
         var result = sut.Uncle();
         Assert.True(result.IsNull);
     }

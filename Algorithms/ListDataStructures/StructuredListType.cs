@@ -7,5 +7,5 @@ public enum StructuredListType
     SortedArray,
     RandomArray,
     UnbalancedBinaryTree,
-    /* RedBlackTree, */
+    RedBlackTree,
 }

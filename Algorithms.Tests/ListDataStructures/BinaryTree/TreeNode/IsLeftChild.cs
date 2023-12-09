@@ -1,6 +1,5 @@
 namespace Algorithms.Tests.ListDataStructures.BinaryTree.TreeNode;
 
-using System;
 using Algorithms.ListDataStructures;
 using Xunit;
 
@@ -11,14 +10,15 @@ public class IsLeftChild
     [Fact]
     public void ReturnTureForNullNode()
     {
-        var sut = TreeNode<int>.GetNullNode();
+        var sut = TreeNode<int>.CreateNullNode();
         Assert.True(sut.IsLeftChild);
     }
 
     [Fact]
     public void ReturnFalseWhenNoParent()
     {
-        TreeNode<int> sut = new(1);
+        var nullNode = TreeNode<int>.CreateNullNode();
+        TreeNode<int> sut = new(1, nullNode, nullNode, nullNode);
         Assert.False(sut.IsLeftChild);
     }
 

@@ -8,7 +8,7 @@ public class Sibling
     [Fact]
     public void ReturnNotSetWhenNotSet()
     {
-        var sut = TreeNode<int>.GetNullNode();
+        var sut = TreeNode<int>.CreateNullNode();
         var result = sut.Sibling();
         Assert.True(result.IsNull);
     }
@@ -16,7 +16,8 @@ public class Sibling
     [Fact]
     public void ReturnNotSetWhenNoChildren()
     {
-        TreeNode<int> sut = new(1);
+        var nullNode = TreeNode<int>.CreateNullNode();
+        TreeNode<int> sut = new(1, nullNode, nullNode, nullNode);
         var result = sut.Sibling();
         Assert.True(result.IsNull);
     }

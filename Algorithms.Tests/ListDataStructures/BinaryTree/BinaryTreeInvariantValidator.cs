@@ -18,7 +18,7 @@ public class BinaryTreeInvariantValidator<T> : IInvariantValidator<T>
     {
         this.RootIsSet();
         this.ParentIsSet(
-            TreeNode<T>.GetNullNode(),
+            this.sut.NullNode,
             this.sut.Root);
         this.LeftRightInvariant(this.sut.Root);
         this.SizeIsEqualToNumberOfChildNodes();
