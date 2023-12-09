@@ -80,7 +80,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
             if (!parent.Left.IsNull)
                 return this.InsertInSubtree(payload, parent.Left);
             else
-                parent.Left = new(payload, parent, this.NullNode, this.NullNode);
+                parent.Left = new(payload, parent, this.NullNode);
 
             return parent.Left;
         }
@@ -89,7 +89,7 @@ public abstract class StructuredBinaryTree<T> : IStructuredList<T>
             if (!parent.Right.IsNull)
                 return this.InsertInSubtree(payload, parent.Right);
             else
-                parent.Right = new(payload, parent, this.NullNode, this.NullNode);
+                parent.Right = new(payload, parent, this.NullNode);
 
             return parent.Right;
         }

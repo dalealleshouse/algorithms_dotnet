@@ -5,12 +5,12 @@ using System;
 public class TreeNode<T>
     where T : notnull, IComparable<T>
 {
-    public TreeNode(T value, TreeNode<T> parent, TreeNode<T> left, TreeNode<T> right)
+    public TreeNode(T value, TreeNode<T> parent, TreeNode<T> nullNode)
     {
         this.Payload = value;
         this.Parent = parent;
-        this.Left = left;
-        this.Right = right;
+        this.Left = nullNode;
+        this.Right = nullNode;
     }
 
     private TreeNode()

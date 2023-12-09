@@ -17,7 +17,7 @@ public class Sibling
     public void ReturnNotSetWhenNoChildren()
     {
         var nullNode = TreeNode<int>.CreateNullNode();
-        TreeNode<int> sut = new(1, nullNode, nullNode, nullNode);
+        TreeNode<int> sut = new(1, nullNode, nullNode);
         var result = sut.Sibling();
         Assert.True(result.IsNull);
     }

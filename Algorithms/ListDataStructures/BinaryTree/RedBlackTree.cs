@@ -24,7 +24,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
 
         if (this.Root.IsNull)
         {
-            this.Root = new(payload, this.NullNode, this.NullNode, this.NullNode);
+            this.Root = new(payload, this.NullNode, this.NullNode);
             return;
         }
 
@@ -56,10 +56,10 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
     {
         while (node != this.Root && node.IsBlack)
         {
+            var sibling = node.Sibling();
+
             if (node.IsLeftChild)
             {
-                var sibling = node.Parent.Right;
-
                 if (sibling.IsRed)
                 {
                     // case 3.1
@@ -96,8 +96,6 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
             }
             else
             {
-                var sibling = node.Parent.Left;
-
                 if (sibling.IsRed)
                 {
                     // case 3.1
@@ -126,7 +124,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
 
                     // case 3.4
                     sibling.Color = node.Parent.Color;
-                    sibling.Parent.Color = NodeColor.Black;
+                    node.Parent.Color = NodeColor.Black;
                     sibling.Left.Color = NodeColor.Black;
                     this.RightRotate(node.Parent);
                     node = this.Root;

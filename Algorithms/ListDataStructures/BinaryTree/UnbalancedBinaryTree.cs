@@ -24,7 +24,7 @@ public class UnbalancedBinaryTree<T> : StructuredBinaryTree<T>
 
         if (this.Root.IsNull)
         {
-            this.Root = new(payload, this.NullNode, this.NullNode, this.NullNode);
+            this.Root = new(payload, this.NullNode, this.NullNode);
             return;
         }
 

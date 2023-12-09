@@ -17,7 +17,7 @@ public class Uncle
     public void ReturnNullNodeWhenNoChildren()
     {
         var nullNode = TreeNode<int>.CreateNullNode();
-        TreeNode<int> sut = new(1, nullNode, nullNode, nullNode);
+        TreeNode<int> sut = new(1, nullNode, nullNode);
         var result = sut.Uncle();
         Assert.True(result.IsNull);
     }
