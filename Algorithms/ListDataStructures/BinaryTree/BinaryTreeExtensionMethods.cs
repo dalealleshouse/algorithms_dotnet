@@ -5,10 +5,6 @@ using System.Collections.Generic;
 
 public static class BinaryTreeExtensionMethods
 {
-    public static Maybe<T> Unwrap<T>(this TreeNode<T> node)
-        where T : notnull, IComparable<T>
-        => !node.IsNull ? new(node.Payload) : Maybe<T>.None;
-
     public static string StringValue<T>(this TreeNode<T> node)
         where T : notnull, IComparable<T>
         => !node.IsNull ? node.Payload.ToString() ?? "NULL" : "NullNode";
