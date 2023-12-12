@@ -43,6 +43,7 @@ public class Delete : ListTests
     }
 
     [Theory]
+    [InlineData('a')]
     [InlineData('b')]
     [InlineData('c')]
     [InlineData('d')]
@@ -51,8 +52,23 @@ public class Delete : ListTests
     [InlineData('g')]
     [InlineData('h')]
     [InlineData('i')]
+    [InlineData('j')]
     [InlineData('k')]
     [InlineData('l')]
+    [InlineData('m')]
+    [InlineData('n')]
+    [InlineData('o')]
+    [InlineData('p')]
+    [InlineData('q')]
+    [InlineData('r')]
+    [InlineData('s')]
+    [InlineData('t')]
+    [InlineData('u')]
+    [InlineData('v')]
+    [InlineData('w')]
+    [InlineData('x')]
+    [InlineData('y')]
+    [InlineData('z')]
     public void DeleteAtEveryPosition(char doomed)
     {
         this.RunTestOnAllLists<char>(
@@ -64,6 +80,6 @@ public class Delete : ListTests
                 var searchResult = sut.Search(doomed);
                 Assert.False(searchResult.HasValue);
             },
-            new[] { 'b', 'c', 'l', 'e', 'f', 'g', 'h', 'i', 'k', 'd' });
+            new[] { 's', 'r', 'c', 'p', 'i', 'n', 'h', 'u', 'e', 'a', 'b', 'd', 'o', 'w', 't', 'y', 'l', 'q', 'v', 'j', 'f', 'z', 'm', 'k', 'x', 'g' });
     }
 }

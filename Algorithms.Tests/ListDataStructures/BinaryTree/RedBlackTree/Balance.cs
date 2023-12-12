@@ -1,6 +1,5 @@
 namespace Algorithms.Tests.ListDataStructures.RedBlackTree;
 
-using System;
 using Algorithms.ListDataStructures;
 using Xunit;
 
