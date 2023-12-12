@@ -23,6 +23,33 @@ public static class SortAlgorithms
         }
     }
 
+    public static void InsertionSort<T>(this RandomArray<T> list)
+      where T : IComparable<T>
+    {
+        for (uint i = 1; i < list.Length; i++)
+        {
+            var openIndex = i;
+            var temp = list[i];
+
+            for (uint j = i - 1; true; j--)
+            {
+                if (list.Comparer(temp, list[j]) < 0)
+                {
+                    list[openIndex] = list[j];
+                    openIndex--;
+                }
+                else
+                {
+                    break;
+                }
+
+                if (j == 0) break;
+            }
+
+            list[openIndex] = temp;
+        }
+    }
+
     public static void Swap<T>(this RandomArray<T> list, uint index1, uint index2)
       where T : IComparable<T>
     {
