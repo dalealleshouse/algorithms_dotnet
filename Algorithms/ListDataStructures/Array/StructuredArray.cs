@@ -35,11 +35,16 @@ public abstract class StructuredArray<T> : IStructuredList<T>
 
     public Comparison<T> Comparer => this.comparer;
 
-    public T this[int index]
+    public T this[uint index]
     {
         get
         {
             return this.array[index];
+        }
+
+        set
+        {
+            this.array[index] = value;
         }
     }
 

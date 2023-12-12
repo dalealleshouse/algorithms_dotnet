@@ -1,12 +1,13 @@
 namespace Algorithms.Tests.ListDataStructures;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Algorithms.ListDataStructures;
 
 public static class SutFactory
 {
+    private static readonly Random Rand = new();
+
     public static RandomArray<int> RandomArray(
             int size,
             Comparison<int> comparer = null) => comparer == null ?
@@ -22,19 +23,13 @@ public static class SutFactory
     public static int[] BuildArray(int size) =>
         Enumerable.Range(0, size + 1).ToArray();
 
+    public static int[] UnorderedArray(int size) =>
+        Enumerable.Range(0, size + 1).Select(x => Rand.Next()).ToArray();
+
     public static int[] BuildAndSortArray(int size, Comparison<int> comparer)
     {
         var array = BuildArray(size);
         System.Array.Sort(array, comparer);
         return array;
-    }
-
-    public static void Validate<T>(this IEnumerable<IInvariantValidator<T>> validators)
-        where T : notnull, IComparable<T>
-    {
-        foreach (var val in validators)
-        {
-            val.Validate();
-        }
     }
 }

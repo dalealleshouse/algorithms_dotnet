@@ -4,10 +4,7 @@ using System;
 
 public class ComparableObject : IComparable<ComparableObject>
 {
-    public ComparableObject(int value)
-    {
-        this.Value = value;
-    }
+    public ComparableObject(int value) => this.Value = value;
 
     public int Value { get; }
 

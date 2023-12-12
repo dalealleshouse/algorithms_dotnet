@@ -25,7 +25,7 @@ public class InvariantValidator<T> : IInvariantValidator<T>
 
         var previous = this.sut[0];
 
-        for (int i = 1; i < this.sut.Length; i++)
+        for (uint i = 1; i < this.sut.Length; i++)
         {
             var compare = this.sut.Comparer(previous, this.sut[i]);
             Assert.True(compare <= 0);

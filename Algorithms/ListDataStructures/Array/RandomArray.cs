@@ -1,5 +1,3 @@
-#nullable enable
-
 namespace Algorithms.ListDataStructures;
 
 using System;

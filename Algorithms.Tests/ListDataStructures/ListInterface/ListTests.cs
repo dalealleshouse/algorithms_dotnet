@@ -21,7 +21,8 @@ public abstract class ListTests
                 return sut;
             })
             .Select(ListTests.CreateValidator)
-            .Validate();
+            .ToList()
+            .ForEach(val => val.Validate());
 
     private static IEnumerable<IStructuredList<T>> AllLists<T>(Comparison<T> comparer = null)
         where T : notnull, IComparable<T> => AllLists(new T[0], comparer);

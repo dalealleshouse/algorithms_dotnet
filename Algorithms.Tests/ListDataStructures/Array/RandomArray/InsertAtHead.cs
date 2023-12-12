@@ -22,9 +22,6 @@ public class InsertAtHead
 
         Assert.Equal(138, sut[0]);
 
-        for (int i = 0; i < max; i++)
-        {
-            Assert.Equal(i, sut[i + 1]);
-        }
+        for (uint i = 0; i < max; i++) Assert.Equal((int)i, sut[i + 1]);
     }
 }
