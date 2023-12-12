@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Algorithms.Benchmarker.ListDataStructures.Lists-20231209-190009</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.10, Pengwin WSL
+Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 7.0.306
+  [Host]     : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+  Job-IMCEUH : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>IterationCount=3  
+</code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>ListType      </th><th>N</th><th>Mean        </th><th>Error      </th><th>StdDev    </th>
+</tr>
+</thead><tbody><tr><td>Insert</td><td>LinkedList</td><td>100</td><td>2,499.9 ns</td><td>298.99 ns</td><td>16.39 ns</td>
+</tr><tr><td>Enumerate</td><td>LinkedList</td><td>100</td><td>251.6 ns</td><td>18.88 ns</td><td>1.03 ns</td>
+</tr><tr><td>Max</td><td>LinkedList</td><td>100</td><td>29,375.6 ns</td><td>5,362.62 ns</td><td>293.94 ns</td>
+</tr><tr><td>Predecessor</td><td>LinkedList</td><td>100</td><td>48,164.2 ns</td><td>9,486.40 ns</td><td>519.98 ns</td>
+</tr><tr><td>Search</td><td>LinkedList</td><td>100</td><td>42,619.9 ns</td><td>17,269.11 ns</td><td>946.58 ns</td>
+</tr><tr><td>Delete</td><td>LinkedList</td><td>100</td><td>59,761.3 ns</td><td>10,232.02 ns</td><td>560.85 ns</td>
+</tr><tr><td>Insert</td><td>LinkedList</td><td>1000</td><td>25,255.9 ns</td><td>5,730.39 ns</td><td>314.10 ns</td>
+</tr><tr><td>Enumerate</td><td>LinkedList</td><td>1000</td><td>2,345.7 ns</td><td>266.98 ns</td><td>14.63 ns</td>
+</tr><tr><td>Max</td><td>LinkedList</td><td>1000</td><td>2,768,157.2 ns</td><td>332,630.44 ns</td><td>18,232.60 ns</td>
+</tr><tr><td>Predecessor</td><td>LinkedList</td><td>1000</td><td>6,445,411.1 ns</td><td>356,101.63 ns</td><td>19,519.13 ns</td>
+</tr><tr><td>Search</td><td>LinkedList</td><td>1000</td><td>4,204,637.9 ns</td><td>1,442,100.11 ns</td><td>79,046.37 ns</td>
+</tr><tr><td>Delete</td><td>LinkedList</td><td>1000</td><td>6,382,513.2 ns</td><td>533,709.45 ns</td><td>29,254.42 ns</td>
+</tr><tr><td>Insert</td><td>LinkedList</td><td>10000</td><td>278,885.8 ns</td><td>57,249.27 ns</td><td>3,138.03 ns</td>
+</tr><tr><td>Enumerate</td><td>LinkedList</td><td>10000</td><td>24,879.4 ns</td><td>2,617.28 ns</td><td>143.46 ns</td>
+</tr><tr><td>Max</td><td>LinkedList</td><td>10000</td><td>275,838,643.3 ns</td><td>39,513,858.61 ns</td><td>2,165,887.92 ns</td>
+</tr><tr><td>Predecessor</td><td>LinkedList</td><td>10000</td><td>678,095,791.0 ns</td><td>73,415,061.65 ns</td><td>4,024,127.26 ns</td>
+</tr><tr><td>Search</td><td>LinkedList</td><td>10000</td><td>411,631,192.7 ns</td><td>42,344,858.12 ns</td><td>2,321,064.56 ns</td>
+</tr><tr><td>Delete</td><td>LinkedList</td><td>10000</td><td>646,550,593.3 ns</td><td>331,533,966.77 ns</td><td>18,172,495.43 ns</td>
+</tr><tr><td>Insert</td><td>SortedArray</td><td>100</td><td>42,466.9 ns</td><td>6,896.54 ns</td><td>378.02 ns</td>
+</tr><tr><td>Enumerate</td><td>SortedArray</td><td>100</td><td>194.5 ns</td><td>55.93 ns</td><td>3.07 ns</td>
+</tr><tr><td>Max</td><td>SortedArray</td><td>100</td><td>1,339.4 ns</td><td>148.96 ns</td><td>8.16 ns</td>
+</tr><tr><td>Predecessor</td><td>SortedArray</td><td>100</td><td>6,154.9 ns</td><td>1,275.77 ns</td><td>69.93 ns</td>
+</tr><tr><td>Search</td><td>SortedArray</td><td>100</td><td>2,622.5 ns</td><td>244.93 ns</td><td>13.43 ns</td>
+</tr><tr><td>Delete</td><td>SortedArray</td><td>100</td><td>5,316.8 ns</td><td>685.75 ns</td><td>37.59 ns</td>
+</tr><tr><td>Insert</td><td>SortedArray</td><td>1000</td><td>2,963,570.7 ns</td><td>463,221.73 ns</td><td>25,390.75 ns</td>
+</tr><tr><td>Enumerate</td><td>SortedArray</td><td>1000</td><td>2,616.1 ns</td><td>5,943.32 ns</td><td>325.77 ns</td>
+</tr><tr><td>Max</td><td>SortedArray</td><td>1000</td><td>19,350.8 ns</td><td>13,409.39 ns</td><td>735.01 ns</td>
+</tr><tr><td>Predecessor</td><td>SortedArray</td><td>1000</td><td>136,769.2 ns</td><td>125,737.57 ns</td><td>6,892.10 ns</td>
+</tr><tr><td>Search</td><td>SortedArray</td><td>1000</td><td>62,040.9 ns</td><td>41,472.34 ns</td><td>2,273.24 ns</td>
+</tr><tr><td>Delete</td><td>SortedArray</td><td>1000</td><td>130,077.7 ns</td><td>131,534.66 ns</td><td>7,209.86 ns</td>
+</tr><tr><td>Insert</td><td>SortedArray</td><td>10000</td><td>294,101,933.7 ns</td><td>97,010,955.46 ns</td><td>5,317,497.82 ns</td>
+</tr><tr><td>Enumerate</td><td>SortedArray</td><td>10000</td><td>23,228.4 ns</td><td>32,789.41 ns</td><td>1,797.30 ns</td>
+</tr><tr><td>Max</td><td>SortedArray</td><td>10000</td><td>143,676.9 ns</td><td>27,214.06 ns</td><td>1,491.69 ns</td>
+</tr><tr><td>Predecessor</td><td>SortedArray</td><td>10000</td><td>1,208,013.9 ns</td><td>490,577.67 ns</td><td>26,890.22 ns</td>
+</tr><tr><td>Search</td><td>SortedArray</td><td>10000</td><td>410,758.5 ns</td><td>89,120.76 ns</td><td>4,885.01 ns</td>
+</tr><tr><td>Delete</td><td>SortedArray</td><td>10000</td><td>1,129,628.2 ns</td><td>312,991.22 ns</td><td>17,156.10 ns</td>
+</tr><tr><td>Insert</td><td>RandomArray</td><td>100</td><td>3,354.4 ns</td><td>1,924.27 ns</td><td>105.48 ns</td>
+</tr><tr><td>Enumerate</td><td>RandomArray</td><td>100</td><td>196.1 ns</td><td>53.50 ns</td><td>2.93 ns</td>
+</tr><tr><td>Max</td><td>RandomArray</td><td>100</td><td>237,188.8 ns</td><td>50,712.15 ns</td><td>2,779.70 ns</td>
+</tr><tr><td>Predecessor</td><td>RandomArray</td><td>100</td><td>290,040.2 ns</td><td>13,227.20 ns</td><td>725.03 ns</td>
+</tr><tr><td>Search</td><td>RandomArray</td><td>100</td><td>113,913.5 ns</td><td>41,664.31 ns</td><td>2,283.76 ns</td>
+</tr><tr><td>Delete</td><td>RandomArray</td><td>100</td><td>140,892.3 ns</td><td>22,531.48 ns</td><td>1,235.03 ns</td>
+</tr><tr><td>Insert</td><td>RandomArray</td><td>1000</td><td>135,497.1 ns</td><td>23,146.90 ns</td><td>1,268.76 ns</td>
+</tr><tr><td>Enumerate</td><td>RandomArray</td><td>1000</td><td>1,702.0 ns</td><td>62.68 ns</td><td>3.44 ns</td>
+</tr><tr><td>Max</td><td>RandomArray</td><td>1000</td><td>22,003,807.9 ns</td><td>3,423,460.39 ns</td><td>187,651.42 ns</td>
+</tr><tr><td>Predecessor</td><td>RandomArray</td><td>1000</td><td>27,278,611.6 ns</td><td>891,820.77 ns</td><td>48,883.71 ns</td>
+</tr><tr><td>Search</td><td>RandomArray</td><td>1000</td><td>10,173,756.8 ns</td><td>3,547,906.80 ns</td><td>194,472.74 ns</td>
+</tr><tr><td>Delete</td><td>RandomArray</td><td>1000</td><td>14,695,616.7 ns</td><td>10,522,017.63 ns</td><td>576,747.29 ns</td>
+</tr><tr><td>Insert</td><td>RandomArray</td><td>10000</td><td>10,695,229.0 ns</td><td>1,066,795.48 ns</td><td>58,474.66 ns</td>
+</tr><tr><td>Enumerate</td><td>RandomArray</td><td>10000</td><td>16,927.2 ns</td><td>2,246.23 ns</td><td>123.12 ns</td>
+</tr><tr><td>Max</td><td>RandomArray</td><td>10000</td><td>2,260,070,212.3 ns</td><td>665,044,764.02 ns</td><td>36,453,347.61 ns</td>
+</tr><tr><td>Predecessor</td><td>RandomArray</td><td>10000</td><td>2,737,446,192.3 ns</td><td>497,870,517.28 ns</td><td>27,289,963.04 ns</td>
+</tr><tr><td>Search</td><td>RandomArray</td><td>10000</td><td>1,018,558,428.0 ns</td><td>557,895,595.89 ns</td><td>30,580,140.15 ns</td>
+</tr><tr><td>Delete</td><td>RandomArray</td><td>10000</td><td>1,387,309,174.3 ns</td><td>146,320,153.73 ns</td><td>8,020,301.36 ns</td>
+</tr><tr><td>Insert</td><td>UnbalancedBinaryTree</td><td>100</td><td>7,195.0 ns</td><td>2,584.95 ns</td><td>141.69 ns</td>
+</tr><tr><td>Enumerate</td><td>UnbalancedBinaryTree</td><td>100</td><td>499.8 ns</td><td>2,504.59 ns</td><td>137.28 ns</td>
+</tr><tr><td>Max</td><td>UnbalancedBinaryTree</td><td>100</td><td>781.0 ns</td><td>140.31 ns</td><td>7.69 ns</td>
+</tr><tr><td>Predecessor</td><td>UnbalancedBinaryTree</td><td>100</td><td>5,492.0 ns</td><td>689.44 ns</td><td>37.79 ns</td>
+</tr><tr><td>Search</td><td>UnbalancedBinaryTree</td><td>100</td><td>2,024.1 ns</td><td>480.17 ns</td><td>26.32 ns</td>
+</tr><tr><td>Delete</td><td>UnbalancedBinaryTree</td><td>100</td><td>6,191.4 ns</td><td>1,500.12 ns</td><td>82.23 ns</td>
+</tr><tr><td>Insert</td><td>UnbalancedBinaryTree</td><td>1000</td><td>97,467.6 ns</td><td>19,686.20 ns</td><td>1,079.07 ns</td>
+</tr><tr><td>Enumerate</td><td>UnbalancedBinaryTree</td><td>1000</td><td>3,651.1 ns</td><td>365.37 ns</td><td>20.03 ns</td>
+</tr><tr><td>Max</td><td>UnbalancedBinaryTree</td><td>1000</td><td>8,977.4 ns</td><td>929.21 ns</td><td>50.93 ns</td>
+</tr><tr><td>Predecessor</td><td>UnbalancedBinaryTree</td><td>1000</td><td>85,491.8 ns</td><td>946.78 ns</td><td>51.90 ns</td>
+</tr><tr><td>Search</td><td>UnbalancedBinaryTree</td><td>1000</td><td>25,515.1 ns</td><td>3,053.77 ns</td><td>167.39 ns</td>
+</tr><tr><td>Delete</td><td>UnbalancedBinaryTree</td><td>1000</td><td>103,352.3 ns</td><td>17,940.36 ns</td><td>983.37 ns</td>
+</tr><tr><td>Insert</td><td>UnbalancedBinaryTree</td><td>10000</td><td>1,450,610.3 ns</td><td>161,379.24 ns</td><td>8,845.74 ns</td>
+</tr><tr><td>Enumerate</td><td>UnbalancedBinaryTree</td><td>10000</td><td>125,572.1 ns</td><td>18,270.13 ns</td><td>1,001.45 ns</td>
+</tr><tr><td>Max</td><td>UnbalancedBinaryTree</td><td>10000</td><td>84,361.3 ns</td><td>31,899.10 ns</td><td>1,748.50 ns</td>
+</tr><tr><td>Predecessor</td><td>UnbalancedBinaryTree</td><td>10000</td><td>1,453,919.8 ns</td><td>98,393.99 ns</td><td>5,393.31 ns</td>
+</tr><tr><td>Search</td><td>UnbalancedBinaryTree</td><td>10000</td><td>458,725.0 ns</td><td>149,322.15 ns</td><td>8,184.85 ns</td>
+</tr><tr><td>Delete</td><td>UnbalancedBinaryTree</td><td>10000</td><td>1,845,202.6 ns</td><td>544,666.21 ns</td><td>29,854.99 ns</td>
+</tr><tr><td>Insert</td><td>RedBlackTree</td><td>100</td><td>8,833.5 ns</td><td>1,180.40 ns</td><td>64.70 ns</td>
+</tr><tr><td>Enumerate</td><td>RedBlackTree</td><td>100</td><td>382.9 ns</td><td>70.57 ns</td><td>3.87 ns</td>
+</tr><tr><td>Max</td><td>RedBlackTree</td><td>100</td><td>782.3 ns</td><td>65.88 ns</td><td>3.61 ns</td>
+</tr><tr><td>Predecessor</td><td>RedBlackTree</td><td>100</td><td>5,388.6 ns</td><td>559.69 ns</td><td>30.68 ns</td>
+</tr><tr><td>Search</td><td>RedBlackTree</td><td>100</td><td>3,183.9 ns</td><td>528.22 ns</td><td>28.95 ns</td>
+</tr><tr><td>Delete</td><td>RedBlackTree</td><td>100</td><td>5,837.2 ns</td><td>483.17 ns</td><td>26.48 ns</td>
+</tr><tr><td>Insert</td><td>RedBlackTree</td><td>1000</td><td>113,312.6 ns</td><td>5,015.07 ns</td><td>274.89 ns</td>
+</tr><tr><td>Enumerate</td><td>RedBlackTree</td><td>1000</td><td>3,617.9 ns</td><td>301.36 ns</td><td>16.52 ns</td>
+</tr><tr><td>Max</td><td>RedBlackTree</td><td>1000</td><td>11,368.6 ns</td><td>56.35 ns</td><td>3.09 ns</td>
+</tr><tr><td>Predecessor</td><td>RedBlackTree</td><td>1000</td><td>81,179.0 ns</td><td>19,301.01 ns</td><td>1,057.95 ns</td>
+</tr><tr><td>Search</td><td>RedBlackTree</td><td>1000</td><td>34,346.0 ns</td><td>8,121.90 ns</td><td>445.19 ns</td>
+</tr><tr><td>Delete</td><td>RedBlackTree</td><td>1000</td><td>94,713.7 ns</td><td>2,603.49 ns</td><td>142.71 ns</td>
+</tr><tr><td>Insert</td><td>RedBlackTree</td><td>10000</td><td>1,634,328.9 ns</td><td>947,330.72 ns</td><td>51,926.39 ns</td>
+</tr><tr><td>Enumerate</td><td>RedBlackTree</td><td>10000</td><td>94,366.3 ns</td><td>8,433.21 ns</td><td>462.25 ns</td>
+</tr><tr><td>Max</td><td>RedBlackTree</td><td>10000</td><td>172,969.8 ns</td><td>15,618.49 ns</td><td>856.10 ns</td>
+</tr><tr><td>Predecessor</td><td>RedBlackTree</td><td>10000</td><td>1,339,888.5 ns</td><td>254,232.94 ns</td><td>13,935.37 ns</td>
+</tr><tr><td>Search</td><td>RedBlackTree</td><td>10000</td><td>557,590.3 ns</td><td>39,863.55 ns</td><td>2,185.06 ns</td>
+</tr><tr><td>Delete</td><td>RedBlackTree</td><td>10000</td><td>1,465,076.3 ns</td><td>453,964.66 ns</td><td>24,883.33 ns</td>
+</tr></tbody></table>
+</body>
+</html>
