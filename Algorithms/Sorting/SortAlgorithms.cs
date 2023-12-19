@@ -56,6 +56,7 @@ public static class SortAlgorithms
         for (uint i = 0; i < list.Length; i++)
         {
             var minIndex = i;
+
             for (uint j = i + 1; j < list.Length; j++)
             {
                 if (list.Comparer(list[j], list[minIndex]) < 0)
