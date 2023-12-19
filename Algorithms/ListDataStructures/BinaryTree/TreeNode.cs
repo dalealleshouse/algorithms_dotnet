@@ -57,6 +57,8 @@ public class TreeNode<T>
 
     public bool IsBlack() => this.Color == NodeColor.Black;
 
+    public bool ChildrenAreBlack() => this.Left.IsBlack() && this.Right.IsBlack();
+
     public bool IsLeaf() => this.Degree() == 0;
 
     public TreeNode<T> Sibling()

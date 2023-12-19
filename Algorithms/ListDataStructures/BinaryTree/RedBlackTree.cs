@@ -69,7 +69,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
                     sibling = node.Parent.Right;
                 }
 
-                if (sibling.Left.IsBlack() && sibling.Right.IsBlack())
+                if (sibling.ChildrenAreBlack())
                 {
                     // case 3.2
                     sibling.Color = NodeColor.Red;
@@ -105,7 +105,7 @@ public class RedBlackTree<T> : StructuredBinaryTree<T>
                     sibling = node.Parent.Left;
                 }
 
-                if (sibling.Left.IsBlack() && sibling.Right.IsBlack())
+                if (sibling.Left.ChildrenAreBlack())
                 {
                     // case 3.2
                     sibling.Color = NodeColor.Red;

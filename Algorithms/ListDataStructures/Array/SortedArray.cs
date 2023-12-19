@@ -1,5 +1,3 @@
-#nullable enable
-
 namespace Algorithms.ListDataStructures;
 
 using System;
@@ -9,20 +7,16 @@ using Algorithms;
 public class SortedArray<T> : StructuredArray<T>
     where T : notnull, IComparable<T>
 {
-    public SortedArray(T[] array, Comparison<T>? comparer = null)
+    public SortedArray(T[] array, Comparison<T>? comparer = null, bool isPreSorted = false)
         : base(array, comparer)
     {
-        Array.Sort(this.array, this.comparer);
+        if (!isPreSorted) Array.Sort(this.array, this.comparer);
     }
 
     public SortedArray(Comparison<T>? comparer = null)
         : base(comparer)
     {
     }
-
-    public static implicit operator T[](SortedArray<T> array) => array.array;
-
-    public static implicit operator SortedArray<T>(T[] array) => new(array);
 
     public override void Insert(T item)
     {

@@ -67,6 +67,13 @@ public static class SortAlgorithms
         }
     }
 
+    public static SortedArray<T> MergeSort<T>(this RandomArray<T> list)
+      where T : IComparable<T>
+    {
+        /* return list.MergeSort(0, list.Length - 1); */
+        throw new NotImplementedException();
+    }
+
     public static void Swap<T>(this RandomArray<T> list, uint index1, uint index2)
       where T : IComparable<T>
     {

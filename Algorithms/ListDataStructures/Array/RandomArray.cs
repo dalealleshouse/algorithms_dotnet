@@ -16,10 +16,6 @@ public class RandomArray<T> : StructuredArray<T>
     {
     }
 
-    public static implicit operator T[](RandomArray<T> array) => array.array;
-
-    public static implicit operator RandomArray<T>(T[] array) => new(array);
-
     public override void Insert(T item)
     {
         this.InsertAtHead(item);
