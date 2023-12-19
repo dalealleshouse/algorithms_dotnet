@@ -26,4 +26,11 @@ public class SortAlgorithms
         this.sut.InsertionSort();
         TestHelpers.IsSorted(this.sut);
     }
+
+    [Fact]
+    public void SelectionSort()
+    {
+        this.sut.SelectionSort();
+        TestHelpers.IsSorted(this.sut);
+    }
 }

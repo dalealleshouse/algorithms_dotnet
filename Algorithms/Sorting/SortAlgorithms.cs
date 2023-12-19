@@ -50,6 +50,22 @@ public static class SortAlgorithms
         }
     }
 
+    public static void SelectionSort<T>(this RandomArray<T> list)
+      where T : IComparable<T>
+    {
+        for (uint i = 0; i < list.Length; i++)
+        {
+            var minIndex = i;
+            for (uint j = i + 1; j < list.Length; j++)
+            {
+                if (list.Comparer(list[j], list[minIndex]) < 0)
+                    minIndex = j;
+            }
+
+            list.Swap(i, minIndex);
+        }
+    }
+
     public static void Swap<T>(this RandomArray<T> list, uint index1, uint index2)
       where T : IComparable<T>
     {
